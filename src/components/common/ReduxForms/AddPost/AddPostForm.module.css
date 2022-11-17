@@ -1,0 +1,63 @@
+.postCreatorWrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 5px;
+}
+
+.addPostTitleWrapper {
+    padding: 0px 10px;
+}
+
+.addPostTitle {
+    font-weight: bold;
+    padding: 2px;
+    font-size: 18px;
+}
+
+.postCreatorWrapper button {
+    padding: 5px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    border: none;
+    background: deepskyblue;
+    color: white;
+    border-radius: 4px;
+}
+
+.postTextareaWrapper {
+    padding: 10px;
+}
+
+.postTextarea {
+    border: none;
+    border-radius: 4px;
+    outline: none;
+    width: 600px;
+    height: 80px;
+    resize: none;
+}
+
+.postTextareaError {
+    border: 1px solid red;
+    border-radius: 4px;
+    outline: none;
+    width: 600px;
+    height: 80px;
+    resize: none;
+}
+
+.errorBlock {
+    color: red;
+    font-weight: bold;
+    padding: 2px;
+    font-size: 14px;
+}
+
+.submitPostButtonWrapper {
+    padding: 0px 10px;
+}
+
+.submitPostButton {
+    cursor: pointer;
+}

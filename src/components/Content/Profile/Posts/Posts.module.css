@@ -1,0 +1,15 @@
+.posts {
+    display: flex;
+    flex-direction: column-reverse;
+    background-color: #f4f4f4;
+    border-radius: 10px;
+    padding: 2px;
+}
+
+.postAreaWraper {
+    border-radius: 10px;
+    background: #fff;
+    padding: 5px;
+    margin-top: 5px;
+    min-height: 200px;
+}

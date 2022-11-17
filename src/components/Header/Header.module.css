@@ -1,0 +1,53 @@
+.header {
+    display: flex;
+    justify-content: space-between;
+    background: #ddeaf3;
+    padding: 5px;
+    border-radius: 10px;
+    grid-area: h;
+}
+
+.avatarLogoWrapper {
+    overflow: hidden;
+    border-radius: 50px;
+}
+.avatarLogoWrapper img {
+    width: 50px;
+    height: 50px;
+}
+
+.loginBtnWrapper {
+    width: 250px;
+    display: flex;
+    justify-content: flex-end;
+}
+.loginBtn {
+    margin: 10px 2px;
+    padding: 8px 10px;
+    width: 75px;
+    font-size: 13px;
+    margin-top: 8px;
+    cursor: pointer;
+    border: none;
+    border-radius: 6px;
+}
+.signUpBtn {
+    margin: 10px 2px;
+    padding: 8px 10px;
+    width: 75px;
+    font-size: 13px;
+    margin-top: 8px;
+    cursor: pointer;
+    border: none;
+    border-radius: 6px;
+}
+.logoutBtn {
+    margin: 10px 2px;
+    padding: 8px 10px;
+    width: 75px;
+    font-size: 13px;
+    margin-top: 8px;
+    cursor: pointer;
+    border: none;
+    border-radius: 6px;
+}

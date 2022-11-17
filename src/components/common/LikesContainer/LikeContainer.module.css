@@ -1,0 +1,16 @@
+
+
+.likeWrapper {
+    width: 50px;
+    display: flex;
+}
+.likeImg {
+    border-radius: 25px;
+    cursor: pointer;
+    width: 20px;
+    height: 20px;
+    transition: 0.3s;
+}
+.likeText {
+    font-size: 16px;
+}

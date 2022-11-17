@@ -1,0 +1,33 @@
+
+.optionsWrapper {
+    position: relative;
+}
+.optionsBtn {
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+    top: 1px;
+    right: 1px;
+}
+.optionsContainer {
+    position: absolute;
+    top: 22px;
+    right: 18px;
+    width: 100px;
+    background: #f4f4f4;
+    border-radius: 4px;
+    padding: 1px;
+}
+.optionBtn {
+    text-align: center;
+    padding: 3px;
+    margin: 1px;
+    border-radius: 4px;
+    background: white;
+    cursor: pointer;
+    transition: 0.3s;
+}
+.optionBtn:hover {
+    background: #f1f1f1;
+}

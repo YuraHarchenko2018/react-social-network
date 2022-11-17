@@ -1,0 +1,55 @@
+.post {
+    background: #fff;
+    border-radius: 4px;
+    padding: 10px;
+    margin: 2px;
+    white-space: pre-line;
+}
+
+.postUserInfo {
+    display: flex;
+    /* flex-direction: column; */
+}
+
+.postAvatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 25px;
+}
+
+.postOwnerName {
+    padding: 10px;
+}
+
+.userNameLink {
+    width: fit-content;
+    text-decoration: none;
+    color: black;
+}
+
+.postUpdateBtn {
+    margin: 0px 5px;
+    padding: 5px 10px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    background: #ffffd4;
+    border: 1px solid #d9d2d2;
+}
+
+.postDeleteBtn {
+    margin: 0px 5px;
+    padding: 5px 10px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    color: white;
+    background: #ff4d4d;
+    border: 1px solid #d8d9d2;
+}
+
+.createdAtTitle {
+    font-size: 10px;
+    padding-top: 5px;
+    text-align: right;
+}

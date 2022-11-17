@@ -1,0 +1,57 @@
+.signUpWrapper {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    min-height: 530px;
+    background: white;
+}
+
+.signUpWindow {
+    display: flex;
+    flex-wrap: wrap;
+    margin-top: 100px;
+    padding: 5px;
+    border: 1px solid gray;
+    border-radius: 10px;
+    width: 300px;
+    height: 250px;
+}
+
+.titleWrapper {
+    text-align: center;
+    width: 290px;
+    height: 50px;
+}
+
+.signUpInputsWrapper {
+    width: 290px;
+    height: 150px;
+}
+
+.emailInput {
+    margin: 10px 45px 5px 45px;
+    height: 30px;
+    width: 200px;
+    outline: none;
+}
+
+.passwordInput {
+    margin: 5px 45px 10px 45px;
+    height: 30px;
+    width: 200px;
+    outline: none;
+}
+
+.submitBtnWpapper {
+    display: flex;
+    justify-content: center;
+    width: 290px;
+    height: 50px;
+}
+
+.submitBtn {
+    cursor: pointer;
+    height: 33px;
+    padding: 5px 10px;
+    font-size: 14px;
+}

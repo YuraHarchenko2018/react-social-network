@@ -1,0 +1,74 @@
+.userInfo {
+    background: #fff;
+    border-radius: 10px;
+    padding: 5px;
+}
+
+.userInfoBackgroundWrapper {
+    height: 200px;
+    overflow: hidden;
+}
+
+.userInfoBackgroundWrapper img {
+    width: 100%;
+    /* margin-top: -315px; */
+}
+
+.userInfoBlock {
+    display: flex;
+    padding: 5px;
+    min-height: 100px;
+}
+
+.userInfoAvatarWrapper {
+    width: 100px;
+    height: 100px;
+    margin-left: 5px;
+    margin-right: 5px;
+    overflow: hidden;
+    border-radius: 50px;
+}
+
+.userInfoAvatarWrapper img {
+    height: 100%;
+    width: 100%;
+}
+
+.userInfoDataWrapper {
+    /* border: 1px solid #a7a7a7; */
+    width: 400px;
+    min-height: 100px;
+}
+
+.userInfoName {
+    padding: 5px;
+}
+.userInfoName span {
+    font-size: 20px;
+    font-weight: bold;
+
+}
+
+.userInfoStatusWrapper {
+    padding: 5px;
+}
+.statusInput {
+    outline: none;
+    border: 1px solid #eeeeee;
+    border-radius: 4px;
+    font-size: 17px;
+    width: -webkit-fill-available;
+    min-width: 200px;
+    padding: 5px;
+}
+.statusSpan {
+    background: white;
+    border-radius: 4px;
+    font-size: 10px;
+    padding: 5px;
+    cursor: pointer;
+    transition: background-color 0.5s;
+}
+.statusSpan:hover {
+    background: #eeeeee;
+}

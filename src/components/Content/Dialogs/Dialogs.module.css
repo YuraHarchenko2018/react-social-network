@@ -1,0 +1,41 @@
+.dialogWindow {
+    display: grid;
+    grid-template-columns: 2fr 8fr;
+    grid-template-rows: 8fr 40px;
+    grid-gap: 5px;
+    border-radius: 10px;
+    background: #fff;
+    padding: 5px;
+}
+
+.dialogsList {
+    /* border-right: 1px solid black; */
+}
+
+.dialogUser {
+    background: #dceaf3;
+    border-radius: 4px;
+    padding: 8px;
+    margin-top: 3px;
+    cursor: pointer;
+}
+
+.messagesList {
+    border: 1px solid #57575742;
+    border-radius: 4px;
+    padding: 5px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+}
+
+.message {
+    border: 1px solid #80808042;
+    border-radius: 4px;
+    font-style: italic;
+    font-size: 14px;
+    background: #fff;
+    padding: 8px;
+    margin-top: 3px;
+    max-width: 600px;
+}

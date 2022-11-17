@@ -1,0 +1,23 @@
+.wrapper {
+    margin: 30px auto;
+}
+
+.title {
+    text-align: center;
+    font-size: 20px;
+    font-weight: bold;
+    padding: 10px 0px;
+}
+
+.textareaWrapper {
+    display: flex;
+    justify-content: center;
+    padding: 5px;
+}
+
+.textareaWrapper textarea {
+    width: 250px;
+    height: 100px;
+    outline: none;
+    border-radius: 4px;
+}

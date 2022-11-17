@@ -1,0 +1,82 @@
+.loginWindow {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 300px;
+    min-height: 200px;
+    border: 1px solid #dbdbdb;
+    border-radius: 10px;
+    margin: 100px auto;
+    padding: 5px;
+}
+
+.loginBlocks {
+    padding: 5px;
+}
+
+/* .fetchingBlock {} */
+.asyncErrorBlock {
+    font-size: 14px;
+    color: #ed5151;
+}
+
+
+.loginFormBlock {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+}
+
+.loginFormItems {
+    margin: 10px 0px;
+}
+
+.loginTitleWrapper {
+    text-align: center;
+}
+.loginTitle {
+    font-weight: bold;
+    font-size: 20px;
+}
+
+.loginInputWrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.loginInput {
+    outline: none;
+    border: 1px solid black;
+    border-radius: 4px;
+    padding: 5px;
+    font-size: 16px;
+}
+.loginInputError {
+    outline: none;
+    border: 1px solid red;
+    border-radius: 4px;
+    padding: 5px;
+    font-size: 16px;
+}
+.errorBlock {
+    font-size: 14px;
+    color: #f37b7b;
+}
+
+.submitLoginButtonWrapper {
+    display: flex;
+    justify-content: center;
+    align-items: baseline;
+}
+.submitLoginButton {
+    border: none;
+    border-radius: 4px;
+    padding: 5px 10px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.5s;
+}
+.submitLoginButton:hover {
+    background: #e3e3e3;
+}

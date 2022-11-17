@@ -1,0 +1,62 @@
+
+.usersList {
+    padding: 5px;
+    min-height: 530px;
+}
+
+.userItem {
+    display: flex;
+    border: 1px solid #b4b4b447;
+    border-radius: 10px;
+    margin-top: 5px;
+    padding: 5px;
+}
+
+.userItemElementDiv {
+    margin: 0px 10px;
+}
+
+.userItemAvatarDivWrapper {
+    overflow: hidden;
+    border-radius: 73px;
+    width: 50px;
+    height: 50px;
+}
+
+.userItemAvatarImg {
+    width: 50px;
+    height: 50px;
+}
+
+.userNameDivWrapper {
+    background: #f3f3f3;
+    padding: 2px 5px;
+    border-radius: 6px;
+    min-width: 80px;
+    max-width: 120px;
+    text-align: center;
+}
+.userNameLink {
+    width: fit-content;
+    text-decoration: none;
+    color: black;
+}
+
+.userStatusWrapper {
+    border: 1px solid #d6d6d6;
+    min-height: 15px;
+    max-width: 400px;
+    padding: 5px;
+    font-family: monospace;
+    margin-top: 5px;
+}
+
+.userFollowButton {
+    width: 60px;
+    font-size: 12px;
+    padding: 4px;
+    margin-top: 15px;
+    cursor: pointer;
+    border: none;
+    border-radius: 6px;
+}

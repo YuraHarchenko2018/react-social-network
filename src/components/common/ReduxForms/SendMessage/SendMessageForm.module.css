@@ -1,0 +1,13 @@
+.messageInputWrapper {
+
+}
+
+.messageInput {
+    width: 600px;
+    border: 1px solid #45454542;
+    margin-top: 2px;
+    border-radius: 4px;
+    font-size: 16px;
+    padding: 5px 15px;
+    outline: none;
+}
