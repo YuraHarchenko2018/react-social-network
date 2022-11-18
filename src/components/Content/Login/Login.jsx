@@ -1,7 +1,6 @@
-import React from "react"
+import React, { useEffect } from "react"
 import LoginForm from "components/common/ReduxForms/Login/LoginForm";
 import useRootRedirect from "hooks/useRootRedirect";
-import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { login, setIsLoginErrorOccur } from "redux/reducers/login"
 import { getIsLoginInSelector } from "redux/selectors/auth";
