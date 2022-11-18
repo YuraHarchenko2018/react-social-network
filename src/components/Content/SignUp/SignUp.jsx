@@ -1,22 +1,31 @@
-import React from "react"
+import SignUpForm from "components/common/ReduxForms/SignUp/SignUpForm"
+import useRootRedirect from "hooks/useRootRedirect"
+import React, { useEffect } from "react"
+import { useDispatch, useSelector } from "react-redux"
+import { setIsLoginErrorOccur, signUp } from "redux/reducers/login"
+import { getIsLoginInSelector } from "redux/selectors/auth"
+import { getIsFetchingLoginStatus, getIsOccurErrorLoginStatus } from "redux/selectors/login"
+
 import s from './SignUp.module.css'
 
-const SignUp = (props) => {
+const SignUp = () => {
+    const dispatch = useDispatch()
+
+    const isLoginIn = useSelector(state => getIsLoginInSelector(state))
+    const isFetching = useSelector(state => getIsFetchingLoginStatus(state))
+    const isOccurError = useSelector(state => getIsOccurErrorLoginStatus(state))
+
+    useRootRedirect(isLoginIn)
+
+    const handleSubmit = ({ name, email, password, rePassword, age }) => signUp(name, email, password, rePassword, age)(dispatch)
+
+    useEffect(() => () => {
+        dispatch(setIsLoginErrorOccur(false))
+    }, [dispatch])
+
     return (
-        <div className={s.signUpWrapper}>
-            <div className={s.signUpWindow}>
-                <div className={s.titleWrapper}>
-                    <h2>Sign Up</h2>
-                </div>
-                <div className={s.signUpInputsWrapper}>
-                    <input className={s.emailInput} placeholder="email@gmail.com" />
-                    <input className={s.passwordInput} placeholder="qwerty" type="password" />
-                    <input className={s.passwordInput} placeholder="qwerty" type="password" />
-                </div>
-                <div className={s.submitBtnWpapper}>
-                    <button className={s.submitBtn}>Submit</button>
-                </div>
-            </div>
+        <div className={s.signUpPage}>
+            <SignUpForm onSubmit={handleSubmit} isFetching={isFetching} isOccurError={isOccurError} />
         </div>
     )
 }

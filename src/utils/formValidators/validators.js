@@ -12,6 +12,7 @@ export const required = value => (value ? undefined : 'Required')
 export const maxLenght10 = maxLenghtCreator(10)
 export const maxLenght30 = maxLenghtCreator(30)
 export const maxLenght50 = maxLenghtCreator(50)
+export const maxLenght100 = maxLenghtCreator(100)
 export const maxLenght240 = maxLenghtCreator(240)
 export const maxLenght1000 = maxLenghtCreator(1000)
 

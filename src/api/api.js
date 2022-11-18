@@ -93,6 +93,30 @@ export const authAPI = {
             userId
         }
     },
+
+    /**
+     * @param {string} name
+     * @param {string} email
+     * @param {string} password
+     * @param {number} age
+     */
+    async signUp(name, email, password, age) {
+        const axiosInstance = getAxiosInstance()
+        const response = await axiosInstance.post(`registration`, {
+            name, 
+            email,
+            password,
+            age
+        }, {})
+        
+        let jwtToken = response.status === 201 ? response.data.access_token : ''
+        let userId = response.status === 201 ? response.data.metadata.sub : 1
+
+        return {
+            jwtToken,
+            userId
+        }
+    },
     
     async me() {
         const axiosInstance = getAxiosInstance()

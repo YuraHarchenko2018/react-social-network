@@ -52,4 +52,26 @@ export const login = (email, password) => async (dispatch) => {
     }
 }
 
+export const signUp = (name, email, password, rePassword, age) => async (dispatch) => {
+
+    dispatch(setIsFetchingLogin(true))
+
+    try {
+        let { jwtToken, userId } = await authAPI.signUp(name, email, password, age)
+            dispatch(setIsFetchingLogin(false))
+            dispatch(setAuthData({
+                token: jwtToken,
+                userId: userId
+            }))
+    } catch(error) {
+        if (error.response) {
+            if (error.response.status) {
+                // set to store flag that mean "something went wrong"
+                dispatch(setIsLoginErrorOccur(true))
+                dispatch(setIsFetchingLogin(false))
+            }
+        }
+    }
+}
+
 export default loginReducer

@@ -1,0 +1,82 @@
+.signUpWindow {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 300px;
+    min-height: 200px;
+    border: 1px solid #dbdbdb;
+    border-radius: 10px;
+    margin: 100px auto;
+    padding: 5px;
+}
+
+.signUpBlocks {
+    padding: 5px;
+}
+
+/* .fetchingBlock {} */
+.asyncErrorBlock {
+    font-size: 14px;
+    color: #ed5151;
+}
+
+
+.signUpFormBlock {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+}
+
+.signUpFormItems {
+    margin: 10px 0px;
+}
+
+.signUpTitleWrapper {
+    text-align: center;
+}
+.signUpTitle {
+    font-weight: bold;
+    font-size: 20px;
+}
+
+.signUpInputWrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.signUpInput {
+    outline: none;
+    border: 1px solid black;
+    border-radius: 4px;
+    padding: 5px;
+    font-size: 16px;
+}
+.signUpInputError {
+    outline: none;
+    border: 1px solid red;
+    border-radius: 4px;
+    padding: 5px;
+    font-size: 16px;
+}
+.errorBlock {
+    font-size: 14px;
+    color: #f37b7b;
+}
+
+.submitLoginButtonWrapper {
+    display: flex;
+    justify-content: center;
+    align-items: baseline;
+}
+.submitLoginButton {
+    border: none;
+    border-radius: 4px;
+    padding: 5px 10px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.5s;
+}
+.submitLoginButton:hover {
+    background: #e3e3e3;
+}
