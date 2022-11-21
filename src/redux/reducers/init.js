@@ -1,36 +1,25 @@
+import { createSlice } from "@reduxjs/toolkit"
 import { getUserProfileImg, isJwtValid } from "./auth"
 
-// action type consts
-const SET_INIT = "SET_INIT"
-
-let initialState = {
-    isAppInit: false,
-}
-
-const initReducer = (state = initialState, action) => {
-    switch (action.type) {
-        case SET_INIT:
-            return {
-                ...state,
-                isAppInit: action.payload.isInit
-            }
-    
-        default:
-            return state
+const initSlice = createSlice({
+    name: 'init',
+    initialState: {
+        isAppInit: false,
+    },
+    reducers: {
+      init(state, action) {
+        state.isAppInit = action.payload.isInit
+      },
     }
-}
+});
 
-// action creators
-export const setInit = (isInit = true) => ({
-    type: SET_INIT, 
-    payload: {
-        isInit
-    }
-})
+export const {
+    init,
+} = initSlice.actions;
 
-// thunk-s
+// thunk
 export const initializeApp = (authUserId) => async (dispatch) => {
-    dispatch(setInit(false))
+    dispatch(init({ isInit: false }))
 
     if (authUserId) {
         let checkJwtValidPromise = dispatch(isJwtValid())
@@ -42,7 +31,7 @@ export const initializeApp = (authUserId) => async (dispatch) => {
         ])
     }
 
-    dispatch(setInit())
+    dispatch(init({ isInit: true }))
 }
 
-export default initReducer
+export default initSlice.reducer
