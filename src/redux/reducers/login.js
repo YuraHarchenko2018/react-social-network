@@ -1,42 +1,35 @@
+import { createSlice } from "@reduxjs/toolkit"
 import { authAPI } from "api/api"
 import { setAuthData } from "./auth"
 
-const SET_IS_FETCHING_LOGIN = 'SET_IS_FETCHING_LOGIN'
-const SET_IS_LOGIN_ERROR_OCCUR = 'SET_IS_LOGIN_ERROR_OCCUR'
-
-const initialState = {
-    isFetching: false,
-    isOccurError: false
-}
-
-const loginReducer = (state = initialState, action) => {
-    switch (action.type) {
-        case SET_IS_FETCHING_LOGIN:
-            return {
-                ...state,
-                isFetching: action.isFetching
-            }
-        case SET_IS_LOGIN_ERROR_OCCUR:
-            return {
-                ...state,
-                isOccurError: action.isError
-            }
-    
-        default:
-            return state
+const loginSlice = createSlice({
+    name: 'login',
+    initialState: {
+        isFetching: false,
+        isOccurError: false
+    },
+    reducers: {
+        setIsFetchingLogin(state, action) {
+          state.isFetching = action.payload.isFetching
+        },
+        setIsLoginErrorOccur(state, action) {
+          state.isOccurError = action.payload.isOccurError
+        },
     }
-}
+});
 
-export const setIsFetchingLogin = (isFetching) => ({ type: SET_IS_FETCHING_LOGIN, isFetching })
-export const setIsLoginErrorOccur = (isError) => ({ type: SET_IS_LOGIN_ERROR_OCCUR, isError })
+export const {
+    setIsFetchingLogin,
+    setIsLoginErrorOccur,
+} = loginSlice.actions;
 
 export const login = (email, password) => async (dispatch) => {
 
-    dispatch(setIsFetchingLogin(true))
+    dispatch(setIsFetchingLogin({ isFetching: true }))
 
     try {
         let { jwtToken, userId } = await authAPI.login(email, password)
-            dispatch(setIsFetchingLogin(false))
+            dispatch(setIsFetchingLogin({ isFetching: false }))
             dispatch(setAuthData({
                 token: jwtToken,
                 userId: userId
@@ -45,8 +38,8 @@ export const login = (email, password) => async (dispatch) => {
         if (error.response) {
             if (error.response.status) {
                 // set to store flag that mean "something went wrong"
-                dispatch(setIsLoginErrorOccur(true))
-                dispatch(setIsFetchingLogin(false))
+                dispatch(setIsLoginErrorOccur({ isOccurError: true }))
+                dispatch(setIsFetchingLogin({ isFetching: false }))
             }
         }
     }
@@ -54,11 +47,11 @@ export const login = (email, password) => async (dispatch) => {
 
 export const signUp = (name, email, password, rePassword, age) => async (dispatch) => {
 
-    dispatch(setIsFetchingLogin(true))
+    dispatch(setIsFetchingLogin({ isFetching: true }))
 
     try {
         let { jwtToken, userId } = await authAPI.signUp(name, email, password, age)
-            dispatch(setIsFetchingLogin(false))
+            dispatch(setIsFetchingLogin({ isFetching: false }))
             dispatch(setAuthData({
                 token: jwtToken,
                 userId: userId
@@ -67,11 +60,11 @@ export const signUp = (name, email, password, rePassword, age) => async (dispatc
         if (error.response) {
             if (error.response.status) {
                 // set to store flag that mean "something went wrong"
-                dispatch(setIsLoginErrorOccur(true))
-                dispatch(setIsFetchingLogin(false))
+                dispatch(setIsLoginErrorOccur({ isOccurError: true }))
+                dispatch(setIsFetchingLogin({ isFetching: false }))
             }
         }
     }
 }
 
-export default loginReducer
+export default loginSlice.reducer

@@ -8,10 +8,10 @@ import s from "./Dialogs.module.css"
 const DialogUserItem = ({ userName }) => <div className={s.dialogUser}>{userName}</div>
 const MessageItem    = ({ message }) => <div className={s.message} style={({ alignSelf: "flex-start" })}>{message}</div>
 
-const Dialogs = ({ isLoginIn, dialogs, messages, addMessageCreator }) => {
+const Dialogs = ({ isLoginIn, dialogs, messages, addMessage }) => {
     useLoginRedirect(isLoginIn)
 
-    const handleSubmit = ({ message }) => addMessageCreator(message)
+    const handleSubmit = ({ message }) => addMessage({ message })
     
     const dialogsItems  = dialogs.map( el =>  <DialogUserItem key={el.id} userName={el.userName} /> )
     const messagesItems = messages.map( el =>  <MessageItem key={el.id} message={el.message} /> )

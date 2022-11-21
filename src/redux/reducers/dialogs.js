@@ -1,5 +1,4 @@
-// action type consts
-const ADD_MESSAGE = "ADD-MESSAGE"
+import { createSlice } from "@reduxjs/toolkit"
 
 let initialState = {
     dialogs: [
@@ -18,31 +17,22 @@ let initialState = {
     ],
 }
 
-const dialogsReducer = (state = initialState, action) => {
-    switch (action.type) {
-        case ADD_MESSAGE:
-            return {
-                ...state,
-                messages: [
-                    ...state.messages,
-                    {
-                        id: state.messages.length + 1,
-                        message: action.payload.message
-                    }
-                ],
-            }
-    
-        default:
-            return state
+const dialogsSlice = createSlice({
+    name: 'dialogs',
+    initialState: initialState,
+    reducers: {
+        addMessage(state, action) {
+            const nextId = state.messages.length + 1
+            state.messages.push({
+                id: nextId,
+                message: action.payload.message
+            })
+        },
     }
-}
+});
 
-// action creators
-export const addMessageCreator = (message) => ({
-    type: ADD_MESSAGE,
-    payload: {
-        message
-    }
-})
+export const {
+    addMessage,
+} = dialogsSlice.actions;
 
-export default dialogsReducer
+export default dialogsSlice.reducer
