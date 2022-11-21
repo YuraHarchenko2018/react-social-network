@@ -1,14 +1,14 @@
 import { configureStore } from '@reduxjs/toolkit';
 // import { combineReducers } from 'redux'
 
-import authReducer from './reducers/auth'
 import dialogsReducer from './reducers/dialogs'
-import initReducer from './reducers/init'
 import loginReducer from './reducers/login'
-import newsReducer from './reducers/news'
-import popUpReducer from './reducers/popup'
 import profileReducer from './reducers/profile'
 import usersReducers from './reducers/users'
+import authSlice from './reducers/auth'
+import initSlice from './reducers/init'
+import popUpSlice from './reducers/popup'
+import newsSlice from './reducers/news'
 
 // const reducer = combineReducers({
 //     profile: profileReducer,
@@ -27,10 +27,10 @@ const store = configureStore({
         dialogs: dialogsReducer,
         users: usersReducers,
         login: loginReducer,
-        auth: authReducer,
-        init: initReducer,
-        popUp: popUpReducer,
-        news: newsReducer
+        auth: authSlice,
+        init: initSlice,
+        popUp: popUpSlice,
+        news: newsSlice
     }
 });
 
