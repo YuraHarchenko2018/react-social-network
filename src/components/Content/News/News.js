@@ -12,7 +12,7 @@ const News = () => {
 
     // unmount
     useEffect( () => () => {
-        dispatch(setNews(null))
+        dispatch(setNews({ posts: null }))
     }, [dispatch] );
 
     if (news === null) {

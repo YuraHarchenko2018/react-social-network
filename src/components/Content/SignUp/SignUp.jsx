@@ -1,6 +1,6 @@
+import React, { useEffect } from "react"
 import SignUpForm from "components/common/ReduxForms/SignUp/SignUpForm"
 import useRootRedirect from "hooks/useRootRedirect"
-import React, { useEffect } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { setIsLoginErrorOccur, signUp } from "redux/reducers/login"
 import { getIsLoginInSelector } from "redux/selectors/auth"
