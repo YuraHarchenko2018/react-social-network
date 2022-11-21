@@ -1,52 +1,29 @@
-// action type consts
-const SET_CONTENT = "SET_CONTENT"
-const SET_IS_SHOW = "SET_IS_SHOW"
-const SET_PAYLOAD = "SET_PAYLOAD"
+import { createSlice } from "@reduxjs/toolkit"
 
-let initialState = {
-    content: 'default',
-    isShow: false,
-    payload: null
-}
-
-const popUpReducer = (state = initialState, action) => {
-    switch (action.type) {
-        case SET_CONTENT:
-            return {
-                ...state,
-                content: action.payload.content
-            }
-        case SET_IS_SHOW:
-            return {
-                ...state,
-                isShow: action.payload.isShow
-            }
-        case SET_PAYLOAD:
-            return {
-                ...state,
-                payload: action.payload
-            }
-    
-        default:
-            return state
+const popUpSlice = createSlice({
+    name: 'popUp',
+    initialState: {
+        content: 'default',
+        isShow: false,
+        payload: null
+    },
+    reducers: {
+      setContent(state, action) {
+        state.content = action.payload.content
+      },
+      setIsShow(state, action) {
+        state.isShow = action.payload.isShow
+      },
+      setPayload(state, action) {
+        state.payload = action.payload
+      }
     }
-}
+});
 
-// action creators
-export const setContentForPopUp = (content = 'default') => ({
-    type: SET_CONTENT, 
-    payload: {
-        content
-    }
-})
+export const {
+    setContent,
+    setIsShow,
+    setPayload
+} = popUpSlice.actions;
 
-export const setIsShowPopUp = (isShow = true) => ({
-    type: SET_IS_SHOW, 
-    payload: {
-        isShow
-    }
-})
-
-export const setPayloadForPopUp = (payload) => ({ type: SET_PAYLOAD, payload })
-
-export default popUpReducer
+export default popUpSlice.reducer

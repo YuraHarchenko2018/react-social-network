@@ -1,6 +1,6 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { setIsShowPopUp } from "redux/reducers/popup";
+import { setIsShow } from "redux/reducers/popup";
 import { getContentPopUp, getIsShowPopUp } from "redux/selectors/popup";
 
 import UpdatePostTextPopUp from "./popUps/updatePostText/updatePostText";
@@ -16,7 +16,7 @@ const PopUpContainer = () => {
 
     const Component = getContentComponent(content)
 
-    const closePopUp = () => dispatch(setIsShowPopUp(false))
+    const closePopUp = () => dispatch(setIsShow({ isShow: false }))
 
     return (
         <>

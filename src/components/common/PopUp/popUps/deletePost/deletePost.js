@@ -1,6 +1,6 @@
 import React from "react"
 import { useDispatch, useSelector } from "react-redux"
-import { setIsShowPopUp } from "redux/reducers/popup"
+import { setIsShow } from "redux/reducers/popup"
 import { deletePost } from "redux/reducers/profile"
 import { getPopUpPayload } from "redux/selectors/popup"
 
@@ -15,11 +15,11 @@ const DeletePostPopUp = () => {
         if (payload.postId) {
             deletePost(payload.postId)(dispatch)
         }
-        dispatch(setIsShowPopUp(false))
+        dispatch(setIsShow({ isShow: false }))
     }
 
     const handleNoBtn = () => {
-        dispatch(setIsShowPopUp(false))
+        dispatch(setIsShow({ isShow: false }))
     }
 
     return (

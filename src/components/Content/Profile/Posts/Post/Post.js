@@ -2,7 +2,7 @@ import React from "react";
 import OptionsWindow from "components/common/OptionsWindow/OptionsWindow";
 import { useDispatch, useSelector } from "react-redux";
 import { getAuthUserIdSelector } from "redux/selectors/auth";
-import { setContentForPopUp, setIsShowPopUp, setPayloadForPopUp } from "redux/reducers/popup";
+import { setContent, setIsShow, setPayload } from "redux/reducers/popup";
 import { getFormattedDate } from "utils/helpers/formatDate";
 import LikesContainer from "components/common/LikesContainer/LikesContainer";
 
@@ -29,17 +29,14 @@ const OptionsContainer = ({ id, userId, text, enviroment }) => {
     const isModifyableUser = authUserId === userId
     
     const handleUpdateBtn = () => {
-        dispatch(setContentForPopUp("updatePostText"))
-        dispatch(setPayloadForPopUp({
-            postId: id,
-            postText: text
-        }))
-        dispatch(setIsShowPopUp(true))
+        dispatch(setContent({ content: "updatePostText" }))
+        dispatch(setPayload({ postId: id, postText: text }))
+        dispatch(setIsShow({ isShow: true }))
     }
     const handleDeleteBtn = () => {
-        dispatch(setContentForPopUp("deletePost"))
-        dispatch(setPayloadForPopUp({ postId: id }))
-        dispatch(setIsShowPopUp(true))
+        dispatch(setContent({ content: "deletePost" }))
+        dispatch(setPayload({ postId: id }))
+        dispatch(setIsShow({ isShow: true }))
     }
 
     const buttonsSettings = [

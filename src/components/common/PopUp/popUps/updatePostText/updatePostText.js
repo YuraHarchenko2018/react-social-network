@@ -1,6 +1,6 @@
 import React, { useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
-import { setIsShowPopUp } from "redux/reducers/popup"
+import { setIsShow } from "redux/reducers/popup"
 import { updatePost } from "redux/reducers/profile"
 import { getPopUpPayload } from "redux/selectors/popup"
 import containerStyle from "./../../PopUpContainer.module.css"
@@ -20,7 +20,7 @@ const UpdatePostTextPopUp = () => {
         if (localPostText !== postText) {
             updatePost(postId, localPostText)(dispatch)
         }
-        dispatch(setIsShowPopUp(false))
+        dispatch(setIsShow({ isShow: false }))
     }
 
     const handleOnChangeTextarea = ({ target }) => {
