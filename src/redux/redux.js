@@ -1,5 +1,6 @@
 import { configureStore } from '@reduxjs/toolkit';
 import { combineReducers } from 'redux'
+// import thunk from 'redux-thunk';
 
 import profileReducer from './reducers/profile'
 import dialogsSlice from './reducers/dialogs'
@@ -10,7 +11,7 @@ import initSlice from './reducers/init'
 import popUpSlice from './reducers/popup'
 import newsSlice from './reducers/news'
 
-const reducer = combineReducers({
+const rootReducer = combineReducers({
     profile: profileReducer,
     dialogs: dialogsSlice,
     users: usersReducers,
@@ -21,6 +22,9 @@ const reducer = combineReducers({
     news: newsSlice
 })
 
-const store = configureStore({ reducer });
+const store = configureStore({
+    reducer: rootReducer,
+    // middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(thunk)
+});
 
 export { store }

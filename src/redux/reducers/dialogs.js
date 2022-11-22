@@ -19,7 +19,7 @@ let initialState = {
 
 const dialogsSlice = createSlice({
     name: 'dialogs',
-    initialState: initialState,
+    initialState,
     reducers: {
         addMessage(state, action) {
             const nextId = state.messages.length + 1
@@ -31,8 +31,6 @@ const dialogsSlice = createSlice({
     }
 });
 
-export const {
-    addMessage,
-} = dialogsSlice.actions;
+export const { addMessage } = dialogsSlice.actions;
 
 export default dialogsSlice.reducer

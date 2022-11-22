@@ -2,7 +2,7 @@ import React from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { getAuthUserIdSelector } from "redux/selectors/auth"
 import { likePost } from "redux/reducers/profile"
-import { likeNewsPost } from "redux/reducers/news"
+import { likePostNewsPage } from "redux/reducers/news"
 import LikeSVG from "../../../assets/like.png"
 
 import s from "./LikeContainer.module.css"
@@ -17,10 +17,11 @@ const LikesContainer = ({ enviroment, postId, postOwnerId, likesCount, likes }) 
 
     const handleLikeBtn = () => {
         if (enviroment === "profile") {
-            likePost(postId, postOwnerId)(dispatch)
+            dispatch(likePost(postId, postOwnerId))
         }
         if (enviroment === "news") {
-            likeNewsPost(postId)(dispatch)
+            // @ts-ignore
+            dispatch(likePostNewsPage(postId))
         }
     }
 
