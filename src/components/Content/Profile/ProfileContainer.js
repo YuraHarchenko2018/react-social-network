@@ -7,20 +7,20 @@ import { fetchUserInfo, fetchUserPosts, setProfileUserId } from "redux/reducers/
 import Preloader from "components/common/Preloader/Preloader"
 import Profile from "./Profile"
 import useLoginRedirect from "hooks/useLoginRedirect"
-import { getAuthUserIdSelector, getIsLoginInSelector } from "redux/selectors/auth"
+import { getAuthUserIdSelector } from "redux/selectors/auth"
 import { getProfileUserIdSelector, getUserInfoStatusSelector, getUserPostsStatusSelector } from "redux/selectors/profile"
 
 
 const ProfileContainer = () => {
+    useLoginRedirect()
+
     const dispatch = useDispatch()
 
-    const isLoginIn = useSelector(state => getIsLoginInSelector(state))
     const authUserId = useSelector(state => getAuthUserIdSelector(state))
     const profileUserId = useSelector(state => getProfileUserIdSelector(state))
     const userInfoStatus = useSelector(state => getUserInfoStatusSelector(state))
     const userPostsStatus = useSelector(state => getUserPostsStatusSelector(state))
 
-    useLoginRedirect(isLoginIn)
 
     // @ts-ignore
     const getUserInfo = useCallback(() => dispatch(fetchUserInfo(profileUserId)), [dispatch, profileUserId])
