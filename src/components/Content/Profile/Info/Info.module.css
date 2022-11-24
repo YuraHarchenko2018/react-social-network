@@ -43,6 +43,7 @@
 .userInfoName {
     padding: 5px;
 }
+
 .userInfoName span {
     font-size: 20px;
     font-weight: bold;
@@ -52,6 +53,7 @@
 .userInfoStatusWrapper {
     padding: 5px;
 }
+
 .statusInput {
     outline: none;
     border: 1px solid #eeeeee;
@@ -61,6 +63,7 @@
     min-width: 200px;
     padding: 5px;
 }
+
 .statusSpan {
     background: white;
     border-radius: 4px;
@@ -69,6 +72,7 @@
     cursor: pointer;
     transition: background-color 0.5s;
 }
+
 .statusSpan:hover {
     background: #eeeeee;
 }

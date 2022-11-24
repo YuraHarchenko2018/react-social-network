@@ -8,7 +8,7 @@ import Preloader from "components/common/Preloader/Preloader"
 import Profile from "./Profile"
 import useLoginRedirect from "hooks/useLoginRedirect"
 import { getAuthUserIdSelector } from "redux/selectors/auth"
-import { getProfileUserIdSelector, getUserInfoStatusSelector, getUserPostsStatusSelector } from "redux/selectors/profile"
+import { getProfileUserIdSelector, getUserInfoSelector, getUserInfoStatusSelector, getUserPostsSelector, getUserPostsStatusSelector } from "redux/selectors/profile"
 
 
 const ProfileContainer = () => {
@@ -18,14 +18,20 @@ const ProfileContainer = () => {
 
     const authUserId = useSelector(state => getAuthUserIdSelector(state))
     const profileUserId = useSelector(state => getProfileUserIdSelector(state))
+    const userInfo = useSelector(state => getUserInfoSelector(state))
+    const userPosts = useSelector(state => getUserPostsSelector(state))
     const userInfoStatus = useSelector(state => getUserInfoStatusSelector(state))
     const userPostsStatus = useSelector(state => getUserPostsStatusSelector(state))
-
 
     // @ts-ignore
     const getUserInfo = useCallback(() => dispatch(fetchUserInfo(profileUserId)), [dispatch, profileUserId])
     // @ts-ignore
     const getUserPosts = useCallback(() => dispatch(fetchUserPosts(profileUserId)), [dispatch, profileUserId])
+
+    const fetchStatuses = [
+        userInfoStatus,
+        userPostsStatus
+    ]
 
     let routerParams = useParams();
     let routerUserId = routerParams.userId ?? authUserId
@@ -37,7 +43,11 @@ const ProfileContainer = () => {
         !userInfoStatus && getUserInfo()
         !userPostsStatus && getUserPosts()
 
-        if ([userInfoStatus, userPostsStatus].every(status => status === 'ready')) {
+        if (fetchStatuses.some(status => status === 'pending') && userInfo && userPosts) {
+            return <Profile />
+        }
+
+        if (fetchStatuses.every(status => status === 'ready')) {
             return <Profile />
         }
     }

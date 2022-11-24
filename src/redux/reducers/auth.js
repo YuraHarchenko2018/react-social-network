@@ -7,85 +7,85 @@ const initialIsLoginIn = jwtFromStorage !== null ? true : false
 const defaultUserImg = "https://cdn-icons-png.flaticon.com/512/149/149071.png"
 
 const authSlice = createSlice({
-    name: 'auth',
-    initialState: {
-        isOccurError: false,
-        jwtToken: jwtFromStorage,
-        isLoginIn: initialIsLoginIn,
-        authUserId: +authUserIdFromStorage,
-        authUserProfileImgLink: defaultUserImg
+  name: 'auth',
+  initialState: {
+    isOccurError: false,
+    jwtToken: jwtFromStorage,
+    isLoginIn: initialIsLoginIn,
+    authUserId: +authUserIdFromStorage,
+    authUserProfileImgLink: defaultUserImg
+  },
+  reducers: {
+    setAuthData(state, action) {
+      const { userId, token } = action.payload
+
+      localStorage.setItem('jwtToken', token)
+      localStorage.setItem('authUserId', userId)
+
+      state.jwtToken = token
+      state.authUserId = +userId
+      state.isOccurError = false
+      state.isLoginIn = true
     },
-    reducers: {
-      setAuthData(state, action) {
-        const { userId, token } = action.payload
+    setUserData(state, action) {
+      const { userId, isOccurError, isLoginIn } = action.payload
 
-        localStorage.setItem('jwtToken', token)
-        localStorage.setItem('authUserId', userId)
+      localStorage.setItem('authUserId', userId)
 
-        state.jwtToken = token
-        state.authUserId = +userId
-        state.isOccurError = false
-        state.isLoginIn = true
-      },
-      setUserData(state, action) {
-        const { userId, isOccurError, isLoginIn } = action.payload
+      state.authUserId = +userId
+      state.isOccurError = isOccurError
+      state.isLoginIn = isLoginIn
+    },
+    setAuthErrorOccur(state) {
+      localStorage.removeItem('jwtToken')
+      localStorage.removeItem('authUserId')
 
-        localStorage.setItem('authUserId', userId)
+      state.jwtToken = ''
+      state.authUserId = null
+      state.isOccurError = true
+      state.isLoginIn = false
+      state.authUserProfileImgLink = defaultUserImg
+    },
+    logout(state) {
+      localStorage.removeItem('jwtToken')
+      localStorage.removeItem('authUserId')
 
-        state.authUserId = +userId
-        state.isOccurError = isOccurError
-        state.isLoginIn = isLoginIn
-      },
-      setAuthErrorOccur(state) {
-        localStorage.removeItem('jwtToken')
-        localStorage.removeItem('authUserId')
-
-        state.jwtToken = ''
-        state.authUserId = null
-        state.isOccurError = true
-        state.isLoginIn = false
-        state.authUserProfileImgLink = defaultUserImg
-      },
-      logout(state) {
-        localStorage.removeItem('jwtToken')
-        localStorage.removeItem('authUserId')
-
-        state.jwtToken = ''
-        state.authUserId = null
-        state.isOccurError = false
-        state.isLoginIn = false
-        state.authUserProfileImgLink = defaultUserImg
-      },
-      setUserAvatar(state, action) {
-        state.authUserProfileImgLink = action.payload.profileImg
-      }
+      state.jwtToken = ''
+      state.authUserId = null
+      state.isOccurError = false
+      state.isLoginIn = false
+      state.authUserProfileImgLink = defaultUserImg
+    },
+    setUserAvatar(state, action) {
+      state.authUserProfileImgLink = action.payload.profileImg
     }
+  }
 });
 
 export const {
-    setAuthData,
-    setUserData,
-    setAuthErrorOccur,
-    logout,
-    setUserAvatar
+  setAuthData,
+  setUserData,
+  setAuthErrorOccur,
+  logout,
+  setUserAvatar
 } = authSlice.actions;
 
 export const isJwtValid = () => async (dispatch) => {
-    let authMeData = await authAPI.me()
-    dispatch(setUserData(authMeData))
+  let authMeData = await authAPI.me()
+  dispatch(setUserData(authMeData))
 }
 
 export const getUserProfileImg = (userId) => async (dispatch) => {
-    try {
-        const profileData = await profileAPI.getProfile(userId)
-        const profileImg = profileData.avatarImg || defaultUserImg
-        dispatch(setUserAvatar({ profileImg }))
-    } catch (error) {
-        if (error.response) {
-          // set to store flag that mean "something went wrong"
-          dispatch(setAuthErrorOccur())
-        }
+  try {
+    const profileData = await profileAPI.getProfile(userId)
+    const profileImg = profileData.avatarImg || defaultUserImg
+    dispatch(setUserAvatar({ profileImg }))
+  } catch (error) {
+    if (error.response) {
+      // set to store flag that mean "something went wrong"
+      dispatch(setAuthErrorOccur())
     }
+  }
 }
 
 export default authSlice.reducer

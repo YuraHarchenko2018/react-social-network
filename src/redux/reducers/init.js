@@ -7,9 +7,9 @@ const initSlice = createSlice({
         isAppInit: false,
     },
     reducers: {
-      init(state, action) {
-        state.isAppInit = action.payload.isInit
-      },
+        init(state, action) {
+            state.isAppInit = action.payload.isInit
+        },
     }
 });
 
@@ -24,7 +24,7 @@ export const initializeApp = (authUserId) => async (dispatch) => {
     if (authUserId) {
         let checkJwtValidPromise = dispatch(isJwtValid())
         let profileImgPromise = dispatch(getUserProfileImg(authUserId))
-        
+
         await Promise.all([
             checkJwtValidPromise,
             profileImgPromise

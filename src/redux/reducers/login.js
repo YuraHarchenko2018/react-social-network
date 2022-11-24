@@ -10,10 +10,10 @@ const loginSlice = createSlice({
     },
     reducers: {
         setIsFetchingLogin(state, action) {
-          state.isFetching = action.payload.isFetching
+            state.isFetching = action.payload.isFetching
         },
         setIsLoginErrorOccur(state, action) {
-          state.isOccurError = action.payload.isOccurError
+            state.isOccurError = action.payload.isOccurError
         },
     }
 });
@@ -29,12 +29,12 @@ export const login = (email, password) => async (dispatch) => {
 
     try {
         let { jwtToken, userId } = await authAPI.login(email, password)
-            dispatch(setIsFetchingLogin({ isFetching: false }))
-            dispatch(setAuthData({
-                token: jwtToken,
-                userId: userId
-            }))
-    } catch(error) {
+        dispatch(setIsFetchingLogin({ isFetching: false }))
+        dispatch(setAuthData({
+            token: jwtToken,
+            userId: userId
+        }))
+    } catch (error) {
         if (error.response) {
             if (error.response.status) {
                 // set to store flag that mean "something went wrong"
@@ -51,12 +51,12 @@ export const signUp = (name, email, password, rePassword, age) => async (dispatc
 
     try {
         let { jwtToken, userId } = await authAPI.signUp(name, email, password, age)
-            dispatch(setIsFetchingLogin({ isFetching: false }))
-            dispatch(setAuthData({
-                token: jwtToken,
-                userId: userId
-            }))
-    } catch(error) {
+        dispatch(setIsFetchingLogin({ isFetching: false }))
+        dispatch(setAuthData({
+            token: jwtToken,
+            userId: userId
+        }))
+    } catch (error) {
         if (error.response) {
             if (error.response.status) {
                 // set to store flag that mean "something went wrong"
