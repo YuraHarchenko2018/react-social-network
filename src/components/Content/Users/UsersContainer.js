@@ -1,21 +1,26 @@
 import React from "react"
-import { connect } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 import { fetchUsers } from "redux/reducers/users"
-import { getUsersSelector } from "redux/selectors/users"
+import { getSelectedPageSelector, getUsersSelector } from "redux/selectors/users"
 import useLoginRedirect from "hooks/useLoginRedirect"
 import Preloader from "components/common/Preloader/Preloader"
 import Users from "./Users"
 
 
-const UsersContainer = ({ users, fetchUsers }) => {
+const UsersContainer = () => {
     useLoginRedirect()
 
+    const dispatch = useDispatch()
+    const users = useSelector(state => getUsersSelector(state))
+    const selectedPage = useSelector(state => getSelectedPageSelector(state))
+
     if (users === null) {
-        fetchUsers()
+        // @ts-ignore
+        dispatch(fetchUsers(selectedPage))
         return <Preloader />
     }
 
     return <Users />
 }
 
-export default connect(state => ({ users: getUsersSelector(state) }), { fetchUsers })(UsersContainer)
+export default UsersContainer
