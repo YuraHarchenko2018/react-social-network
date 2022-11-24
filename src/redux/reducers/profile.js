@@ -1,103 +1,190 @@
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit"
 import { postsAPI, profileAPI } from "api/api"
 import { setAuthErrorOccur } from "./auth"
 
-// action type consts
-const SET_PROFILE_UDER_ID = "profile/SET_PROFILE_UDER_ID"
-const ADD_POST = "profile/ADD_POST"
-const EDIT_POST_TEXT = "profile/EDIT_POST_TEXT"
-const DELETE_POST = "profile/DELETE_POST"
-const SET_USER_POSTS = "profile/SET_USER_POSTS"
-const UPDATE_USER_INFO = "profile/UPDATE_USER_INFO"
-const UPDATE_USER_STATUS = "profile/UPDATE_USER_STATUS"
+const profileSlice = createSlice({
+    name: 'profile',
+    initialState: {
+        /**
+         * @property {{
+         *  id: number,
+         *  name: string,
+         *  email: string,
+         *  age: number,
+         *  status: string,
+         *  avatarImg: string,
+         * }} userInfo
+         */
+        userInfo: null,
+        /**
+         * @property {[
+         *   {
+         *      id: number,
+         *      userId: number,
+         *      text: string,
+         *      created_at: string,
+         *      updated_at: string,
+         *      likesCount: number,
+         *      likes: [
+         *        {
+         *          id: number,
+         *          user: {
+         *             id: number
+         *          }
+         *        }
+         *      ],
+         *      user: {
+         *          id: number,
+         *          name: string,
+         *          email: string,
+         *          password: string,
+         *          age: number,
+         *          status: string,
+         *          isFollow: boolean,
+         *          avatarImg: string,
+         *      }
+         *   }
+         * ]} posts
+         */
+        posts: null,
+        profileUserId: null,
+        /**
+         * @property {null | 'pending' | 'ready'} userInfoStatus
+         */
+        userInfoStatus: null,
+        /**
+         * @property {null | 'pending' | 'ready'} userPostsStatus
+         */
+        userPostsStatus: null
+    },
+    reducers: {
+        setProfileUserId(state, action) {
+            const userId = action.payload
 
-let initialState = {
-    profileUserId: null,
-    userInfo: null,
-    posts: null,
-    isFetchingUserInfo: false,
-}
+            state.profileUserId = userId
+            state.userInfoStatus = null
+            state.userPostsStatus = null
+        },
+        setPostText(state, action) {
+            const { postId, postText } = action.payload
 
-const profileReducer = (state = initialState, action) => {
-    switch (action.type) {
-        case SET_PROFILE_UDER_ID:
-            return {
-                ...state,
-                profileUserId: action.payload.userId,
-                userInfo: null,
-                posts: null,
-            }
-        case ADD_POST: // ??? fix id
-            return {
-                ...state,
-                posts: [
-                    ...state.posts,
-                    {
-                        id: state.posts.length + 1,
-                        text: action.postText
-                    }
-                ],
-            }
-        case EDIT_POST_TEXT:
-            return {
-                ...state,
-                posts: state.posts.map(post => {
-                    return post.id === action.payload.postId ? ({ ...post, text: action.payload.postText }) : post
-                })
-            }
-        case DELETE_POST:
-            return {
-                ...state,
-                posts: state.posts.filter(el => el.id !== action.payload.postId)
-            }
-        case SET_USER_POSTS:
-            return {
-                ...state,
-                posts: action.payload.posts
-            }
-        case UPDATE_USER_INFO:
-            return {
-                ...state,
-                userInfo: action.userInfo
-            }
-        case UPDATE_USER_STATUS:
-            return {
-                ...state,
-                userInfo: {
-                    ...state.userInfo,
-                    status: action.payload.status
+            state.posts.forEach(post => {
+                if (post.id === postId) {
+                    post.text = postText
                 }
-            }
+            })
+        },
+        removePost(state, action) {
+            const postId = action.payload
+            state.posts = state.posts.filter(post => post.id !== postId)
+        },
+        setUserPosts(state, action) {
+            const posts = action.payload
+            state.posts = posts
+        },
+        setUserInfo(state, action) {
+            const userInfo = action.payload
+            state.userInfo = userInfo
+        },
+        setUserStatus(state, action) {
+            const status = action.payload
+            state.userInfo.status = status
+        }
+    },
+    extraReducers: (builder) => {
+        builder.addCase(fetchUserInfo.fulfilled, (state) => {
+            state.userInfoStatus = 'ready'
+        })
+        builder.addCase(fetchUserInfo.pending, (state) => {
+            state.userInfoStatus = 'pending'
+        })
+        builder.addCase(fetchUserPosts.fulfilled, (state) => {
+            state.userPostsStatus = 'ready'
+        })
+        builder.addCase(fetchUserPosts.pending, (state) => {
+            state.userPostsStatus = 'pending'
+        })
+    },
+});
 
-        default:
-            return state
-    }
-}
-
-
-// action creators
-export const setPosts = (posts) => ({ type: SET_USER_POSTS, payload: { posts } })
-// export const addPostCreator = (postText) => ({ type: ADD_POST, postText })
-export const updatePostText = (postId, postText) => ({
-    type: EDIT_POST_TEXT,
-    payload: {
-        postId,
-        postText
-    }
-})
-export const deletePostCreator = (postId) => ({ type: DELETE_POST, payload: { postId } })
-
-export const setUserInfo = (userInfo) => ({ type: UPDATE_USER_INFO, userInfo })
-export const setProfileUserId = (userId) => ({ type: SET_PROFILE_UDER_ID, payload: { userId } })
-export const setUserStatusToState = (userId, status) => ({ type: UPDATE_USER_STATUS, payload: { userId, status } })
+export const {
+    setProfileUserId,
+    setPostText,
+    removePost,
+    setUserPosts,
+    setUserInfo,
+    setUserStatus
+} = profileSlice.actions
 
 
 // thunx
+export const fetchUserInfo = createAsyncThunk(
+    'profile/fetchUserInfo',
+    /**
+     * @param {number} userId
+     */
+    async (userId, { rejectWithValue, dispatch }) => {
+        try {
+            let profileData = await profileAPI.getProfile(userId)
+            dispatch(setUserInfo(profileData))
+            return profileData
+        } catch (error) {
+            if (error.response) {
+                console.log(error.response.data);
+                // set to store flag that mean "something went wrong"
+                dispatch(setAuthErrorOccur())
+                return rejectWithValue(error.response)
+            }
+        }
+    }
+)
+
+export const updateUserStatus = createAsyncThunk(
+    'profile/updateUserStatus',
+    /**
+     * @param {string} status
+     */
+    async (status, { rejectWithValue, dispatch }) => {
+        try {
+            let result = await profileAPI.setStatus(status)
+            if (result.statusCode === 200) {
+                dispatch(setUserStatus(status))
+                return status
+            }
+        } catch (error) {
+            if (error.response) {
+                dispatch(setAuthErrorOccur())
+                return rejectWithValue(error.response.data)
+            }
+        }
+    }
+)
+
+export const fetchUserPosts = createAsyncThunk(
+    'profile/fetchUserPosts',
+    /**
+     * @param {number} userId
+     */
+    async (userId, { rejectWithValue, dispatch }) => {
+        try {
+            let posts = await postsAPI.getUserPosts(userId)
+            dispatch(setUserPosts(posts))
+            return posts
+        } catch (error) {
+            if (error.response) {
+                dispatch(setAuthErrorOccur())
+                return rejectWithValue(error.response)
+            }
+        }
+    }
+)
+
 export const addPost = (postText, authUserId) => async (dispatch) => {
     try {
         // ??? somewhere redo -> get from server new post id and add only one to state
         let result = await postsAPI.addPost(postText)
         if (result) {
-            dispatch(getUserPosts(authUserId))
+            dispatch(fetchUserPosts(authUserId))
             // dispatch(addPostCreator(text, newPostId))
         }
     } catch (error) {
@@ -111,7 +198,7 @@ export const updatePost = (postId, postText) => async (dispatch) => {
     try {
         let result = await postsAPI.updatePost(postId, postText)
         if (result.status) {
-            dispatch(updatePostText(postId, postText))
+            dispatch(setPostText({ postId, postText }))
         }
     } catch (error) {
         if (error.response) {
@@ -124,53 +211,11 @@ export const deletePost = (postId) => async (dispatch) => {
     try {
         let result = await postsAPI.deletePost(postId)
         if (result) {
-            dispatch(deletePostCreator(postId))
+            dispatch(removePost(postId))
         }
     } catch (error) {
         if (error.response) {
             dispatch(setAuthErrorOccur())
-        }
-    }
-}
-
-export const getUserPosts = (userId) => async (dispatch) => {
-    try {
-        let posts = await postsAPI.getUserPosts(userId)
-        dispatch(setPosts(posts))
-    } catch (error) {
-        if (error.response) {
-            dispatch(setAuthErrorOccur())
-        }
-    }
-}
-
-export const getUserInfo = (userId) => async (dispatch) => {
-
-    try {
-        let profileData = await profileAPI.getProfile(userId)
-        dispatch(setUserInfo(profileData))
-    } catch (error) {
-        if (error.response) {
-            console.log(error.response.data);
-            // set to store flag that mean "something went wrong"
-            dispatch(setAuthErrorOccur())
-        }
-    }
-}
-
-export const setUserStatus = (userId, status) => async (dispatch) => {
-    try {
-        let result = await profileAPI.setStatus(status)
-        if (result.statusCode === 200) {
-            dispatch(setUserStatusToState(userId, status))
-        } else {
-            // bad request
-        }
-    } catch (error) {
-        if (error.response) {
-            console.log(error.response.data);
-            // set to store flag that mean "something went wrong"
-            // dispatch(setAuthErrorOccur())
         }
     }
 }
@@ -179,7 +224,7 @@ export const likePost = (postId, profileUserId) => async (dispatch) => {
     try {
         let result = await postsAPI.likePost(postId)
         if (result.status) {
-            dispatch(getUserPosts(profileUserId))
+            dispatch(fetchUserPosts(profileUserId))
         } else {
             console.log(result.message)
         }
@@ -190,4 +235,4 @@ export const likePost = (postId, profileUserId) => async (dispatch) => {
     }
 }
 
-export default profileReducer
+export default profileSlice.reducer

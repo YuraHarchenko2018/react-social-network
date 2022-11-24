@@ -20,20 +20,20 @@ const Content = (props) => {
     return (
         <div className={s.content}>
             <Routes>
-                <Route path="/" element={ <HelloPage /> } />
+                <Route path="/" element={<HelloPage />} />
 
                 <Route path="/profile/">
-                    <Route path=":userId" element={suspenseWithPreloader(ProfileContainer)} />
                     <Route path="" element={suspenseWithPreloader(ProfileContainer)} />
+                    <Route path=":userId" element={suspenseWithPreloader(ProfileContainer)} />
                 </Route>
-                
-                <Route path="dialogs" element={ <DialogsContainer /> } />
-                <Route path="users" element={suspenseWithPreloader(UsersContainer)} />
-                <Route path="news" element={ <News /> } />
-                <Route path="games" element={ <Games /> } />
 
-                <Route path="login" element={ <Login /> } />
-                <Route path="sign-up" element={ <SignUp /> } />
+                <Route path="dialogs" element={<DialogsContainer />} />
+                <Route path="users" element={suspenseWithPreloader(UsersContainer)} />
+                <Route path="news" element={<News />} />
+                <Route path="games" element={<Games />} />
+
+                <Route path="login" element={<Login />} />
+                <Route path="sign-up" element={<SignUp />} />
             </Routes>
         </div>
     )

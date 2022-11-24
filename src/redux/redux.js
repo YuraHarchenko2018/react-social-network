@@ -1,8 +1,7 @@
 import { configureStore } from '@reduxjs/toolkit';
 import { combineReducers } from 'redux'
-// import thunk from 'redux-thunk';
 
-import profileReducer from './reducers/profile'
+import profileSlice from './reducers/profile'
 import dialogsSlice from './reducers/dialogs'
 import usersSlice from './reducers/users'
 import loginSlice from './reducers/login'
@@ -12,7 +11,7 @@ import popUpSlice from './reducers/popup'
 import newsSlice from './reducers/news'
 
 const rootReducer = combineReducers({
-    profile: profileReducer,
+    profile: profileSlice,
     dialogs: dialogsSlice,
     users: usersSlice,
     login: loginSlice,
@@ -24,7 +23,6 @@ const rootReducer = combineReducers({
 
 const store = configureStore({
     reducer: rootReducer,
-    // middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(thunk)
 });
 
 export { store }

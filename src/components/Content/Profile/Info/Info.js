@@ -1,10 +1,12 @@
 import React, { useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
-import PlayBackSpeed from "./PlaybackSpeed"
+
 import { generateStatus } from "utils/helpers/generateStatus"
-import { setUserStatus } from "redux/reducers/profile"
+import { updateUserStatus } from "redux/reducers/profile"
 import { getUserInfoSelector } from "redux/selectors/profile"
 import { getAuthUserIdSelector } from "redux/selectors/auth"
+
+import PlayBackSpeed from "./PlaybackSpeed"
 import OptionsWindow from "components/common/OptionsWindow/OptionsWindow"
 // import DefaultProfileBg from "../../../../assets/profile-background.JPG"
 
@@ -13,7 +15,7 @@ import s from "./Info.module.css"
 
 const Info = () => {
     const dispatch = useDispatch()
-    
+
     const userInfo = useSelector(state => getUserInfoSelector(state))
     const authUserId = useSelector(state => getAuthUserIdSelector(state))
 
@@ -30,7 +32,7 @@ const Info = () => {
         }
     }
 
-    const updateUserStatus = () => {
+    const handleUserStatus = () => {
         toggleUserStatusMode()
 
         if (!localUserStatus) {
@@ -38,23 +40,24 @@ const Info = () => {
         }
 
         if (localUserStatus !== userInfo.status) {
-            setUserStatus(userInfo.id, localUserStatus)(dispatch)
+            // @ts-ignore
+            dispatch(updateUserStatus(localUserStatus))
         }
     }
 
     const renderStatusBar = () => {
-        return (isStatusEditMode) 
+        return (isStatusEditMode)
             ? (
-                <input 
+                <input
                     className={s.statusInput}
                     autoFocus
-                    onBlur={updateUserStatus} 
-                    onChange={userStatusInputOnChange} 
+                    onBlur={handleUserStatus}
+                    onChange={userStatusInputOnChange}
                     value={localUserStatus}
                 />
             )
             : (
-                <span 
+                <span
                     onClick={toggleUserStatusMode}
                     className={s.statusSpan}>
                     {localUserStatus}
@@ -87,7 +90,7 @@ const Info = () => {
                         <span>{userInfo.name}</span>
                     </div>
                     <div className={s.userInfoStatusWrapper}>
-                        { renderStatusBar() }
+                        {renderStatusBar()}
                     </div>
                     <div className={s.userInfoData}>
                         <ul>
@@ -98,7 +101,7 @@ const Info = () => {
                     </div>
                 </div>
                 <div className={s.userInfoDataWrapper}>
-                    { userInfo.id === authUserId && <OptionsWindow buttonsSettings={buttonsSettings} /> }
+                    {userInfo.id === authUserId && <OptionsWindow buttonsSettings={buttonsSettings} />}
                 </div>
             </div>
         </div>
