@@ -19,7 +19,7 @@ let initialState = {
 
 const profileReducer = (state = initialState, action) => {
     switch (action.type) {
-        case SET_PROFILE_UDER_ID: 
+        case SET_PROFILE_UDER_ID:
             return {
                 ...state,
                 profileUserId: action.payload.userId,
@@ -29,12 +29,12 @@ const profileReducer = (state = initialState, action) => {
         case ADD_POST: // ??? fix id
             return {
                 ...state,
-                posts: [ 
-                    ...state.posts, 
+                posts: [
+                    ...state.posts,
                     {
                         id: state.posts.length + 1,
                         text: action.postText
-                    } 
+                    }
                 ],
             }
         case EDIT_POST_TEXT:
@@ -67,7 +67,7 @@ const profileReducer = (state = initialState, action) => {
                     status: action.payload.status
                 }
             }
-    
+
         default:
             return state
     }
@@ -102,7 +102,7 @@ export const addPost = (postText, authUserId) => async (dispatch) => {
         }
     } catch (error) {
         if (error.response) {
-          dispatch(setAuthErrorOccur())
+            dispatch(setAuthErrorOccur())
         }
     }
 }
@@ -115,7 +115,7 @@ export const updatePost = (postId, postText) => async (dispatch) => {
         }
     } catch (error) {
         if (error.response) {
-          dispatch(setAuthErrorOccur())
+            dispatch(setAuthErrorOccur())
         }
     }
 }
@@ -128,7 +128,7 @@ export const deletePost = (postId) => async (dispatch) => {
         }
     } catch (error) {
         if (error.response) {
-          dispatch(setAuthErrorOccur())
+            dispatch(setAuthErrorOccur())
         }
     }
 }
@@ -139,21 +139,21 @@ export const getUserPosts = (userId) => async (dispatch) => {
         dispatch(setPosts(posts))
     } catch (error) {
         if (error.response) {
-          dispatch(setAuthErrorOccur())
+            dispatch(setAuthErrorOccur())
         }
     }
 }
 
 export const getUserInfo = (userId) => async (dispatch) => {
-    
+
     try {
         let profileData = await profileAPI.getProfile(userId)
         dispatch(setUserInfo(profileData))
     } catch (error) {
         if (error.response) {
-          console.log(error.response.data);
-          // set to store flag that mean "something went wrong"
-          dispatch(setAuthErrorOccur())
+            console.log(error.response.data);
+            // set to store flag that mean "something went wrong"
+            dispatch(setAuthErrorOccur())
         }
     }
 }
@@ -168,9 +168,9 @@ export const setUserStatus = (userId, status) => async (dispatch) => {
         }
     } catch (error) {
         if (error.response) {
-          console.log(error.response.data);
-          // set to store flag that mean "something went wrong"
-          // dispatch(setAuthErrorOccur())
+            console.log(error.response.data);
+            // set to store flag that mean "something went wrong"
+            // dispatch(setAuthErrorOccur())
         }
     }
 }
@@ -185,7 +185,7 @@ export const likePost = (postId, profileUserId) => async (dispatch) => {
         }
     } catch (error) {
         if (error.response) {
-          dispatch(setAuthErrorOccur())
+            dispatch(setAuthErrorOccur())
         }
     }
 }

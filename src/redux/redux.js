@@ -4,7 +4,7 @@ import { combineReducers } from 'redux'
 
 import profileReducer from './reducers/profile'
 import dialogsSlice from './reducers/dialogs'
-import usersReducers from './reducers/users'
+import usersSlice from './reducers/users'
 import loginSlice from './reducers/login'
 import authSlice from './reducers/auth'
 import initSlice from './reducers/init'
@@ -14,7 +14,7 @@ import newsSlice from './reducers/news'
 const rootReducer = combineReducers({
     profile: profileReducer,
     dialogs: dialogsSlice,
-    users: usersReducers,
+    users: usersSlice,
     login: loginSlice,
     auth: authSlice,
     init: initSlice,

@@ -5,33 +5,68 @@ import { setAuthErrorOccur } from "./auth"
 const newsSlice = createSlice({
     name: 'news',
     initialState: {
+        /**
+         * @property {{
+         *  id: number,
+         *  userId: number,
+         *  text: string,
+         *  created_at: string,
+         *  updated_at: string,
+         *  user: {
+         *          id: number,
+         *          name: string,
+         *          email: string,
+         *          password: string,
+         *          age: number,
+         *          status: string,
+         *          isFollow: boolean,
+         *          avatarImg: string,
+         *      }
+         *  likesCount: number,
+         *  likes: {
+         *     {
+         *      id: number,
+         *      user: {
+         *          id: number,
+         *          name: string,
+         *          email: string,
+         *          password: string,
+         *          age: number,
+         *          status: string,
+         *          isFollow: boolean,
+         *          avatarImg: string,
+         *      }
+         *     }
+         *  },
+         * } | null} posts
+         */
         posts: null,
     },
     reducers: {
-      setNews(state, action) {
-        const { posts } = action.payload
-        state.posts = posts;
-      },
+        setNews(state, action) {
+            const { posts } = action.payload
+            console.log(posts)
+            state.posts = posts;
+        },
     },
     extraReducers: (builder) => {
-      builder.addCase(fetchNews.fulfilled, (state, action) => {
-        console.log('fulfilled below')
-        console.log(action.payload)
-        // state.posts = action.payload;
-      })
-      builder.addCase(fetchNews.rejected, (state, action) => {
-        console.log('rejected below')
-        console.log(action.payload)
-        // state.posts = action.payload;
-      })
-      builder.addCase(likePostNewsPage.rejected, (state, action) => {
-        console.log('rejected below')
-        console.log(action.payload)
-        // state.posts = action.payload;
-      })
+        builder.addCase(fetchNews.fulfilled, (state, action) => {
+            console.log('fulfilled below')
+            console.log(action.payload)
+            // state.posts = action.payload;
+        })
+        builder.addCase(fetchNews.rejected, (state, action) => {
+            console.log('rejected below')
+            console.log(action.payload)
+            // state.posts = action.payload;
+        })
+        builder.addCase(likePostNewsPage.rejected, (state, action) => {
+            console.log('rejected below')
+            console.log(action.payload)
+            // state.posts = action.payload;
+        })
     },
 });
-
 
 export const {
     setNews,
@@ -56,17 +91,20 @@ export const fetchNews = createAsyncThunk(
 
 export const likePostNewsPage = createAsyncThunk(
     'news/likePostNewsPage',
-    async (postId, thunxAPI) => {
+    /**
+     * @param {number} postId
+     */
+    async (postId, thunkAPI) => {
         try {
             let result = await postsAPI.likePost(postId)
             if (result.status) {
-                thunxAPI.dispatch(fetchNews())
+                thunkAPI.dispatch(fetchNews())
             } else {
                 throw new Error(result.message)
             }
         } catch (error) {
-            thunxAPI.dispatch(setAuthErrorOccur())
-            return thunxAPI.rejectWithValue(error)
+            thunkAPI.dispatch(setAuthErrorOccur())
+            return thunkAPI.rejectWithValue(error)
         }
     }
 )

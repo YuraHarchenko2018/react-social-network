@@ -17,6 +17,7 @@ const LikesContainer = ({ enviroment, postId, postOwnerId, likesCount, likes }) 
 
     const handleLikeBtn = () => {
         if (enviroment === "profile") {
+            // @ts-ignore
             dispatch(likePost(postId, postOwnerId))
         }
         if (enviroment === "news") {

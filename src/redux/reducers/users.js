@@ -1,164 +1,178 @@
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit"
 import { usersAPI } from "api/api"
 import { setAuthErrorOccur } from "./auth"
 
-const FOLLOW = 'FOLLOW'
-const SET_USERS = 'SET_USERS'
-const SET_SELECTED_PAGE = 'SET_SELECTED_PAGE'
-const SET_IS_FETCHING_USERS = 'SET_IS_FETCHING_USERS'
-const SET_FOLLOWING_IN_PROCESS = 'SET_FOLLOWING_IN_PROCESS'
 
-const initialState = {
-    users: null,
-    totalUsersCount: 0,
-    perPage: 5,
-    selectedPage: 1,
-    isFetching: true,
-    followingInProcess: []
-}
+const usersSlice = createSlice({
+    name: 'users',
+    initialState: {
+        /**
+         * @property {{
+         *  id: number,
+         *  name: string,
+         *  email: string,
+         *  age: number,
+         *  status: string,
+         *  avatarImg: string,
+         *  isFollow: boolean,
+         * } | null} users
+         */
+        users: null,
+        totalUsersCount: 0,
+        perPage: 5,
+        selectedPage: 1,
+        isFetching: true,
+        /**
+         * @property {Array<number>} followingInProcess
+         */
+        followingInProcess: []
+    },
+    reducers: {
+        setFollowStatus(state, action) {
+            const { userId, status } = action.payload
 
-const usersReducers = (state = initialState, action) => {
-    switch (action.type) {
-        case FOLLOW:
-            if (action.payload.status) {
-                return {
-                    ...state,
-                    users: state.users.map(user => user.id === action.payload.userId ? { ...user, isFollow: true } : user)
+            state.users.forEach(user => {
+                if (user.id === userId) {
+                    user.isFollow = status
                 }
+            })
+        },
+        setUsersData(state, action) {
+            const { users, totalCount } = action.payload
+
+            state.users = users
+            state.totalUsersCount = totalCount
+        },
+        setSelectedPage(state, action) {
+            const { page } = action.payload
+            state.selectedPage = page
+        },
+        setIsFetchingUser(state, action) {
+            const { isFetching } = action.payload
+            state.isFetching = isFetching
+        },
+        setFollowingInProcess(state, action) {
+            const { status, followUserId } = action.payload
+
+            if (status) {
+                state.followingInProcess.push(followUserId)
             } else {
-                return {
-                    ...state,
-                    users: state.users.map(user => user.id === action.payload.userId ? { ...user, isFollow: false } : user)
-                }
+                state.followingInProcess = state.followingInProcess.filter(userId => userId !== followUserId)
             }
-        case SET_USERS:
-            return {
-                ...state,
-                users: [
-                    ...action.payload.users
-                ],
-                totalUsersCount: action.payload.totalCount
-            }
-        case SET_SELECTED_PAGE:
-            return {
-                ...state,
-                selectedPage: action.payload.page
-            }
-        case SET_IS_FETCHING_USERS:
-            return {
-                ...state,
-                isFetching: action.payload.isFetching
-            }
-        case SET_FOLLOWING_IN_PROCESS:
-            if (action.payload.status) {
-                return {
-                    ...state,
-                    followingInProcess: [...state.followingInProcess, action.payload.followUserId]
-                }
-            } else {
-                return {
-                    ...state,
-                    followingInProcess: 
-                        state.followingInProcess.filter(followUserId => followUserId !== action.payload.followUserId)
-                }
-            }
-    
-        default:
-            return state
-    }
+        }
+    },
+    extraReducers: (builder) => {
+        builder.addCase(fetchUsers.fulfilled, handleExtraFulfilled)
+        builder.addCase(follow.fulfilled, handleExtraFulfilled)
+        builder.addCase(unfollow.fulfilled, handleExtraFulfilled)
+        builder.addCase(fetchUsers.rejected, handleExtraRejected)
+        builder.addCase(follow.rejected, handleExtraRejected)
+        builder.addCase(unfollow.rejected, handleExtraRejected)
+    },
+});
+
+const handleExtraFulfilled = (state, action) => {
+    console.log('fulfilled below')
+    console.log(action.payload)
 }
 
-
-export const setFollowStatus = (status, userId) => ({
-    type: FOLLOW,
-    payload: {
-        status,
-        userId
-    }
-})
-export const setUsersData = (users, totalCount) => ({
-    type: SET_USERS,
-    payload: {
-        users,
-        totalCount
-    }
-})
-export const setFollowingInProcess = (status, followUserId) => ({
-    type: SET_FOLLOWING_IN_PROCESS, 
-    payload: {
-        status, 
-        followUserId
-    }
-})
-export const setSelectedPage = (page) => ({
-    type: SET_SELECTED_PAGE,
-    payload: {
-        page
-    }
-})
-export const setIsFetchingUser = (isFetching) => ({
-    type: SET_IS_FETCHING_USERS,
-    payload: {
-        isFetching
-    }
-})
-
-export const getUsers = (page = 1) => async (dispatch) => {
-    dispatch(setIsFetchingUser(true))
-    
-    try {
-        let { users, totalCount } = await usersAPI.getUsers(page)
-        dispatch(setUsersData(users, totalCount))
-        dispatch(setIsFetchingUser(false))
-    } catch (error) {
-        if (error.response) {
-          // set to store flag that mean "something went wrong"
-          dispatch(setAuthErrorOccur())
-          dispatch(setIsFetchingUser(false))
-        }
-    }
+const handleExtraRejected = (state, action) => {
+    console.log('rejected below')
+    console.log(action.payload)
 }
 
-export const follow = (userToFollowId) => async (dispatch) => {
-    dispatch(setFollowingInProcess(true, userToFollowId))
+export const {
+    setFollowStatus,
+    setUsersData,
+    setSelectedPage,
+    setIsFetchingUser,
+    setFollowingInProcess
+} = usersSlice.actions
 
-    try {
-        let data = await usersAPI.follow(userToFollowId)
-    
-        if (data) {
-            dispatch(setFollowingInProcess(false, userToFollowId))
-            dispatch(setFollowStatus(true, userToFollowId))
-        }
-    } catch (error) {
-        if (error.response) {
-            if (error.response.status) {
+
+export const fetchUsers = createAsyncThunk(
+    'users/fetchUsers',
+    /**
+     * @param {number} page
+     */
+    async (page, { rejectWithValue, dispatch }) => {
+        dispatch(setIsFetchingUser({ isFetching: true }))
+
+        try {
+            let { users, totalCount } = await usersAPI.getUsers(page)
+            dispatch(setUsersData({ users, totalCount }))
+            dispatch(setIsFetchingUser({ isFetching: false }))
+
+            return { users, totalCount }
+        } catch (error) {
+            if (error.response) {
                 // set to store flag that mean "something went wrong"
-                dispatch(setAuthErrorOccur())
-                dispatch(setFollowingInProcess(false, userToFollowId))
+                dispatch(setIsFetchingUser({ isFetching: false }))
+                return rejectWithValue(error.response)
             }
         }
     }
-}
+)
 
-export const unfollow = (userToFollowId) => async (dispatch) => {
-    dispatch(setFollowingInProcess(true, userToFollowId))
+export const follow = createAsyncThunk(
+    'users/follow',
+    /**
+     * @param {number} userToFollowId
+     */
+    async (userToFollowId, { rejectWithValue, dispatch }) => {
+        dispatch(setFollowingInProcess({ status: true, followUserId: userToFollowId }))
 
-    try {
-        let data = await usersAPI.unfollow(userToFollowId)
-    
-        if (data) {
-            dispatch(setFollowingInProcess(false, userToFollowId))
-            dispatch(setFollowStatus(false, userToFollowId))
-        }
-    } catch (error) {
-        if (error.response) {
-            if (error.response.status) {
-                // set to store flag that mean "something went wrong"
-                dispatch(setAuthErrorOccur())
-                dispatch(setFollowingInProcess(false, userToFollowId))
+        try {
+            let data = await usersAPI.follow(userToFollowId)
+
+            if (data) {
+                dispatch(setFollowingInProcess({ status: false, followUserId: userToFollowId }))
+                dispatch(setFollowStatus({ status: true, userId: userToFollowId }))
+            }
+
+            return data
+        } catch (error) {
+            if (error.response) {
+                if (error.response.status) {
+                    // set to store flag that mean "something went wrong"
+                    dispatch(setAuthErrorOccur())
+                    dispatch(setFollowingInProcess({ status: false, followUserId: userToFollowId }))
+                    return rejectWithValue(error.response)
+                }
             }
         }
     }
-}
+)
+
+export const unfollow = createAsyncThunk(
+    'users/unfollow',
+    /**
+     * @param {number} userToFollowId
+     */
+    async (userToFollowId, { rejectWithValue, dispatch }) => {
+        dispatch(setFollowingInProcess({ status: true, followUserId: userToFollowId }))
+
+        try {
+            let data = await usersAPI.unfollow(userToFollowId)
+
+            if (data) {
+                dispatch(setFollowingInProcess({ status: false, followUserId: userToFollowId }))
+                dispatch(setFollowStatus({ status: false, userId: userToFollowId }))
+            }
+
+            return data
+        } catch (error) {
+            if (error.response) {
+                if (error.response.status) {
+                    // set to store flag that mean "something went wrong"
+                    dispatch(setAuthErrorOccur())
+                    dispatch(setFollowingInProcess({ status: false, followUserId: userToFollowId }))
+                    return rejectWithValue(error.response)
+                }
+            }
+        }
+    }
+)
 
 
-export default usersReducers
+export default usersSlice.reducer
