@@ -41,13 +41,27 @@ const newsSlice = createSlice({
          * } | null} posts
          */
         posts: null,
+        selectedPage: 1,
+        newsPerPage: 5,
+        totalNewsAmount: 0
     },
     reducers: {
         setNews(state, action) {
             const { posts } = action.payload
-            console.log(posts)
             state.posts = posts;
         },
+        setSelectedPage(state, action) {
+            const page = action.payload
+            state.selectedPage = page
+        },
+        setAmountNewsPerPage(state, action) {
+            const { amount } = action.payload
+            state.newsPerPage = amount
+        },
+        setNewsAmount(state, action) {
+            const amount = action.payload
+            state.totalNewsAmount = amount
+        }
     },
     extraReducers: (builder) => {
         builder.addCase(fetchNews.fulfilled, (state, action) => {
@@ -70,14 +84,22 @@ const newsSlice = createSlice({
 
 export const {
     setNews,
+    setSelectedPage,
+    setAmountNewsPerPage,
+    setNewsAmount
 } = newsSlice.actions;
 
 
 export const fetchNews = createAsyncThunk(
     'news/fetchNews',
-    async (_, { rejectWithValue, dispatch }) => {
+    /**
+     * @param {*} param0
+     */
+    async ({ selectedPage, perPage }, { rejectWithValue, dispatch }) => {
         try {
-            const newsPosts = await postsAPI.getPosts()
+            const newsPosts = await postsAPI.getPosts(selectedPage, perPage)
+            const newsAmount = await postsAPI.getPostsAmount()
+            dispatch(setNewsAmount(newsAmount))
             dispatch(setNews({ posts: newsPosts }))
             return newsPosts
         } catch (error) {

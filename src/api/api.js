@@ -24,7 +24,7 @@ export const usersAPI = {
         let totalCount = response.status === 200 ? response.data[0].totalCount : []
 
         return {
-            users, 
+            users,
             totalCount
         };
     },
@@ -84,7 +84,7 @@ export const authAPI = {
             email,
             password,
         }, {})
-        
+
         let jwtToken = response.status === 201 ? response.data.access_token : ''
         let userId = response.status === 201 ? response.data.metadata.sub : 1
 
@@ -103,12 +103,12 @@ export const authAPI = {
     async signUp(name, email, password, age) {
         const axiosInstance = getAxiosInstance()
         const response = await axiosInstance.post(`registration`, {
-            name, 
+            name,
             email,
             password,
             age
         }, {})
-        
+
         let jwtToken = response.status === 201 ? response.data.access_token : ''
         let userId = response.status === 201 ? response.data.metadata.sub : 1
 
@@ -117,14 +117,14 @@ export const authAPI = {
             userId
         }
     },
-    
+
     async me() {
         const axiosInstance = getAxiosInstance()
         const response = await axiosInstance.get(`auth/me`)
-        
+
         let userAuthData = response.status === 200 ? response.data.user : {}
         let isOccurError = response.status === 200 ? false : true
-        let isLoginIn    = response.status === 200 ? true : false
+        let isLoginIn = response.status === 200 ? true : false
 
         return {
             userId: userAuthData?.userId,
@@ -145,10 +145,17 @@ export const postsAPI = {
         let posts = response.status === 200 ? response.data.posts : []
         return posts;
     },
-    
-    async getPosts() {
+
+    async getPostsAmount() {
         const axiosInstance = getAxiosInstance()
-        const response = await axiosInstance.get(`/posts`)
+        const response = await axiosInstance.get(`/posts/amount`)
+        let newsAmount = response.status === 200 ? response.data.postsTotalCount : 0
+        return newsAmount;
+    },
+
+    async getPosts(pageId = 1, perPage = 5) {
+        const axiosInstance = getAxiosInstance()
+        const response = await axiosInstance.get(`/posts?page=${pageId}&perPage=${perPage}`)
         let newsPost = response.status === 200 ? response.data : []
         return newsPost;
     },
