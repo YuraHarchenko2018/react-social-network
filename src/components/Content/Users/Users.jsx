@@ -1,7 +1,7 @@
 import React from 'react'
 
+import UsersList from './elements/users-list/UsersList'
 import PaginatorContainer from './elements/paginator/PaginatorContainer'
-import UsersListContainer from './elements/users-list/UsersListContainer'
 
 import s from './Users.module.css'
 
@@ -9,7 +9,7 @@ import s from './Users.module.css'
 const Users = () => {
     return (
         <div className={s.usersPageWrapper}>
-            <UsersListContainer />
+            <UsersList />
             <PaginatorContainer />
         </div>
     )

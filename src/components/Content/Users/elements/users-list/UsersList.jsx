@@ -1,68 +1,107 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { NavLink } from "react-router-dom";
+import { follow, unfollow } from "redux/reducers/users";
+import { getAuthUserIdSelector } from "redux/selectors/auth";
+import { getFollowingInProcessSelector, getUsersSelector } from "redux/selectors/users";
 import { generateStatus } from "utils/helpers/generateStatus";
+import DefaultAvatarImg from "../../../../../assets/default-avatar.webp"
 
 import s from './UsersList.module.css'
 
 
-const UsersList = (props) => {
-    const renderFollowsButton = (user) => {
-        if (user.id === props.authUserId) {
-            return
-        }
-
-        return user.isFollow 
-        ? (
-            <button 
-                className={s.userFollowButton}
-                disabled={ props.followingInProcess.some(fid => fid === user.id) } 
-                onClick={ () => props.unfollow(user.id) }
-            >Unfollow</button>
-        )
-        : (
-            <button 
-                className={s.userFollowButton}
-                disabled={ props.followingInProcess.some(fid => fid === user.id) } 
-                onClick={ () => props.follow(user.id) }
-            >Follow</button>
-        )
-    }
-    const renderUsers = () => {
-        let usersJSX = props.users.map( user => {
-            let avatarLink = user.avatarImg || "https://cdn4.iconfinder.com/data/icons/small-n-flat/24/user-512.png"
-            return (
-                <div key={user.id} className={s.userItem}>
-                    <div>
-                        <div className={s.userItemElementDiv + " " + s.userItemAvatarDivWrapper}>
-                            <NavLink className={s.userNameLink} to={`/profile/${user.id}`}>
-                                <img className={s.userItemAvatarImg} alt="#" src={avatarLink} />
-                            </NavLink>
-                        </div>
-                        <div className={s.userItemElementDiv}>
-                            { renderFollowsButton(user) }
-                        </div>
-                    </div>
-                    <div className={s.userItemElementDiv}>
-                        <NavLink className={s.userNameLink} to={`/profile/${user.id}`}>
-                            <div className={s.userNameDivWrapper}>
-                                {user.name}
-                            </div>
-                        </NavLink>
-                        <div className={s.userStatusWrapper}>
-                            {user.status ? user.status : generateStatus()}
-                        </div>
-                    </div>
-                </div>
-            )
-        })
-        return usersJSX
-    }
+const UsersList = () => {
+    const users = useSelector(state => getUsersSelector(state))
 
     return (
         <div className={s.usersList}>
-            { renderUsers() }
+            {
+                users.map(user => {
+                    return <UserItem user={user} />
+                })
+            }
         </div>
     )
 }
+
+const UserItem = ({ user }) => {
+    const [avatarImg, setAvatarImg] = useState(user.avatarImg)
+
+    useEffect(() => {
+        fetch(user.avatarImg).catch(() => setAvatarImg(null))
+    }, [setAvatarImg, user.avatarImg])
+
+    return (
+        <div key={user.id} className={s.userItem}>
+            <div>
+                <Avatar userId={user.id} avatarImg={avatarImg} />
+                <FollowButton userId={user.id} isFollow={user.isFollow} />
+            </div>
+            <div className={s.userItemElementDiv}>
+                <UserNameTitle userId={user.id} username={user.name} />
+                <UserStatus userStatus={user.status} />
+            </div>
+        </div>
+    )
+}
+
+const Avatar = ({ userId, avatarImg }) => {
+    return (
+        <div className={s.userItemElementDiv + " " + s.userItemAvatarDivWrapper}>
+            <NavLink className={s.userNameLink} to={`/profile/${userId}`}>
+                <img className={s.userItemAvatarImg} alt="#" src={avatarImg ?? DefaultAvatarImg} />
+            </NavLink>
+        </div>
+    )
+}
+
+const FollowButton = ({ userId, isFollow }) => {
+    const dispatch = useDispatch()
+    const authUserId = useSelector(state => getAuthUserIdSelector(state))
+    const followingInProcess = useSelector(state => getFollowingInProcessSelector(state))
+
+    return (
+        <div className={s.userItemElementDiv}>
+            {
+                userId !== authUserId ?
+                    isFollow ? (
+                        <button
+                            className={s.userFollowButton}
+                            disabled={followingInProcess.some(fid => fid === userId)}
+                            // @ts-ignore
+                            onClick={() => dispatch(unfollow(userId))}
+                        >Unfollow</button>
+                    ) : (
+                        <button
+                            className={s.userFollowButton}
+                            disabled={followingInProcess.some(fid => fid === userId)}
+                            // @ts-ignore
+                            onClick={() => dispatch(follow(userId))}
+                        >Follow</button>
+                    )
+                    : <></>
+            }
+        </div>
+    )
+}
+
+const UserNameTitle = ({ userId, username }) => {
+    return (
+        <NavLink className={s.userNameLink} to={`/profile/${userId}`}>
+            <div className={s.userNameDivWrapper}>
+                {username}
+            </div>
+        </NavLink>
+    )
+}
+
+const UserStatus = ({ userStatus }) => {
+    return (
+        <div className={s.userStatusWrapper}>
+            {userStatus ? userStatus : generateStatus()}
+        </div>
+    )
+}
+
 
 export default UsersList

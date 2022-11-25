@@ -1,13 +1,14 @@
-import React from "react";
+import React, { useCallback, useState } from "react";
 import OptionsWindow from "components/common/OptionsWindow/OptionsWindow";
 import { useDispatch, useSelector } from "react-redux";
+import { NavLink } from "react-router-dom";
 import { getAuthUserIdSelector } from "redux/selectors/auth";
 import { setContent, setIsShow, setPayload } from "redux/reducers/popup";
 import { getFormattedDate } from "utils/helpers/formatDate";
 import LikesContainer from "components/common/LikesContainer/LikesContainer";
+import DefaultAvatarImg from "../../../../../assets/default-avatar.webp"
 
 import s from "./Post.module.css"
-import { NavLink } from "react-router-dom";
 
 
 const Post = (props) => {
@@ -27,7 +28,7 @@ const OptionsContainer = ({ id, userId, text, enviroment }) => {
     const dispatch = useDispatch()
     const authUserId = useSelector(state => getAuthUserIdSelector(state))
     const isModifyableUser = authUserId === userId
-    
+
     const handleUpdateBtn = () => {
         dispatch(setContent({ content: "updatePostText" }))
         dispatch(setPayload({ postId: id, postText: text }))
@@ -54,18 +55,21 @@ const OptionsContainer = ({ id, userId, text, enviroment }) => {
 
     return (
         <>
-            { 
-                enviroment === "profile" && isModifyableUser && <OptionsWindow buttonsSettings={buttonsSettings} /> 
+            {
+                enviroment === "profile" && isModifyableUser && <OptionsWindow buttonsSettings={buttonsSettings} />
             }
         </>
     )
 }
 
 const PostCreatorInfoContainer = ({ id, name, avatarImg }) => {
+    const [avatar, setAvatar] = useState(DefaultAvatarImg)
+    useCallback(() => fetch(avatarImg).then(() => setAvatar(avatarImg)), [avatarImg])
+
     return (
         <div className={s.postUserInfo}>
             <NavLink className={s.userNameLink} to={`/profile/${id}`}>
-                <img className={s.postAvatar} alt="#" src={avatarImg} />
+                <img className={s.postAvatar} alt="#" src={avatar} />
             </NavLink>
             <NavLink className={`${s.userNameLink} ${s.postOwnerName}`} to={`/profile/${id}`}>
                 <b>{name}</b>
