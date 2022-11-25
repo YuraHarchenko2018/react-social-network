@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux"
 import { fetchNews, setNews } from "redux/reducers/news"
 import { getNewsSelector } from "redux/selectors/news"
 import { Posts } from "../Profile/Posts/Posts"
+import NewsPaginator from "./UsersPaginator"
 
 
 const News = () => {
@@ -19,7 +20,13 @@ const News = () => {
         return <Preloader />
     }
 
-    return <Posts posts={news} enviroment="news" />
+    return (
+        <>
+            <Posts posts={news} enviroment="news" />
+            <NewsPaginator />
+        </>
+    )
 }
+
 
 export default News

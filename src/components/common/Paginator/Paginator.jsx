@@ -17,28 +17,28 @@ const Paginator = (props) => {
 
     const renderPageButtons = () => {
         let simplePagesArray = generateSipmlePagesArray(props.pagesCount)
-        
+
         let pagesJSX = simplePagesArray.map(page => {
-            let pageClassName = (page === props.selectedPage) 
-                            ? s.pageBtn + " " + s.activePageBtn 
-                            : s.pageBtn
+            let pageClassName = (page === props.selectedPage)
+                ? s.pageBtn + " " + s.activePageBtn
+                : s.pageBtn
             return (
-                <div 
-                    key={page} className={pageClassName} 
-                    onClick={() => { props.changeSelectedPage(page) }} 
+                <div
+                    key={page} className={pageClassName}
+                    onClick={() => { props.changeSelectedPage(page) }}
                 >
                     {page}
                 </div>
             )
         })
-        
+
         return pagesJSX
     }
 
     return (
         <div className={s.paginatorWrapper}>
             <div className={s.pages}>
-                { renderPageButtons() }
+                {renderPageButtons()}
             </div>
             <div className={s.nextBtnWrapper}>
                 <button onClick={props.onPrevBtnClick} className={s.prevBtn}>Prev</button>
