@@ -1,45 +1,22 @@
-import React from "react"
+import React, { useCallback } from "react"
 import { useDispatch, useSelector } from "react-redux"
-import { fetchUsers, setSelectedPage } from "redux/reducers/users"
-import { getPagesCountSelector, getSelectedPageSelector } from "redux/selectors/users"
+import { fetchUsers } from "redux/reducers/users"
+import { getUsersPagesCountSelector, getUsersPerPageSelector } from "redux/selectors/users"
 import Paginator from "components/common/Paginator/Paginator"
 
 
 const UsersPaginator = () => {
     const dispatch = useDispatch()
 
-    const selectedPage = useSelector(state => getSelectedPageSelector(state))
-    const pagesCount = useSelector(state => getPagesCountSelector(state))
+    const pagesCount = useSelector(state => getUsersPagesCountSelector(state))
+    const perPage = useSelector(state => getUsersPerPageSelector(state))
 
-    const changeSelectedPage = (page) => {
+    const handlePaginatorCallback = useCallback((page) => {
         // @ts-ignore
-        dispatch(fetchUsers(page))
-        dispatch(setSelectedPage({ page }))
-    }
+        dispatch(fetchUsers({ selectedPage: page, perPage }))
+    }, [dispatch, perPage])
 
-    const onNextBtnClick = () => {
-        let nextSelectedValue = selectedPage < pagesCount
-            ? selectedPage + 1
-            : selectedPage
-
-        changeSelectedPage(nextSelectedValue)
-    }
-
-    const onPrevBtnClick = () => {
-        let nextSelectedValue = selectedPage > 1
-            ? selectedPage - 1
-            : selectedPage
-
-        changeSelectedPage(nextSelectedValue)
-    }
-
-    return <Paginator
-        selectedPage={selectedPage}
-        pagesCount={pagesCount}
-        onNextBtnClick={onNextBtnClick}
-        onPrevBtnClick={onPrevBtnClick}
-        changeSelectedPage={changeSelectedPage}
-    />
+    return <Paginator pagesCount={pagesCount} handlePaginatorCallback={handlePaginatorCallback} />
 }
 
 

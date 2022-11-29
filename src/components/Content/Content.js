@@ -8,7 +8,7 @@ import DialogsContainer from "./Dialogs/DialogsContainer"
 import Login from "./Login/Login"
 import SignUp from "./SignUp/SignUp"
 import News from "./News/News"
-import Games from "./Games/Games"
+import FriendsContainer from "./Friends/FriendsContainer"
 
 import s from "./Content.module.css"
 
@@ -28,9 +28,9 @@ const Content = (props) => {
                 </Route>
 
                 <Route path="dialogs" element={<DialogsContainer />} />
+                <Route path="friends" element={<FriendsContainer />} />
                 <Route path="users" element={suspenseWithPreloader(UsersContainer)} />
                 <Route path="news" element={<News />} />
-                <Route path="games" element={<Games />} />
 
                 <Route path="login" element={<Login />} />
                 <Route path="sign-up" element={<SignUp />} />

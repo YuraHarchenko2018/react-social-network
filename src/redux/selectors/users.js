@@ -4,26 +4,43 @@ export const getUsersSelector = (state) => {
     return state.users.users
 }
 
+export const getFriendsSelector = (state) => {
+    return state.users.friends
+}
+
 export const getFollowingInProcessSelector = (state) => {
     return state.users.followingInProcess
 }
 
-export const getSelectedPageSelector = (state) => {
-    return state.users.selectedPage
+export const getUsersPerPageSelector = (state) => {
+    return state.users.usersPerPage
 }
 
-export const getPerPageSelector = (state) => {
-    return state.users.perPage
+export const getFriendsPerPageSelector = (state) => {
+    return state.users.friendsPerPage
 }
 
 export const getTotalUsersCountSelector = (state) => {
     return state.users.totalUsersCount
 }
 
-export const getPagesCountSelector = (state) => {
-    let totalUsersCount = getTotalUsersCountSelector(state)
-    let perPage = getPerPageSelector(state)
+export const getTotalFriendsCountSelector = (state) => {
+    return state.users.totalFriendsCount
+}
 
-    let pagesCount = Math.ceil(totalUsersCount / perPage)
+export const getUsersPagesCountSelector = (state) => {
+    let totalUsersCount = getTotalUsersCountSelector(state)
+    let perPage = getUsersPerPageSelector(state)
+    return getPagesCount(totalUsersCount, perPage)
+}
+
+export const getFriendsPagesCountSelector = (state) => {
+    let totalFriendsCount = getTotalFriendsCountSelector(state)
+    let perPage = getFriendsPerPageSelector(state)
+    return getPagesCount(totalFriendsCount, perPage)
+}
+
+const getPagesCount = (totalItemsCount, perPage) => {
+    let pagesCount = Math.ceil(totalItemsCount / perPage)
     return pagesCount
 }

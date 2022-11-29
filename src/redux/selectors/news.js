@@ -4,10 +4,6 @@ export const getNewsSelector = (state) => {
     return state.news.posts
 }
 
-export const getSelectedPageSelector = (state) => {
-    return state.news.selectedPage
-}
-
 export const getPerPageSelector = (state) => {
     return state.news.newsPerPage
 }

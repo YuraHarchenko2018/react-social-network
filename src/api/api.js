@@ -30,6 +30,23 @@ export const usersAPI = {
     },
 
     /**
+     * @param {number} currentPage
+     * @param {number} pageSize
+     */
+    async getFriends(currentPage = 1, pageSize = 10) {
+        const axiosInstance = getAxiosInstance()
+        const response = await axiosInstance.get(`/users/friends?page=${currentPage}&count=${pageSize}`)
+
+        let users = response.status === 200 ? response.data.users : []
+        let totalCount = response.status === 200 ? response.data.totalCount : []
+
+        return {
+            users,
+            totalCount
+        };
+    },
+
+    /**
      * @param {number} followId
      */
     async follow(followId) {

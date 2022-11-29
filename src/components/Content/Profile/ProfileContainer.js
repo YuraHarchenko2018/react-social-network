@@ -8,7 +8,7 @@ import Preloader from "components/common/Preloader/Preloader"
 import Profile from "./Profile"
 import useLoginRedirect from "hooks/useLoginRedirect"
 import { getAuthUserIdSelector } from "redux/selectors/auth"
-import { getProfileUserIdSelector, getUserInfoSelector, getUserInfoStatusSelector, getUserPostsSelector, getUserPostsStatusSelector } from "redux/selectors/profile"
+import { getProfileUserIdSelector, getUserInfoStatusSelector, getUserPostsStatusSelector } from "redux/selectors/profile"
 
 
 const ProfileContainer = () => {
@@ -18,8 +18,6 @@ const ProfileContainer = () => {
 
     const authUserId = useSelector(state => getAuthUserIdSelector(state))
     const profileUserId = useSelector(state => getProfileUserIdSelector(state))
-    const userInfo = useSelector(state => getUserInfoSelector(state))
-    const userPosts = useSelector(state => getUserPostsSelector(state))
     const userInfoStatus = useSelector(state => getUserInfoStatusSelector(state))
     const userPostsStatus = useSelector(state => getUserPostsStatusSelector(state))
 
@@ -42,10 +40,6 @@ const ProfileContainer = () => {
     if (profileUserId !== null) {
         !userInfoStatus && getUserInfo()
         !userPostsStatus && getUserPosts()
-
-        if (fetchStatuses.some(status => status === 'pending') && userInfo && userPosts) {
-            return <Profile />
-        }
 
         if (fetchStatuses.every(status => status === 'ready')) {
             return <Profile />

@@ -1,6 +1,6 @@
 .posts {
     display: flex;
-    flex-direction: column-reverse;
+    flex-direction: column;
     background-color: #f4f4f4;
     border-radius: 10px;
     padding: 2px;

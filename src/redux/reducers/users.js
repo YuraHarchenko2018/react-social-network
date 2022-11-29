@@ -18,10 +18,11 @@ const usersSlice = createSlice({
          * } | null} users
          */
         users: null,
+        friends: null,
         totalUsersCount: 0,
-        perPage: 5,
-        selectedPage: 1,
-        isFetching: true,
+        totalFriendsCount: 0,
+        usersPerPage: 5,
+        friendsPerPage: 7,
         /**
          * @property {Array<number>} followingInProcess
          */
@@ -43,13 +44,11 @@ const usersSlice = createSlice({
             state.users = users
             state.totalUsersCount = totalCount
         },
-        setSelectedPage(state, action) {
-            const { page } = action.payload
-            state.selectedPage = page
-        },
-        setIsFetchingUser(state, action) {
-            const { isFetching } = action.payload
-            state.isFetching = isFetching
+        setFriends(state, action) {
+            const { users, totalCount } = action.payload
+
+            state.friends = users
+            state.totalFriendsCount = totalCount
         },
         setFollowingInProcess(state, action) {
             const { status, followUserId } = action.payload
@@ -84,8 +83,7 @@ const handleExtraRejected = (state, action) => {
 export const {
     setFollowStatus,
     setUsersData,
-    setSelectedPage,
-    setIsFetchingUser,
+    setFriends,
     setFollowingInProcess
 } = usersSlice.actions
 
@@ -93,22 +91,37 @@ export const {
 export const fetchUsers = createAsyncThunk(
     'users/fetchUsers',
     /**
-     * @param {number} page
+     * @param {*} param0
      */
-    async (page, { rejectWithValue, dispatch }) => {
-        dispatch(setIsFetchingUser({ isFetching: true }))
+    async ({ selectedPage, perPage }, { rejectWithValue, dispatch }) => {
 
         try {
-            let { users, totalCount } = await usersAPI.getUsers(page)
+            let { users, totalCount } = await usersAPI.getUsers(selectedPage, perPage)
             dispatch(setUsersData({ users, totalCount }))
-            dispatch(setIsFetchingUser({ isFetching: false }))
 
             return { users, totalCount }
         } catch (error) {
             if (error.response) {
                 // set to store flag that mean "something went wrong"
-                dispatch(setIsFetchingUser({ isFetching: false }))
                 return rejectWithValue(error.response)
+            }
+        }
+    }
+)
+
+export const fetchFriends = createAsyncThunk(
+    'users/fetchFriends',
+    /**
+     * @param {*} param0
+     */
+    async ({ selectedPage, perPage }, { dispatch }) => {
+        try {
+            let { users, totalCount } = await usersAPI.getFriends(selectedPage, perPage)
+            dispatch(setFriends({ users, totalCount }))
+        } catch (error) {
+            if (error.response) {
+                // set to store flag that mean "something went wrong"
+                dispatch(setAuthErrorOccur())
             }
         }
     }

@@ -41,18 +41,13 @@ const newsSlice = createSlice({
          * } | null} posts
          */
         posts: null,
-        selectedPage: 1,
-        newsPerPage: 5,
+        newsPerPage: 3,
         totalNewsAmount: 0
     },
     reducers: {
         setNews(state, action) {
             const { posts } = action.payload
             state.posts = posts;
-        },
-        setSelectedPage(state, action) {
-            const page = action.payload
-            state.selectedPage = page
         },
         setAmountNewsPerPage(state, action) {
             const { amount } = action.payload
@@ -84,7 +79,6 @@ const newsSlice = createSlice({
 
 export const {
     setNews,
-    setSelectedPage,
     setAmountNewsPerPage,
     setNewsAmount
 } = newsSlice.actions;
