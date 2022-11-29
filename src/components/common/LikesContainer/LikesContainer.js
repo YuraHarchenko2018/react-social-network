@@ -13,22 +13,22 @@ const LikesContainer = ({ enviroment, postId, postOwnerId, likesCount, likes }) 
     const authUserId = useSelector(state => getAuthUserIdSelector(state))
 
     const isLiked = checkIsPostLiked(likes, authUserId)
-    const isLikedColor = isLiked ? '#bef5ff' : '#fff'
+    const isLikedClass = isLiked ? s.activeColor : s.disableColor
 
     const handleLikeBtn = () => {
         if (enviroment === "profile") {
             // @ts-ignore
-            dispatch(likePost(postId, postOwnerId))
+            dispatch(likePost(postId, authUserId))
         }
         if (enviroment === "news") {
             // @ts-ignore
-            dispatch(likePostNewsPage(postId))
+            dispatch(likePostNewsPage({ postId, authUserId }))
         }
     }
 
     return (
         <div className={s.likeWrapper}>
-            <img alt="#" onClick={handleLikeBtn} className={s.likeImg} style={({ background: isLikedColor })} src={LikeSVG} />
+            <img alt="#" onClick={handleLikeBtn} className={`${s.likeImg} ${isLikedClass}`} src={LikeSVG} />
             <div className={s.likeText}>{likesCount}</div>
         </div>
     )

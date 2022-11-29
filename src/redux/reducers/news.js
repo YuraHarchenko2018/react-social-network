@@ -56,23 +56,40 @@ const newsSlice = createSlice({
         setNewsAmount(state, action) {
             const amount = action.payload
             state.totalNewsAmount = amount
-        }
+        },
+
+        addLikeToPost(state, action) {
+            const { postId, likeData } = action.payload
+
+            state.posts.forEach(post => {
+                if (post.id === postId) {
+                    post.likesCount++
+                    post.likes.push(likeData)
+                }
+            })
+        },
+        removeLikeOnPost(state, action) {
+            const { postId, userId } = action.payload
+
+            state.posts.forEach(post => {
+                if (post.id === postId) {
+                    post.likesCount--
+                    post.likes = post.likes.filter(likeObj => likeObj.user.id !== userId)
+                }
+            })
+        },
     },
     extraReducers: (builder) => {
         builder.addCase(fetchNews.fulfilled, (state, action) => {
             console.log('fulfilled below')
             console.log(action.payload)
-            // state.posts = action.payload;
         })
         builder.addCase(fetchNews.rejected, (state, action) => {
             console.log('rejected below')
             console.log(action.payload)
-            // state.posts = action.payload;
         })
         builder.addCase(likePostNewsPage.rejected, (state, action) => {
-            console.log('rejected below')
-            console.log(action.payload)
-            // state.posts = action.payload;
+            alert('If you want like post, please signup or login')
         })
     },
 });
@@ -80,7 +97,9 @@ const newsSlice = createSlice({
 export const {
     setNews,
     setAmountNewsPerPage,
-    setNewsAmount
+    setNewsAmount,
+    addLikeToPost,
+    removeLikeOnPost,
 } = newsSlice.actions;
 
 
@@ -108,13 +127,17 @@ export const fetchNews = createAsyncThunk(
 export const likePostNewsPage = createAsyncThunk(
     'news/likePostNewsPage',
     /**
-     * @param {number} postId
+     * @param {*} param0
      */
-    async (postId, thunkAPI) => {
+    async ({ postId, authUserId }, thunkAPI) => {
         try {
             let result = await postsAPI.likePost(postId)
             if (result.status) {
-                thunkAPI.dispatch(fetchNews())
+                if (result.likeData) {
+                    thunkAPI.dispatch(addLikeToPost({ postId, likeData: result.likeData }))
+                } else {
+                    thunkAPI.dispatch(removeLikeOnPost({ postId, userId: authUserId }))
+                }
             } else {
                 throw new Error(result.message)
             }

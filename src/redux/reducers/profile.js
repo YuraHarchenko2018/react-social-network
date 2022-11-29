@@ -65,6 +65,61 @@ const profileSlice = createSlice({
             state.userInfoStatus = null
             state.userPostsStatus = null
         },
+        addLikeToPost(state, action) {
+            const { postId, likeData } = action.payload
+
+            /* with immer */
+            state.posts.forEach(post => {
+                if (post.id === postId) {
+                    post.likesCount++
+                    post.likes.push(likeData)
+                }
+            })
+
+            /* immutable */
+            // return {
+            //     ...state,
+            //     posts: state.posts.map(post => {
+            //         if (post.id === postId) {
+            //             return {
+            //                 ...post,
+            //                 likesCount: post.likesCount + 1,
+            //                 likes: [
+            //                     ...post.likes,
+            //                     likeData
+            //                 ]
+            //             }
+            //         }
+            //         return post
+            //     })
+            // }
+        },
+        removeLikeOnPost(state, action) {
+            const { postId, userId } = action.payload
+
+            /* with immer */
+            state.posts.forEach(post => {
+                if (post.id === postId) {
+                    post.likesCount--
+                    post.likes = post.likes.filter(likeObj => likeObj.user.id !== userId)
+                }
+            })
+
+            /* immutable */
+            // return {
+            //     ...state,
+            //     posts: state.posts.map(post => {
+            //         if (post.id === postId) {
+            //             return {
+            //                 ...post,
+            //                 likesCount: post.likesCount - 1,
+            //                 likes: post.likes.filter(likeObj => likeObj.user.id !== userId)
+            //             }
+            //         }
+            //         return post
+            //     })
+            // }
+        },
         setPostText(state, action) {
             const { postId, postText } = action.payload
 
@@ -113,7 +168,9 @@ export const {
     removePost,
     setUserPosts,
     setUserInfo,
-    setUserStatus
+    setUserStatus,
+    addLikeToPost,
+    removeLikeOnPost,
 } = profileSlice.actions
 
 
@@ -220,11 +277,15 @@ export const deletePost = (postId) => async (dispatch) => {
     }
 }
 
-export const likePost = (postId, profileUserId) => async (dispatch) => {
+export const likePost = (postId, authUserId) => async (dispatch) => {
     try {
         let result = await postsAPI.likePost(postId)
         if (result.status) {
-            dispatch(fetchUserPosts(profileUserId))
+            if (result.likeData) {
+                dispatch(addLikeToPost({ postId, likeData: result.likeData }))
+            } else {
+                dispatch(removeLikeOnPost({ postId, userId: authUserId }))
+            }
         } else {
             console.log(result.message)
         }

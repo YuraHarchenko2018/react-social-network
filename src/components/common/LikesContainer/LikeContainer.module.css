@@ -1,9 +1,8 @@
-
-
 .likeWrapper {
     width: 50px;
     display: flex;
 }
+
 .likeImg {
     border-radius: 25px;
     cursor: pointer;
@@ -11,6 +10,15 @@
     height: 20px;
     transition: 0.3s;
 }
+
+.activeColor {
+    background: #bef5ff;
+}
+
+.disableColor {
+    background: #fff;
+}
+
 .likeText {
     font-size: 16px;
 }
