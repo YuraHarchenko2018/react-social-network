@@ -29,6 +29,22 @@ export const usersAPI = {
         };
     },
 
+    async searchUsers(searchParam) {
+        const axiosInstance = getAxiosInstance()
+        const response = await axiosInstance.get(`/users/search?search=${searchParam}`)
+
+        let users = response.status === 200 ? response.data[0].users : []
+        return users;
+    },
+
+    async searchFriends(searchParam) {
+        const axiosInstance = getAxiosInstance()
+        const response = await axiosInstance.get(`/users/friends/search?search=${searchParam}`)
+
+        let users = response.status === 200 ? response.data[0].users : []
+        return users;
+    },
+
     /**
      * @param {number} currentPage
      * @param {number} pageSize

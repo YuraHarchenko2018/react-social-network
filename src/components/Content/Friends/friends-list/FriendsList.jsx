@@ -43,10 +43,11 @@ const FriendItem = ({ user }) => {
 }
 
 const Avatar = ({ userId, avatarImg }) => {
+    const profileAvatar = navigator.onLine ? avatarImg : DefaultAvatarImg
     return (
         <div className={s.userItemElementDiv + " " + s.userItemAvatarDivWrapper}>
             <NavLink className={s.userNameLink} to={`/profile/${userId}`}>
-                <img className={s.userItemAvatarImg} alt="#" src={avatarImg ?? DefaultAvatarImg} />
+                <img className={s.userItemAvatarImg} alt="#" src={profileAvatar} />
             </NavLink>
         </div>
     )

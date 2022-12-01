@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react"
+import React, { useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 
 import { generateStatus } from "utils/helpers/generateStatus"
@@ -26,16 +26,9 @@ const Info = () => {
 
     const [localUserStatus, setLocalUserStatus] = useState(userStatus)
     const [isStatusEditMode, setStatusEditMode] = useState(false)
-    const [profileBg, setProfileBg] = useState(null)
-    const [profileAva, setProfileAva] = useState(null)
 
-    useEffect(() => {
-        fetch(defaultProfileBg).then(() => setProfileBg(defaultProfileBg)).catch(() => setProfileBg(null))
-    }, [setProfileBg])
-
-    useEffect(() => {
-        fetch(userInfo.avatarImg).then(() => setProfileAva(userInfo.avatarImg)).catch(() => setProfileAva(null))
-    }, [userInfo.avatarImg, setProfileAva])
+    const profileBg = navigator.onLine ? defaultProfileBg : DefaultLocalProfileBg
+    const profileAva = navigator.onLine ? userInfo.avatarImg : DefaultAvatarImg
 
     const userStatusInputOnChange = ({ target }) => setLocalUserStatus(target.value)
 
@@ -89,11 +82,11 @@ const Info = () => {
     return (
         <div className={s.userInfo}>
             <div className={s.userInfoBackgroundWrapper}>
-                <img alt="#" src={profileBg ?? DefaultLocalProfileBg} />
+                <img alt="#" src={profileBg} />
             </div>
             <div className={s.userInfoBlock}>
                 <div className={s.userInfoAvatarWrapper}>
-                    <img alt="" src={profileAva ?? DefaultAvatarImg} />
+                    <img alt="" src={profileAva} />
                 </div>
                 <div className={s.userInfoDataWrapper}>
                     <div className={s.userInfoName}>

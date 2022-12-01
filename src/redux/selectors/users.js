@@ -28,6 +28,10 @@ export const getTotalFriendsCountSelector = (state) => {
     return state.users.totalFriendsCount
 }
 
+export const getIsSearchSelector = (state) => {
+    return state.users.isSearch
+}
+
 export const getUsersPagesCountSelector = (state) => {
     let totalUsersCount = getTotalUsersCountSelector(state)
     let perPage = getUsersPerPageSelector(state)

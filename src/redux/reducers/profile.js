@@ -240,7 +240,7 @@ export const addPost = (postText, authUserId) => async (dispatch) => {
     try {
         // ??? somewhere redo -> get from server new post id and add only one to state
         let result = await postsAPI.addPost(postText)
-        if (result) {
+        if (result.status) {
             dispatch(fetchUserPosts(authUserId))
             // dispatch(addPostCreator(text, newPostId))
         }

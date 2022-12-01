@@ -29,10 +29,10 @@ const DeletePostPopUp = () => {
             </div>
             <div className={s.buttonsWrapper}>
                 <div className={s.buttonWrapper}>
-                    <button onClick={handleYesBtn}>Yes</button>
+                    <button onClick={handleNoBtn}>No</button>
                 </div>
                 <div className={s.buttonWrapper}>
-                    <button onClick={handleNoBtn}>No</button>
+                    <button onClick={handleYesBtn}>Yes</button>
                 </div>
             </div>
         </div>

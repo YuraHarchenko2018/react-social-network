@@ -19,6 +19,7 @@ const usersSlice = createSlice({
          */
         users: null,
         friends: null,
+        isSearch: false,
         totalUsersCount: 0,
         totalFriendsCount: 0,
         usersPerPage: 5,
@@ -43,6 +44,10 @@ const usersSlice = createSlice({
 
             state.users = users
             state.totalUsersCount = totalCount
+        },
+        setIsSearchFlag(state, action) {
+            const isSearch = action.payload
+            state.isSearch = isSearch
         },
         setFriends(state, action) {
             const { users, totalCount } = action.payload
@@ -83,6 +88,7 @@ const handleExtraRejected = (state, action) => {
 export const {
     setFollowStatus,
     setUsersData,
+    setIsSearchFlag,
     setFriends,
     setFollowingInProcess
 } = usersSlice.actions
@@ -100,6 +106,44 @@ export const fetchUsers = createAsyncThunk(
             dispatch(setUsersData({ users, totalCount }))
 
             return { users, totalCount }
+        } catch (error) {
+            if (error.response) {
+                // set to store flag that mean "something went wrong"
+                return rejectWithValue(error.response)
+            }
+        }
+    }
+)
+
+export const searchUsers = createAsyncThunk(
+    'users/searchUsers',
+    /**
+     * @param {string} searchParam
+     */
+    async (searchParam, { rejectWithValue, dispatch }) => {
+
+        try {
+            let users = await usersAPI.searchUsers(searchParam)
+            dispatch(setUsersData({ users, totalCount: 0 }))
+        } catch (error) {
+            if (error.response) {
+                // set to store flag that mean "something went wrong"
+                return rejectWithValue(error.response)
+            }
+        }
+    }
+)
+
+export const searchFriends = createAsyncThunk(
+    'users/searchFriends',
+    /**
+     * @param {string} searchParam
+     */
+    async (searchParam, { rejectWithValue, dispatch }) => {
+
+        try {
+            let users = await usersAPI.searchFriends(searchParam)
+            dispatch(setFriends({ users, totalCount: 0 }))
         } catch (error) {
             if (error.response) {
                 // set to store flag that mean "something went wrong"

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react"
+import React from "react"
 import { useNavigate } from "react-router-dom"
 import ProfileAvatar from "../../assets/default-avatar.webp"
 
@@ -12,18 +12,12 @@ const Header = (props) => {
   const signUpBtnClick = () => navigate('/sign-up')
   const logoutBtnClick = () => props.logout()
 
-  const [profileAva, setProfileAva] = useState(null)
-
-  useEffect(() => {
-    const avatar = props.authUserProfileImgLink
-    fetch(avatar).then(() => setProfileAva(avatar)).catch(() => setProfileAva(null))
-  }, [props.authUserProfileImgLink, setProfileAva])
-
+  const profileAva = navigator.onLine ? props.authUserProfileImgLink : ProfileAvatar
 
   return (
     <header className={s.header}>
       <div className={s.avatarLogoWrapper}>
-        <img alt="#" src={profileAva ?? ProfileAvatar} />
+        <img alt="No connection" src={profileAva} loading="lazy" />
       </div>
       <div className={s.loginBtnWrapper}>
         {

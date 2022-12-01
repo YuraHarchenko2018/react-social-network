@@ -1,14 +1,18 @@
-import React, { useEffect } from "react"
+import React, { useEffect, useState } from "react"
 import Preloader from "components/common/Preloader/Preloader"
 import { useDispatch, useSelector } from "react-redux"
 import { fetchNews, setNews } from "redux/reducers/news"
 import { getPerPageSelector, getNewsSelector } from "redux/selectors/news"
 import { Posts } from "../Profile/Posts/Posts"
-import NewsPaginator from "./NewsPaginator"
+
+import s from "./News.module.css"
 
 
 const News = () => {
     const dispatch = useDispatch()
+
+    const [newsPage, setNewsPage] = useState(1)
+
     const news = useSelector(state => getNewsSelector(state))
     const perPage = useSelector(state => getPerPageSelector(state))
 
@@ -17,15 +21,30 @@ const News = () => {
     // unmount
     useEffect(() => () => { dispatch(setNews({ posts: null })) }, [dispatch])
 
-    if (news === null) {
+    const handleScroll = (e) => {
+        // s.newsWrapper: max-height === 600px
+        const scrollBaseHeight = 600
+        const scrollHeight = e.target.scrollHeight
+        const scrollTop = e.target.scrollTop
+
+        const isEnd = scrollHeight - scrollTop - scrollBaseHeight <= 0 ? true : false
+
+        if (isEnd) {
+            const nextPage = newsPage + 1
+            // @ts-ignore
+            dispatch(fetchNews({ selectedPage: nextPage, perPage: 5 }))
+            setNewsPage(nextPage)
+        }
+    }
+
+    if (!news.length) {
         return <Preloader />
     }
 
     return (
-        <>
-            <NewsPaginator />
+        <div onScroll={handleScroll} className={s.newsWrapper}>
             <Posts posts={news} enviroment="news" />
-        </>
+        </div>
     )
 }
 

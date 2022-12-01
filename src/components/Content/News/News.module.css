@@ -1,0 +1,5 @@
+.newsWrapper {
+    overflow: auto;
+    max-height: 600px;
+    background: white;
+}
