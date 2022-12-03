@@ -1,6 +1,4 @@
 import React, { useCallback, useEffect } from "react"
-// @ts-ignore
-import { useAppDispatch, useAppSelector } from "./../../../hooks/redux.ts"
 import { fetchUserInfo, fetchUserPosts, setProfileUserId } from "redux/reducers/profile"
 import { useParams } from "react-router-dom"
 
@@ -11,16 +9,19 @@ import useLoginRedirect from "hooks/useLoginRedirect"
 import { getAuthUserIdSelector } from "redux/selectors/auth"
 import { getProfileUserIdSelector, getUserInfoStatusSelector, getUserPostsStatusSelector } from "redux/selectors/profile"
 
+// @ts-ignore
+import { useAppDispatch, useAppSelector } from "./../../../hooks/redux.ts"
+
 
 const ProfileContainer = () => {
     useLoginRedirect()
 
     const dispatch = useAppDispatch()
 
-    const authUserId = useAppSelector(state => getAuthUserIdSelector(state))
-    const profileUserId = useAppSelector(state => getProfileUserIdSelector(state))
-    const userInfoStatus = useAppSelector(state => getUserInfoStatusSelector(state))
-    const userPostsStatus = useAppSelector(state => getUserPostsStatusSelector(state))
+    const authUserId = useAppSelector(getAuthUserIdSelector)
+    const profileUserId = useAppSelector(getProfileUserIdSelector)
+    const userInfoStatus = useAppSelector(getUserInfoStatusSelector)
+    const userPostsStatus = useAppSelector(getUserPostsStatusSelector)
 
     const getUserInfo = useCallback(() => dispatch(fetchUserInfo(profileUserId)), [dispatch, profileUserId])
     const getUserPosts = useCallback(() => dispatch(fetchUserPosts(profileUserId)), [dispatch, profileUserId])
@@ -30,9 +31,8 @@ const ProfileContainer = () => {
         userPostsStatus
     ]
 
-    let routerParams = useParams();
-    let routerUserId = routerParams.userId ?? authUserId
-    routerUserId = Number(routerUserId)
+    const routerParams = useParams();
+    const routerUserId = Number(routerParams.userId ?? authUserId)
 
     useEffect(() => { dispatch(setProfileUserId(routerUserId)) }, [dispatch, routerUserId])
 

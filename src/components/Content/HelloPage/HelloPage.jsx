@@ -1,9 +1,8 @@
 import React from "react"
-
 import s from "./HelloPage.module.css"
 
 
-const HelloPage = (props) => {
+const HelloPage = () => {
     return (
         <div className={s.helloPageWrapper}>
             <h2>Hello 👋</h2>

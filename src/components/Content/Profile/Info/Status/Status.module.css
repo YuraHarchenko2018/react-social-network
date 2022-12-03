@@ -1,0 +1,26 @@
+.userInfoStatusWrapper {
+    padding: 5px;
+}
+
+.statusInput {
+    outline: none;
+    border: 1px solid #eeeeee;
+    border-radius: 4px;
+    font-size: 17px;
+    width: -webkit-fill-available;
+    min-width: 200px;
+    padding: 5px;
+}
+
+.statusSpan {
+    background: white;
+    border-radius: 4px;
+    font-size: 10px;
+    padding: 5px;
+    cursor: pointer;
+    transition: background-color 0.5s;
+}
+
+.statusSpan:hover {
+    background: #eeeeee;
+}

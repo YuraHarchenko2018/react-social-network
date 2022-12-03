@@ -1,15 +1,15 @@
 import React, { useEffect } from "react"
-// @ts-ignore
-import { useAppDispatch, useAppSelector } from "./hooks/redux.ts"
+import PopUpContainer from "./components/common/PopUp/PopUpContainer"
 import HeaderContainer from "./components/Header/HeaderContainer"
-import Preloader from "./components/common/Preloader/Preloader"
 import NavBar from "./components/Navbar/NavBar"
 import Content from "./components/Content/Content"
-import PopUpContainer from "./components/common/PopUp/PopUpContainer"
+import Preloader from "./components/common/Preloader/Preloader"
 import { initializeApp } from "./redux/reducers/init"
 import { getIsAppInit } from "./redux/selectors/init"
 import { getAuthUserIdSelector } from "./redux/selectors/auth.js"
 import "./App.css"
+// @ts-ignore
+import { useAppDispatch, useAppSelector } from "./hooks/redux.ts"
 
 
 const App = () => {

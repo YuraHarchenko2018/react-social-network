@@ -1,23 +1,26 @@
 import React, { useEffect } from "react"
 import SignUpForm from "components/common/ReduxForms/SignUp/SignUpForm"
 import useRootRedirect from "hooks/useRootRedirect"
-import { useDispatch, useSelector } from "react-redux"
 import { setIsLoginErrorOccur, signUp } from "redux/reducers/login"
 import { getIsLoginInSelector } from "redux/selectors/auth"
 import { getIsFetchingLoginStatus, getIsOccurErrorLoginStatus } from "redux/selectors/login"
-
 import s from './SignUp.module.css'
+// @ts-ignore
+import { useAppDispatch, useAppSelector } from "hooks/redux.ts"
+
 
 const SignUp = () => {
-    const dispatch = useDispatch()
+    const dispatch = useAppDispatch()
 
-    const isLoginIn = useSelector(state => getIsLoginInSelector(state))
-    const isFetching = useSelector(state => getIsFetchingLoginStatus(state))
-    const isOccurError = useSelector(state => getIsOccurErrorLoginStatus(state))
+    const isLoginIn = useAppSelector(getIsLoginInSelector)
+    const isFetching = useAppSelector(getIsFetchingLoginStatus)
+    const isOccurError = useAppSelector(getIsOccurErrorLoginStatus)
 
     useRootRedirect(isLoginIn)
 
-    const handleSubmit = ({ name, email, password, rePassword, age }) => signUp(name, email, password, rePassword, age)(dispatch)
+    const handleSubmit = ({ name, email, password, rePassword, age }) => {
+        dispatch(signUp(name, email, password, rePassword, age))
+    }
 
     useEffect(() => () => {
         dispatch(setIsLoginErrorOccur(false))

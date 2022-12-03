@@ -1,11 +1,19 @@
-import { connect } from "react-redux"
-import { logout } from "redux/reducers/auth"
-import { getAuthUserProfileImgLinkSelector, getIsLoginInSelector } from "redux/selectors/auth"
+import React from "react"
 import Header from "./Header"
+import { useSelector } from "react-redux"
+import { getAuthUserProfileImgLinkSelector, getIsLoginInSelector } from "redux/selectors/auth"
 
-const mapStateToProps = (state) => ({
-    isLoginIn: getIsLoginInSelector(state), 
-    authUserProfileImgLink: getAuthUserProfileImgLinkSelector(state),
-})
 
-export default connect(mapStateToProps, { logout })(Header)
+const HeaderContainer = () => {
+    const isLoginIn = useSelector(getIsLoginInSelector)
+    const authUserProfileImgLink = useSelector(getAuthUserProfileImgLinkSelector)
+
+    return (
+        <Header
+            isLoginIn={isLoginIn}
+            authUserProfileImgLink={authUserProfileImgLink}
+        />
+    )
+}
+
+export default HeaderContainer

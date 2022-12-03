@@ -5,7 +5,7 @@ import { getIsLoginInSelector } from "redux/selectors/auth";
 
 const useLoginRedirect = () => {
     const navigate = useNavigate();
-    const isLoginIn = useSelector(state => getIsLoginInSelector(state))
+    const isLoginIn = useSelector(getIsLoginInSelector)
 
     useEffect(() => {
         if (!isLoginIn) {

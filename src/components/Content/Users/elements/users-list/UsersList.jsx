@@ -1,6 +1,4 @@
-import React, { useEffect, useState } from "react";
-// @ts-ignore
-import { useAppDispatch, useAppSelector } from "./../../../../../hooks/redux.ts"
+import React from "react";
 import { NavLink } from "react-router-dom";
 import { follow, unfollow } from "redux/reducers/users";
 import { getAuthUserIdSelector } from "redux/selectors/auth";
@@ -8,9 +6,12 @@ import { getFollowingInProcessSelector, getUsersSelector } from "redux/selectors
 import { generateStatus } from "utils/helpers/generateStatus";
 import DefaultAvatarImg from "../../../../../assets/default-avatar.webp"
 import s from './UsersList.module.css'
+// @ts-ignore
+import { useAppDispatch, useAppSelector } from "./../../../../../hooks/redux.ts"
+
 
 const UsersList = () => {
-    const users = useAppSelector(state => getUsersSelector(state))
+    const users = useAppSelector(getUsersSelector)
 
     return (
         <div className={s.usersList}>
@@ -24,11 +25,7 @@ const UsersList = () => {
 }
 
 const UserItem = ({ user }) => {
-    const [avatarImg, setAvatarImg] = useState(user.avatarImg)
-
-    useEffect(() => {
-        fetch(user.avatarImg).catch(() => setAvatarImg(null))
-    }, [setAvatarImg, user.avatarImg])
+    const avatarImg = navigator.onLine ? user.avatarImg : DefaultAvatarImg
 
     return (
         <div key={user.id} className={s.userItem}>
@@ -48,7 +45,7 @@ const Avatar = ({ userId, avatarImg }) => {
     return (
         <div className={s.userItemElementDiv + " " + s.userItemAvatarDivWrapper}>
             <NavLink className={s.userNameLink} to={`/profile/${userId}`}>
-                <img className={s.userItemAvatarImg} alt="#" src={avatarImg ?? DefaultAvatarImg} />
+                <img className={s.userItemAvatarImg} alt="#" src={avatarImg} />
             </NavLink>
         </div>
     )
@@ -56,8 +53,12 @@ const Avatar = ({ userId, avatarImg }) => {
 
 const FollowButton = ({ userId, isFollow }) => {
     const dispatch = useAppDispatch()
-    const authUserId = useAppSelector(state => getAuthUserIdSelector(state))
-    const followingInProcess = useAppSelector(state => getFollowingInProcessSelector(state))
+
+    const authUserId = useAppSelector(getAuthUserIdSelector)
+    const followingInProcess = useAppSelector(getFollowingInProcessSelector)
+
+    const handleFollow = () => dispatch(follow(userId))
+    const handleUnfollow = () => dispatch(unfollow(userId))
 
     return (
         <div className={s.userItemElementDiv}>
@@ -67,14 +68,18 @@ const FollowButton = ({ userId, isFollow }) => {
                         <button
                             className={s.userFollowButton}
                             disabled={followingInProcess.some(fid => fid === userId)}
-                            onClick={() => dispatch(unfollow(userId))}
-                        >Unfollow</button>
+                            onClick={handleUnfollow}
+                        >
+                            Unfollow
+                        </button>
                     ) : (
                         <button
                             className={s.userFollowButton}
                             disabled={followingInProcess.some(fid => fid === userId)}
-                            onClick={() => dispatch(follow(userId))}
-                        >Follow</button>
+                            onClick={handleFollow}
+                        >
+                            Follow
+                        </button>
                     )
                     : <></>
             }
@@ -99,6 +104,5 @@ const UserStatus = ({ userStatus }) => {
         </div>
     )
 }
-
 
 export default UsersList

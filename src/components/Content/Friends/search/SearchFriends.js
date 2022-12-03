@@ -1,8 +1,9 @@
 import React from 'react';
-// @ts-ignore
-import { useAppDispatch } from "./../../../../hooks/redux.ts"
 import { TextField, Box } from '@mui/material';
 import { searchFriends, setIsSearchFlag } from 'redux/reducers/users';
+// @ts-ignore
+import { useAppDispatch } from "./../../../../hooks/redux.ts"
+
 
 const SearchFriends = () => {
     const dispatch = useAppDispatch()

@@ -1,9 +1,10 @@
 import React, { useCallback } from "react"
-// @ts-ignore
-import { useAppDispatch, useAppSelector } from "./../../../../../hooks/redux.ts"
 import { fetchUsers } from "redux/reducers/users"
 import { getIsSearchSelector, getUsersPagesCountSelector, getUsersPerPageSelector } from "redux/selectors/users"
 import Paginator from "components/common/Paginator/Paginator"
+// @ts-ignore
+import { useAppDispatch, useAppSelector } from "./../../../../../hooks/redux.ts"
+
 
 const UsersPaginator = () => {
     const dispatch = useAppDispatch()

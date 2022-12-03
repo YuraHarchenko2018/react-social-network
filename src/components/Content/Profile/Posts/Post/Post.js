@@ -1,18 +1,18 @@
-import React, { useCallback, useState } from "react";
-import OptionsWindow from "components/common/OptionsWindow/OptionsWindow";
+import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { NavLink } from "react-router-dom";
 import { getAuthUserIdSelector } from "redux/selectors/auth";
 import { setContent, setIsShow, setPayload } from "redux/reducers/popup";
 import { getFormattedDate } from "utils/helpers/formatDate";
+import OptionsWindow from "components/common/OptionsWindow/OptionsWindow";
 import LikesContainer from "components/common/LikesContainer/LikesContainer";
 import DefaultAvatarImg from "../../../../../assets/default-avatar.webp"
-
 import s from "./Post.module.css"
 
 
 const Post = (props) => {
     const { post: { id, likesCount, likes, userId }, enviroment } = props
+
     return (
         <div className={s.post}>
             <OptionsContainer enviroment={props.enviroment} {...props.post} />
@@ -26,8 +26,9 @@ const Post = (props) => {
 
 const OptionsContainer = ({ id, userId, text, enviroment }) => {
     const dispatch = useDispatch()
-    const authUserId = useSelector(state => getAuthUserIdSelector(state))
-    const isModifyableUser = authUserId === userId
+    const authUserId = useSelector(getAuthUserIdSelector)
+
+    const isModifyableUser = userId === authUserId
 
     const handleUpdateBtn = () => {
         dispatch(setContent({ content: "updatePostText" }))
@@ -63,8 +64,7 @@ const OptionsContainer = ({ id, userId, text, enviroment }) => {
 }
 
 const PostCreatorInfoContainer = ({ id, name, avatarImg }) => {
-    const [avatar, setAvatar] = useState(DefaultAvatarImg)
-    useCallback(() => fetch(avatarImg).then(() => setAvatar(avatarImg)), [avatarImg])
+    const avatar = navigator.onLine ? avatarImg : DefaultAvatarImg
 
     return (
         <div className={s.postUserInfo}>
@@ -84,6 +84,7 @@ const PostTextContainer = ({ text }) => {
 
 const DateContainer = ({ created_at }) => {
     const dateTitle = getFormattedDate(created_at)
+
     return (
         <div className={s.createdAtTitle}>
             {dateTitle}

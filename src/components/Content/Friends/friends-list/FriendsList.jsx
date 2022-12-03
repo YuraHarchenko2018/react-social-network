@@ -1,15 +1,14 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { useSelector } from "react-redux";
 import { NavLink } from "react-router-dom";
 import { getFriendsSelector } from "redux/selectors/users";
 import { generateStatus } from "utils/helpers/generateStatus";
 import DefaultAvatarImg from "../../../../assets/default-avatar.webp"
-
 import s from './FriendsList.module.css'
 
 
 const FriendsList = () => {
-    const friends = useSelector(state => getFriendsSelector(state))
+    const friends = useSelector(getFriendsSelector)
 
     return (
         <div className={s.usersList}>
@@ -23,11 +22,7 @@ const FriendsList = () => {
 }
 
 const FriendItem = ({ user }) => {
-    const [avatarImg, setAvatarImg] = useState(user.avatarImg)
-
-    useEffect(() => {
-        fetch(user.avatarImg).catch(() => setAvatarImg(null))
-    }, [setAvatarImg, user.avatarImg])
+    const avatarImg = navigator.onLine ? user.avatarImg : DefaultAvatarImg
 
     return (
         <div key={user.id} className={s.userItem}>
@@ -43,11 +38,10 @@ const FriendItem = ({ user }) => {
 }
 
 const Avatar = ({ userId, avatarImg }) => {
-    const profileAvatar = navigator.onLine ? avatarImg : DefaultAvatarImg
     return (
         <div className={s.userItemElementDiv + " " + s.userItemAvatarDivWrapper}>
             <NavLink className={s.userNameLink} to={`/profile/${userId}`}>
-                <img className={s.userItemAvatarImg} alt="#" src={profileAvatar} />
+                <img className={s.userItemAvatarImg} alt="#" src={avatarImg} />
             </NavLink>
         </div>
     )
@@ -70,6 +64,5 @@ const UserStatus = ({ userStatus }) => {
         </div>
     )
 }
-
 
 export default FriendsList

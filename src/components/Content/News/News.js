@@ -1,12 +1,11 @@
 import React, { useEffect, useState } from "react"
-// @ts-ignore
-import { useAppDispatch, useAppSelector } from "./../../../hooks/redux.ts"
 import Preloader from "components/common/Preloader/Preloader"
 import { fetchNews, setNews } from "redux/reducers/news"
 import { getPerPageSelector, getNewsSelector } from "redux/selectors/news"
 import { Posts } from "../Profile/Posts/Posts"
-
 import s from "./News.module.css"
+// @ts-ignore
+import { useAppDispatch, useAppSelector } from "./../../../hooks/redux.ts"
 
 
 const News = () => {
@@ -14,8 +13,8 @@ const News = () => {
 
     const [newsPage, setNewsPage] = useState(1)
 
-    const news = useAppSelector(state => getNewsSelector(state))
-    const perPage = useAppSelector(state => getPerPageSelector(state))
+    const news = useAppSelector(getNewsSelector)
+    const perPage = useAppSelector(getPerPageSelector)
 
     // did mount
     useEffect(() => { dispatch(fetchNews({ selectedPage: 1, perPage })) }, [dispatch, perPage]);

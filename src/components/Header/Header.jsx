@@ -1,27 +1,29 @@
 import React from "react"
 import { useNavigate } from "react-router-dom"
+import { useDispatch } from "react-redux"
+import { logout } from "redux/reducers/auth"
 import ProfileAvatar from "../../assets/default-avatar.webp"
-
 import s from "./Header.module.css"
 
 
-const Header = (props) => {
-  let navigate = useNavigate();
+const Header = ({ isLoginIn, authUserProfileImgLink }) => {
+  const dispatch = useDispatch()
+  const navigate = useNavigate();
 
   const loginBtnClick = () => navigate('/login')
   const signUpBtnClick = () => navigate('/sign-up')
-  const logoutBtnClick = () => props.logout()
+  const logoutBtnClick = () => dispatch(logout())
 
-  const profileAva = navigator.onLine ? props.authUserProfileImgLink : ProfileAvatar
+  const profileAvatar = navigator.onLine ? authUserProfileImgLink : ProfileAvatar
 
   return (
     <header className={s.header}>
       <div className={s.avatarLogoWrapper}>
-        <img alt="No connection" src={profileAva} loading="lazy" />
+        <img alt="#" src={profileAvatar} />
       </div>
       <div className={s.loginBtnWrapper}>
         {
-          props.isLoginIn ? (
+          isLoginIn ? (
             <button onClick={logoutBtnClick} className={s.logoutBtn}>Logout</button>
           ) : (
             <>

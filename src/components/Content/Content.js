@@ -1,19 +1,16 @@
 import React from "react"
 import { Routes, Route } from 'react-router-dom'
-
 import { suspenseWithPreloader } from "utils/helpers/suspenseWithPreloader"
-
 import HelloPage from "./HelloPage/HelloPage"
 import DialogsContainer from "./Dialogs/DialogsContainer"
+import FriendsContainer from "./Friends/FriendsContainer"
+import News from "./News/News"
 import Login from "./Login/Login"
 import SignUp from "./SignUp/SignUp"
-import News from "./News/News"
-import FriendsContainer from "./Friends/FriendsContainer"
-
 import s from "./Content.module.css"
 
 
-const Content = (props) => {
+const Content = () => {
     const UsersContainer = React.lazy(() => import('./Users/UsersContainer'));
     const ProfileContainer = React.lazy(() => import('./Profile/ProfileContainer'));
 

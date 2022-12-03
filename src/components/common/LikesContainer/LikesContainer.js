@@ -1,12 +1,11 @@
 import React from "react"
-// @ts-ignore
-import { useAppDispatch, useAppSelector } from "./../../../hooks/redux.ts"
 import { getAuthUserIdSelector } from "redux/selectors/auth"
 import { likePost } from "redux/reducers/profile"
 import { likePostNewsPage } from "redux/reducers/news"
 import LikeSVG from "../../../assets/like.png"
-
 import s from "./LikeContainer.module.css"
+// @ts-ignore
+import { useAppDispatch, useAppSelector } from "./../../../hooks/redux.ts"
 
 
 const LikesContainer = ({ enviroment, postId, postOwnerId, likesCount, likes }) => {
