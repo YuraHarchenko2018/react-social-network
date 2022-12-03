@@ -1,23 +1,29 @@
-import React, { useEffect } from "react";
-import { connect } from "react-redux";
-import HeaderContainer from "./components/Header/HeaderContainer";
-import Preloader from "./components/common/Preloader/Preloader";
-import NavBar from "./components/Navbar/NavBar";
-import Content from "./components/Content/Content";
-import PopUpContainer from "./components/common/PopUp/PopUpContainer";
-import { initializeApp } from "./redux/reducers/init";
-import { getIsAppInit } from "./redux/selectors/init";
-import { getAuthUserIdSelector } from "./redux/selectors/auth";
+import React, { useEffect } from "react"
+// @ts-ignore
+import { useAppDispatch, useAppSelector } from "./hooks/redux.ts"
+import HeaderContainer from "./components/Header/HeaderContainer"
+import Preloader from "./components/common/Preloader/Preloader"
+import NavBar from "./components/Navbar/NavBar"
+import Content from "./components/Content/Content"
+import PopUpContainer from "./components/common/PopUp/PopUpContainer"
+import { initializeApp } from "./redux/reducers/init"
+import { getIsAppInit } from "./redux/selectors/init"
+import { getAuthUserIdSelector } from "./redux/selectors/auth.js"
+import "./App.css"
 
-import "./App.css";
 
-const App = ({ isAppInit, authUserId, initializeApp }) => {
+const App = () => {
+  const dispatch = useAppDispatch()
+
+  const isAppInit = useAppSelector(getIsAppInit)
+  const authUserId = useAppSelector(getAuthUserIdSelector)
+
   useEffect(() => {
-    initializeApp(authUserId);
-  }, [initializeApp, authUserId]);
+    dispatch(initializeApp(authUserId))
+  }, [dispatch, authUserId])
 
   if (!isAppInit) {
-    return <Preloader />;
+    return <Preloader />
   }
 
   return (
@@ -29,15 +35,7 @@ const App = ({ isAppInit, authUserId, initializeApp }) => {
         <Content />
       </div>
     </>
-  );
-};
+  )
+}
 
-export default connect(
-  (state) => ({
-    isAppInit: getIsAppInit(state),
-    authUserId: getAuthUserIdSelector(state),
-  }),
-  {
-    initializeApp,
-  }
-)(App);
+export default App

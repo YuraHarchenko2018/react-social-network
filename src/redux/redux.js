@@ -10,7 +10,7 @@ import initSlice from './reducers/init'
 import popUpSlice from './reducers/popup'
 import newsSlice from './reducers/news'
 
-const rootReducer = combineReducers({
+const reducers = {
     profile: profileSlice,
     dialogs: dialogsSlice,
     users: usersSlice,
@@ -19,10 +19,14 @@ const rootReducer = combineReducers({
     init: initSlice,
     popUp: popUpSlice,
     news: newsSlice
+}
+
+export const rootReducer = combineReducers({
+    ...reducers
 })
 
-const store = configureStore({
+const setupStore = () => configureStore({
     reducer: rootReducer,
 });
 
-export { store }
+export default setupStore

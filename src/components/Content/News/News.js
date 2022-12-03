@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react"
+// @ts-ignore
+import { useAppDispatch, useAppSelector } from "./../../../hooks/redux.ts"
 import Preloader from "components/common/Preloader/Preloader"
-import { useDispatch, useSelector } from "react-redux"
 import { fetchNews, setNews } from "redux/reducers/news"
 import { getPerPageSelector, getNewsSelector } from "redux/selectors/news"
 import { Posts } from "../Profile/Posts/Posts"
@@ -9,20 +10,20 @@ import s from "./News.module.css"
 
 
 const News = () => {
-    const dispatch = useDispatch()
+    const dispatch = useAppDispatch()
 
     const [newsPage, setNewsPage] = useState(1)
 
-    const news = useSelector(state => getNewsSelector(state))
-    const perPage = useSelector(state => getPerPageSelector(state))
+    const news = useAppSelector(state => getNewsSelector(state))
+    const perPage = useAppSelector(state => getPerPageSelector(state))
 
-    // @ts-ignore | did mount
+    // did mount
     useEffect(() => { dispatch(fetchNews({ selectedPage: 1, perPage })) }, [dispatch, perPage]);
     // unmount
     useEffect(() => () => { dispatch(setNews({ posts: null })) }, [dispatch])
 
     const handleScroll = (e) => {
-        // s.newsWrapper: max-height === 600px
+        // s.newsWrapper: max-height == 600px
         const scrollBaseHeight = 600
         const scrollHeight = e.target.scrollHeight
         const scrollTop = e.target.scrollTop
@@ -31,7 +32,6 @@ const News = () => {
 
         if (isEnd) {
             const nextPage = newsPage + 1
-            // @ts-ignore
             dispatch(fetchNews({ selectedPage: nextPage, perPage: 5 }))
             setNewsPage(nextPage)
         }

@@ -1,7 +1,8 @@
 import React, { useCallback, useEffect } from "react"
-import { useParams } from "react-router-dom"
-import { useDispatch, useSelector } from "react-redux"
+// @ts-ignore
+import { useAppDispatch, useAppSelector } from "./../../../hooks/redux.ts"
 import { fetchUserInfo, fetchUserPosts, setProfileUserId } from "redux/reducers/profile"
+import { useParams } from "react-router-dom"
 
 import Preloader from "components/common/Preloader/Preloader"
 import Profile from "./Profile"
@@ -14,16 +15,14 @@ import { getProfileUserIdSelector, getUserInfoStatusSelector, getUserPostsStatus
 const ProfileContainer = () => {
     useLoginRedirect()
 
-    const dispatch = useDispatch()
+    const dispatch = useAppDispatch()
 
-    const authUserId = useSelector(state => getAuthUserIdSelector(state))
-    const profileUserId = useSelector(state => getProfileUserIdSelector(state))
-    const userInfoStatus = useSelector(state => getUserInfoStatusSelector(state))
-    const userPostsStatus = useSelector(state => getUserPostsStatusSelector(state))
+    const authUserId = useAppSelector(state => getAuthUserIdSelector(state))
+    const profileUserId = useAppSelector(state => getProfileUserIdSelector(state))
+    const userInfoStatus = useAppSelector(state => getUserInfoStatusSelector(state))
+    const userPostsStatus = useAppSelector(state => getUserPostsStatusSelector(state))
 
-    // @ts-ignore
     const getUserInfo = useCallback(() => dispatch(fetchUserInfo(profileUserId)), [dispatch, profileUserId])
-    // @ts-ignore
     const getUserPosts = useCallback(() => dispatch(fetchUserPosts(profileUserId)), [dispatch, profileUserId])
 
     const fetchStatuses = [

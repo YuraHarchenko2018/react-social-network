@@ -1,5 +1,6 @@
 import React from "react"
-import { useDispatch, useSelector } from "react-redux"
+// @ts-ignore
+import { useAppDispatch, useAppSelector } from "./../../../hooks/redux.ts"
 import { getAuthUserIdSelector } from "redux/selectors/auth"
 import { likePost } from "redux/reducers/profile"
 import { likePostNewsPage } from "redux/reducers/news"
@@ -9,19 +10,17 @@ import s from "./LikeContainer.module.css"
 
 
 const LikesContainer = ({ enviroment, postId, postOwnerId, likesCount, likes }) => {
-    const dispatch = useDispatch()
-    const authUserId = useSelector(state => getAuthUserIdSelector(state))
+    const dispatch = useAppDispatch()
+    const authUserId = useAppSelector(state => getAuthUserIdSelector(state))
 
     const isLiked = checkIsPostLiked(likes, authUserId)
     const isLikedClass = isLiked ? s.activeColor : s.disableColor
 
     const handleLikeBtn = () => {
         if (enviroment === "profile") {
-            // @ts-ignore
             dispatch(likePost(postId, authUserId))
         }
         if (enviroment === "news") {
-            // @ts-ignore
             dispatch(likePostNewsPage({ postId, authUserId }))
         }
     }

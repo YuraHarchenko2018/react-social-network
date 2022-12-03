@@ -1,13 +1,13 @@
 import React from 'react';
+// @ts-ignore
+import { useAppDispatch } from "./../../../../hooks/redux.ts"
 import { TextField, Box } from '@mui/material';
 import { searchFriends, setIsSearchFlag } from 'redux/reducers/users';
-import { useDispatch } from 'react-redux';
 
 const SearchFriends = () => {
-    const dispatch = useDispatch()
+    const dispatch = useAppDispatch()
 
     const handleSearchChange = (e) => {
-        // @ts-ignore
         dispatch(searchFriends(e.target.value))
         dispatch(setIsSearchFlag(!!e.target.value))
     }

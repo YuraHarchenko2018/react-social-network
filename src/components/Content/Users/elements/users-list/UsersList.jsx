@@ -1,17 +1,16 @@
 import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+// @ts-ignore
+import { useAppDispatch, useAppSelector } from "./../../../../../hooks/redux.ts"
 import { NavLink } from "react-router-dom";
 import { follow, unfollow } from "redux/reducers/users";
 import { getAuthUserIdSelector } from "redux/selectors/auth";
 import { getFollowingInProcessSelector, getUsersSelector } from "redux/selectors/users";
 import { generateStatus } from "utils/helpers/generateStatus";
 import DefaultAvatarImg from "../../../../../assets/default-avatar.webp"
-
 import s from './UsersList.module.css'
 
-
 const UsersList = () => {
-    const users = useSelector(state => getUsersSelector(state))
+    const users = useAppSelector(state => getUsersSelector(state))
 
     return (
         <div className={s.usersList}>
@@ -56,9 +55,9 @@ const Avatar = ({ userId, avatarImg }) => {
 }
 
 const FollowButton = ({ userId, isFollow }) => {
-    const dispatch = useDispatch()
-    const authUserId = useSelector(state => getAuthUserIdSelector(state))
-    const followingInProcess = useSelector(state => getFollowingInProcessSelector(state))
+    const dispatch = useAppDispatch()
+    const authUserId = useAppSelector(state => getAuthUserIdSelector(state))
+    const followingInProcess = useAppSelector(state => getFollowingInProcessSelector(state))
 
     return (
         <div className={s.userItemElementDiv}>
@@ -68,14 +67,12 @@ const FollowButton = ({ userId, isFollow }) => {
                         <button
                             className={s.userFollowButton}
                             disabled={followingInProcess.some(fid => fid === userId)}
-                            // @ts-ignore
                             onClick={() => dispatch(unfollow(userId))}
                         >Unfollow</button>
                     ) : (
                         <button
                             className={s.userFollowButton}
                             disabled={followingInProcess.some(fid => fid === userId)}
-                            // @ts-ignore
                             onClick={() => dispatch(follow(userId))}
                         >Follow</button>
                     )

@@ -1,24 +1,22 @@
 import React, { useState } from "react"
-import { useDispatch, useSelector } from "react-redux"
-
+// @ts-ignore
+import { useAppDispatch, useAppSelector } from "./../../../../hooks/redux.ts"
 import { generateStatus } from "utils/helpers/generateStatus"
 import { updateUserStatus } from "redux/reducers/profile"
 import { getUserInfoSelector } from "redux/selectors/profile"
 import { getAuthUserIdSelector } from "redux/selectors/auth"
-
 import PlayBackSpeed from "./PlaybackSpeed"
 import OptionsWindow from "components/common/OptionsWindow/OptionsWindow"
 import DefaultAvatarImg from "../../../../assets/default-avatar.webp"
 import DefaultLocalProfileBg from "../../../../assets/profile-background.png"
-
 import s from "./Info.module.css"
 
 
 const Info = () => {
-    const dispatch = useDispatch()
+    const dispatch = useAppDispatch()
 
-    const userInfo = useSelector(state => getUserInfoSelector(state))
-    const authUserId = useSelector(state => getAuthUserIdSelector(state))
+    const userInfo = useAppSelector(state => getUserInfoSelector(state))
+    const authUserId = useAppSelector(state => getAuthUserIdSelector(state))
 
     const defaultProfileBg = 'https://img.freepik.com/free-vector/hand-painted-watercolor-pastel-sky-background_23-2148902771.jpg?w=2000'
 
@@ -46,7 +44,6 @@ const Info = () => {
         }
 
         if (localUserStatus !== userInfo.status) {
-            // @ts-ignore
             dispatch(updateUserStatus(localUserStatus))
         }
     }

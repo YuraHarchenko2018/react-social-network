@@ -6,7 +6,7 @@ import s from './Preloader.module.css'
 
 const Preloader = () => {
     return (
-        <div className={s.preloaderWrapper}>
+        <div className={s.preloader}>
             <img alt="#" src={PreloaderGIF} />
         </div>
     )
