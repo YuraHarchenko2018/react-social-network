@@ -7,3 +7,7 @@ export const getDialogsUsersSelector = (state) => {
 export const getDialogsMessagesSelector = (state) => {
     return state.dialogs.messages
 }
+
+export const getSelectedDialogSelector = (state) => {
+    return state.dialogs.selectedDialog
+}

@@ -2,7 +2,6 @@ import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { addPost } from "redux/reducers/profile";
 import { getIsModifyableUserSelector, getUserPostsSelector } from "redux/selectors/profile";
-import { getAuthUserIdSelector } from "redux/selectors/auth";
 import AddPostForm from "components/common/ReduxForms/AddPost/AddPostForm";
 import Post from './Post/Post'
 
@@ -13,10 +12,9 @@ const PostsArea = React.memo(() => {
     const dispatch = useDispatch()
 
     const posts = useSelector(state => getUserPostsSelector(state))
-    const authUserId = useSelector(state => getAuthUserIdSelector(state))
     const isModifyableUser = useSelector(state => getIsModifyableUserSelector(state))
 
-    const onSubmit = ({ postText }) => addPost(postText, authUserId)(dispatch)
+    const onSubmit = ({ postText }) => addPost(postText)(dispatch)
 
     return (
         <div className={s.postAreaWraper}>
@@ -33,7 +31,7 @@ const PostsArea = React.memo(() => {
 export const Posts = ({ posts, enviroment }) => {
     return (
         <div className={s.posts}>
-            { posts.map(post => <Post key={post.id} post={post} enviroment={enviroment} />) }
+            {posts.map(post => <Post key={post.id} post={post} enviroment={enviroment} />)}
         </div>
     )
 }

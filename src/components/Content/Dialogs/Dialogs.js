@@ -1,28 +1,38 @@
-import React from "react"
+import React, { useEffect } from "react"
 import useLoginRedirect from "hooks/useLoginRedirect"
 import SendMessageForm from "components/common/ReduxForms/SendMessage/SendMessageForm"
-
+import DialogUserItem from "./Components/DialogUserItem/DialogUserItem";
+import MessageItem from "./Components/MessageItem/MessageItem";
 import s from "./Dialogs.module.css"
+import { List } from "@mui/material";
+import { chatAPI } from "api/chat";
+import { useDispatch } from "react-redux";
 
-
-const DialogUserItem = ({ userName }) => <div className={s.dialogUser}>{userName}</div>
-const MessageItem = ({ message }) => <div className={s.message} style={({ alignSelf: "flex-start" })}>{message}</div>
 
 const Dialogs = ({ dialogs, messages, addMessage }) => {
     useLoginRedirect()
 
-    const handleSubmit = ({ message }) => addMessage({ message })
+    const dispatch = useDispatch()
 
-    const dialogsItems = dialogs.map(el => <DialogUserItem key={el.id} userName={el.userName} />)
-    const messagesItems = messages.map(el => <MessageItem key={el.id} message={el.message} />)
+    useEffect(() => {
+        chatAPI.listenOnMessage(dispatch)
+    }, [dispatch, addMessage])
+
+    const handleSubmit = ({ message }) => {
+        chatAPI.handleSendMessage(message)
+    }
 
     return (
         <div className={s.dialogWindow}>
-            <div className={s.dialogsList}>
-                {dialogsItems}
-            </div>
+            <List sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }} aria-label="contacts">
+                {
+                    dialogs.map(el => <DialogUserItem key={el.id} userName={el.name} />)
+                }
+            </List>
             <div className={s.messagesList}>
-                {messagesItems}
+                {
+                    messages.map(el => <MessageItem key={el.id} userId={el.userId} message={el.message} />)
+                }
             </div>
             <div className="mock"></div>
             <div>

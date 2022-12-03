@@ -4,7 +4,7 @@ import PreloaderGIF from '../../../assets/Preloader.gif'
 import s from './Preloader.module.css'
 
 
-const Preloader = (props) => {
+const Preloader = () => {
     return (
         <div className={s.preloaderWrapper}>
             <img alt="#" src={PreloaderGIF} />

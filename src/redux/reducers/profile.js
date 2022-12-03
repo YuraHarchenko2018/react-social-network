@@ -137,6 +137,10 @@ const profileSlice = createSlice({
             const posts = action.payload
             state.posts = posts
         },
+        setOnePost(state, action) {
+            const post = action.payload
+            state.posts.push(post)
+        },
         setUserInfo(state, action) {
             const userInfo = action.payload
             state.userInfo = userInfo
@@ -171,6 +175,7 @@ export const {
     setUserStatus,
     addLikeToPost,
     removeLikeOnPost,
+    setOnePost,
 } = profileSlice.actions
 
 
@@ -236,13 +241,11 @@ export const fetchUserPosts = createAsyncThunk(
     }
 )
 
-export const addPost = (postText, authUserId) => async (dispatch) => {
+export const addPost = (postText) => async (dispatch) => {
     try {
-        // ??? somewhere redo -> get from server new post id and add only one to state
         let result = await postsAPI.addPost(postText)
         if (result.status) {
-            dispatch(fetchUserPosts(authUserId))
-            // dispatch(addPostCreator(text, newPostId))
+            dispatch(setOnePost(result.post))
         }
     } catch (error) {
         if (error.response) {

@@ -1,11 +1,11 @@
 import React, { useCallback, useEffect } from "react"
 import { useParams } from "react-router-dom"
 import { useDispatch, useSelector } from "react-redux"
-
 import { fetchUserInfo, fetchUserPosts, setProfileUserId } from "redux/reducers/profile"
 
 import Preloader from "components/common/Preloader/Preloader"
 import Profile from "./Profile"
+
 import useLoginRedirect from "hooks/useLoginRedirect"
 import { getAuthUserIdSelector } from "redux/selectors/auth"
 import { getProfileUserIdSelector, getUserInfoStatusSelector, getUserPostsStatusSelector } from "redux/selectors/profile"
