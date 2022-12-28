@@ -1,3 +1,4 @@
+import { TextareaAutosize } from "@mui/material"
 import React, { useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { setIsShow } from "redux/reducers/popup"
@@ -28,13 +29,18 @@ const UpdatePostTextPopUp = () => {
         setLocalPostText(newText)
     }
 
+    const textAreaStyle = {
+        fontSize: '18px',
+        padding: '20px 20px'
+    }
+
     return (
         <div className={s.wrapper}>
             <div className={s.title}>
                 Update post text
             </div>
             <div className={s.textareaWrapper}>
-                <textarea value={localPostText} onChange={handleOnChangeTextarea} />
+                <TextareaAutosize style={textAreaStyle} value={localPostText} onChange={handleOnChangeTextarea} />
             </div>
             <button onClick={handleApproveBtn} className={containerStyle.approveBtn}>Approve</button>
         </div>

@@ -1,30 +1,28 @@
-import { createSlice } from "@reduxjs/toolkit"
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit"
+import { chatAPI } from "api/chat";
 
 let initialState = {
     /**
-     * @property {[{
-     *  id: number,
-     *  name: string,
-     *  avatarImg: string,
-     * }] | null} dialogs
+     * @property {[
+     *   {
+     *     id: number,
+     *     name: string,
+     *     avatarImg: string,
+     *   }, 
+     *   ...
+     * ] | []} dialogs
      */
-    dialogs: [
-        { id: 1, name: "Yura", avatarImg: "imgLink" },
-        { id: 2, name: "Vova", avatarImg: "imgLink" },
-        { id: 3, name: "Vlad", avatarImg: "imgLink" },
-        { id: 4, name: "Vika", avatarImg: "imgLink" },
-        { id: 5, name: "Tanya", avatarImg: "imgLink" },
-    ],
+    dialogs: [],
     /**
      * @property {number | null} selectedDialog
      */
     selectedDialog: null,
 
     messages: [
-        { id: 1, userId: 30, message: "Hi" },
-        { id: 2, userId: 2, message: "How are you?" },
-        { id: 3, userId: 30, message: "Good" },
-        { id: 4, userId: 2, message: "What do you think?" },
+        { id: 1, senderId: 30, text: "Hi" },
+        { id: 2, senderId: 2, text: "How are you?" },
+        { id: 3, senderId: 30, text: "Good" },
+        { id: 4, senderId: 2, text: "What do you think?" },
     ],
 }
 
@@ -33,19 +31,75 @@ const dialogsSlice = createSlice({
     initialState,
     reducers: {
         addMessage(state, action) {
-            const nextId = state.messages.length + 1
-            const userId = action.payload.userId
-            const message = action.payload.message
-
-            state.messages.push({
-                id: nextId,
-                userId: userId,
-                message: message
-            })
+            const { id, senderId, text } = action.payload
+            state.messages.push({ id, senderId, text })
         },
+        // messagesReceived
+        setMessages(state, action) {
+            state.messages = action.payload
+        },
+        setDialogs(state, action) {
+            state.dialogs = action.payload
+        },
+        setSelectedDialog(state, action) {
+            const chatId = action.payload
+            state.selectedDialog = chatId
+        }
     }
 });
 
-export const { addMessage } = dialogsSlice.actions;
+export const {
+    addMessage,
+    setMessages,
+    setDialogs,
+    setSelectedDialog,
+} = dialogsSlice.actions;
+
+export const fetchDialogs = createAsyncThunk(
+    'dialogs/fetchDialogs',
+    async (data, { dispatch }) => {
+        const dialogs = await chatAPI.getDialogs()
+        dispatch(setDialogs(dialogs))
+    }
+)
+
+export const fetchMessages = createAsyncThunk(
+    'dialogs/fetchMessages',
+    /**
+     * @param {number} chatId
+     */
+    async (chatId, { dispatch }) => {
+        const messages = await chatAPI.getMessages(chatId)
+        dispatch(setMessages(messages))
+    }
+)
+
+
+let _messageHandler = null
+
+export const startListeningMessage = createAsyncThunk(
+    'dialogs/startListeningMessage',
+    async (data, { dispatch }) => {
+        if (!_messageHandler) {
+            _messageHandler = ({ id, text, senderId, created_at, updated_at }) => {
+                console.log('startListeningMessage: ', created_at, updated_at)
+                console.log({ id, senderId, text })
+                dispatch(addMessage({ id, senderId, text }))
+            }
+        }
+
+        const socket = chatAPI.createChannel()
+        socket.on('message', _messageHandler)
+    }
+)
+
+export const stopListeningMessage = createAsyncThunk(
+    'dialogs/stopListeningMessage', () => {
+        if (_messageHandler) {
+            const socket = chatAPI.createChannel()
+            socket.off('message', _messageHandler)
+        }
+    }
+)
 
 export default dialogsSlice.reducer

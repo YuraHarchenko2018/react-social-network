@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect } from "react"
+import React, { useEffect } from "react"
 import { fetchUserInfo, fetchUserPosts, setProfileUserId } from "redux/reducers/profile"
 import { useParams } from "react-router-dom"
 
@@ -23,9 +23,6 @@ const ProfileContainer = () => {
     const userInfoStatus = useAppSelector(getUserInfoStatusSelector)
     const userPostsStatus = useAppSelector(getUserPostsStatusSelector)
 
-    const getUserInfo = useCallback(() => dispatch(fetchUserInfo(profileUserId)), [dispatch, profileUserId])
-    const getUserPosts = useCallback(() => dispatch(fetchUserPosts(profileUserId)), [dispatch, profileUserId])
-
     const fetchStatuses = [
         userInfoStatus,
         userPostsStatus
@@ -34,15 +31,27 @@ const ProfileContainer = () => {
     const routerParams = useParams();
     const routerUserId = Number(routerParams.userId ?? authUserId)
 
-    useEffect(() => { dispatch(setProfileUserId(routerUserId)) }, [dispatch, routerUserId])
+    useEffect(() => {
+        dispatch(setProfileUserId(routerUserId))
+    }, [
+        routerUserId,
+        dispatch
+    ])
 
-    if (profileUserId !== null) {
-        !userInfoStatus && getUserInfo()
-        !userPostsStatus && getUserPosts()
-
-        if (fetchStatuses.every(status => status === 'ready')) {
-            return <Profile />
+    useEffect(() => {
+        if (profileUserId !== null) {
+            !userInfoStatus && dispatch(fetchUserInfo(profileUserId))
+            !userPostsStatus && dispatch(fetchUserPosts(profileUserId))
         }
+    }, [
+        profileUserId,
+        userInfoStatus,
+        userPostsStatus,
+        dispatch
+    ])
+
+    if (fetchStatuses.every(status => status === 'ready')) {
+        return <Profile />
     }
 
     return <Preloader />

@@ -2,7 +2,7 @@ import React from "react"
 import { useNavigate } from "react-router-dom"
 import { useDispatch } from "react-redux"
 import { logout } from "redux/reducers/auth"
-import ProfileAvatar from "../../assets/default-avatar.webp"
+import { serverLink } from "constants/common"
 import s from "./Header.module.css"
 
 
@@ -14,7 +14,7 @@ const Header = ({ isLoginIn, authUserProfileImgLink }) => {
   const signUpBtnClick = () => navigate('/sign-up')
   const logoutBtnClick = () => dispatch(logout())
 
-  const profileAvatar = navigator.onLine ? authUserProfileImgLink : ProfileAvatar
+  const profileAvatar = isLoginIn ? serverLink + authUserProfileImgLink : authUserProfileImgLink
 
   return (
     <header className={s.header}>

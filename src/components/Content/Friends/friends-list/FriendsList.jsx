@@ -3,7 +3,7 @@ import { useSelector } from "react-redux";
 import { NavLink } from "react-router-dom";
 import { getFriendsSelector } from "redux/selectors/users";
 import { generateStatus } from "utils/helpers/generateStatus";
-import DefaultAvatarImg from "../../../../assets/default-avatar.webp"
+import { serverLink } from "constants/common";
 import s from './FriendsList.module.css'
 
 
@@ -22,7 +22,7 @@ const FriendsList = () => {
 }
 
 const FriendItem = ({ user }) => {
-    const avatarImg = navigator.onLine ? user.avatarImg : DefaultAvatarImg
+    const avatarImg = serverLink + user.avatarImg
 
     return (
         <div key={user.id} className={s.userItem}>

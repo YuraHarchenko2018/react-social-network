@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit"
 import { postsAPI, profileAPI } from "api/api"
-import { setAuthErrorOccur } from "./auth"
+import { getUserProfileImg, setAuthErrorOccur } from "./auth"
 
 const profileSlice = createSlice({
     name: 'profile',
@@ -190,6 +190,33 @@ export const fetchUserInfo = createAsyncThunk(
             let profileData = await profileAPI.getProfile(userId)
             dispatch(setUserInfo(profileData))
             return profileData
+        } catch (error) {
+            if (error.response) {
+                console.log(error.response.data);
+                // set to store flag that mean "something went wrong"
+                dispatch(setAuthErrorOccur())
+                return rejectWithValue(error.response)
+            }
+        }
+    }
+)
+
+export const updateUserInfo = createAsyncThunk(
+    'profile/updateUserInfo',
+    /**
+     * @param {object} data
+     */
+    async (data, { rejectWithValue, dispatch }) => {
+        const { userId, file, name, age } = data;
+        try {
+            let result = await profileAPI.updateUserInfo(file, name, age)
+            if (result) {
+                dispatch(fetchUserInfo(userId))
+                dispatch(fetchUserPosts(userId))
+                dispatch(getUserProfileImg(userId))
+            } else {
+                throw new Error('Some error with update user info')
+            }
         } catch (error) {
             if (error.response) {
                 console.log(error.response.data);

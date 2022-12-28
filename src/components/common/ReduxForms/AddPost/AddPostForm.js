@@ -1,6 +1,6 @@
 import React from 'react'
 import { Form, Field } from 'react-final-form'
-import { composeValidators, required, maxLenght240 } from '../../../../utils/formValidators/validators'
+import { composeValidators, required, maxLenght2000 } from '../../../../utils/formValidators/validators'
 
 import s from "./AddPostForm.module.css"
 
@@ -20,11 +20,11 @@ const ExactForm = ({ handleSubmit, reset }) => (
       <div className={s.addPostTitleWrapper}>
         <span className={s.addPostTitle}>Create new post</span>
       </div>
-      <Field 
-          name="postText" 
-          placeholder="Text some wonder here..." 
-          validate={composeValidators(required, maxLenght240)} 
-          component={PostTextarea} 
+      <Field
+        name="postText"
+        placeholder="Text some wonder here..."
+        validate={composeValidators(required, maxLenght2000)}
+        component={PostTextarea}
       />
       <div className={s.submitPostButtonWrapper}>
         <button type="submit" className={s.submitPostButton}>Post</button>

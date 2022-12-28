@@ -12,6 +12,10 @@ export const getTotalPostsCountSelector = (state) => {
     return state.news.totalNewsAmount
 }
 
+export const getNewsIsLoadingSelector = (state) => {
+    return state.news.isLoading
+}
+
 export const getPagesCountSelector = (state) => {
     let totalUsersCount = getTotalPostsCountSelector(state)
     let perPage = getPerPageSelector(state)

@@ -6,7 +6,7 @@ import { setContent, setIsShow, setPayload } from "redux/reducers/popup";
 import { getFormattedDate } from "utils/helpers/formatDate";
 import OptionsWindow from "components/common/OptionsWindow/OptionsWindow";
 import LikesContainer from "components/common/LikesContainer/LikesContainer";
-import DefaultAvatarImg from "../../../../../assets/default-avatar.webp"
+import { serverLink } from "constants/common";
 import s from "./Post.module.css"
 
 
@@ -64,7 +64,7 @@ const OptionsContainer = ({ id, userId, text, enviroment }) => {
 }
 
 const PostCreatorInfoContainer = ({ id, name, avatarImg }) => {
-    const avatar = navigator.onLine ? avatarImg : DefaultAvatarImg
+    const avatar = serverLink + avatarImg
 
     return (
         <div className={s.postUserInfo}>

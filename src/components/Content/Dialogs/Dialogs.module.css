@@ -1,5 +1,6 @@
 .dialogWindow {
     display: grid;
+    min-height: 530px;
     grid-template-columns: 2fr 8fr;
     grid-template-rows: 8fr 40px;
     grid-gap: 5px;

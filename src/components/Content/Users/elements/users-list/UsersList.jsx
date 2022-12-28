@@ -4,7 +4,7 @@ import { follow, unfollow } from "redux/reducers/users";
 import { getAuthUserIdSelector } from "redux/selectors/auth";
 import { getFollowingInProcessSelector, getUsersSelector } from "redux/selectors/users";
 import { generateStatus } from "utils/helpers/generateStatus";
-import DefaultAvatarImg from "../../../../../assets/default-avatar.webp"
+import { serverLink } from "constants/common";
 import s from './UsersList.module.css'
 // @ts-ignore
 import { useAppDispatch, useAppSelector } from "./../../../../../hooks/redux.ts"
@@ -25,7 +25,7 @@ const UsersList = () => {
 }
 
 const UserItem = ({ user }) => {
-    const avatarImg = navigator.onLine ? user.avatarImg : DefaultAvatarImg
+    const avatarImg = serverLink + user.avatarImg
 
     return (
         <div key={user.id} className={s.userItem}>

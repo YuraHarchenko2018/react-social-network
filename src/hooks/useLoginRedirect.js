@@ -9,7 +9,7 @@ const useLoginRedirect = () => {
 
     useEffect(() => {
         if (!isLoginIn) {
-            return navigate('/login')
+            navigate('/login')
         }
     }, [navigate, isLoginIn])
 }

@@ -4,20 +4,36 @@ import { getAuthUserIdSelector } from "redux/selectors/auth"
 import Status from "./Status/Status"
 import PlayBackSpeed from "./PlaybackSpeed"
 import OptionsWindow from "components/common/OptionsWindow/OptionsWindow"
-import DefaultAvatarImg from "../../../../assets/default-avatar.webp"
 import DefaultLocalProfileBg from "../../../../assets/profile-background.png"
-import { buttonsSettings, defaultProfileBg } from "constants/profile"
+import { defaultProfileBg } from "constants/profile"
 import s from "./Info.module.css"
 // @ts-ignore
-import { useAppSelector } from "./../../../../hooks/redux.ts"
-
+import { useAppDispatch, useAppSelector } from "./../../../../hooks/redux.ts"
+import { setContent, setIsShow, setPayload } from "redux/reducers/popup"
+import { serverLink } from "constants/common"
 
 const Info = () => {
+    const dispatch = useAppDispatch()
+
     const userInfo = useAppSelector(getUserInfoSelector)
     const authUserId = useAppSelector(getAuthUserIdSelector)
 
     const profileBg = navigator.onLine ? defaultProfileBg : DefaultLocalProfileBg
-    const profileAvatar = navigator.onLine ? userInfo.avatarImg : DefaultAvatarImg
+    const profileAvatar = serverLink + userInfo.avatarImg
+
+    const handleUpdateInfoBtn = () => {
+        dispatch(setContent({ content: "updateUserInfo" }))
+        dispatch(setPayload(userInfo))
+        dispatch(setIsShow({ isShow: true }))
+    }
+
+    const buttonsSettings = [
+        {
+            id: 1,
+            text: "Edit profile info",
+            onClickFunc: handleUpdateInfoBtn
+        },
+    ]
 
     return (
         <div className={s.userInfo}>
@@ -29,7 +45,7 @@ const Info = () => {
                     <Status userId={userInfo.id} actualUserStatus={userInfo.status} authUserId={authUserId} />
                     <AdditionalData email={userInfo.email} age={userInfo.age} />
                 </div>
-                <EditProfileButton userId={userInfo.id} authUserId={authUserId} />
+                <EditProfileButton userId={userInfo.id} authUserId={authUserId} buttonsSettings={buttonsSettings} />
             </div>
         </div>
     )
@@ -74,7 +90,7 @@ const AdditionalData = ({ email, age }) => {
     )
 }
 
-const EditProfileButton = ({ userId, authUserId }) => {
+const EditProfileButton = ({ userId, authUserId, buttonsSettings }) => {
     return (
         <div className={s.userInfoDataWrapper}>
             {

@@ -1,0 +1,32 @@
+.wrapper {
+    margin: 30px auto;
+    width: 400px;
+}
+
+.title {
+    text-align: center;
+    font-size: 20px;
+    font-weight: bold;
+    padding: 10px 0px;
+}
+
+.avatarWrapper {
+    display: flex;
+    justify-content: flex-start;
+    padding: 10px 5px;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+.inputWrapper {
+    display: flex;
+    justify-content: center;
+    padding: 5px;
+}
+
+.inputWrapper input {
+    width: 250px;
+    height: 30px;
+    outline: none;
+    border-radius: 4px;
+}

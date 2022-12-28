@@ -2,10 +2,9 @@ import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setIsShow } from "redux/reducers/popup";
 import { getContentPopUp, getIsShowPopUp } from "redux/selectors/popup";
-
+import UpdateUserInfoPopUp from "./popUps/updateUserInfo/updateUserInfo";
 import UpdatePostTextPopUp from "./popUps/updatePostText/updatePostText";
 import DeletePostPopUp from "./popUps/deletePost/deletePost";
-
 import s from './PopUpContainer.module.css'
 
 
@@ -25,7 +24,7 @@ const PopUpContainer = () => {
                     <div className={s.backgroundBlur}>
                         <div className={s.popUpContainer}>
                             <button className={s.closeBtn} onClick={closePopUp}>Close</button>
-                            { Component }
+                            {Component}
                         </div>
                     </div>
                 ) : <></>
@@ -40,7 +39,9 @@ const getContentComponent = (content) => {
             return <UpdatePostTextPopUp />
         case "deletePost":
             return <DeletePostPopUp />
-    
+        case "updateUserInfo":
+            return <UpdateUserInfoPopUp />
+
         default:
             return <></>
     }

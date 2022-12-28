@@ -15,6 +15,7 @@ export const maxLenght50 = maxLenghtCreator(50)
 export const maxLenght100 = maxLenghtCreator(100)
 export const maxLenght240 = maxLenghtCreator(240)
 export const maxLenght1000 = maxLenghtCreator(1000)
+export const maxLenght2000 = maxLenghtCreator(2000)
 
 // helper
 export const composeValidators = (...validators) => value => {

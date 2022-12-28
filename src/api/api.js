@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const getAxiosInstance = () => {
+export const getAxiosInstance = () => {
     let JwtToken = localStorage.getItem('jwtToken') || ''
     return axios.create({
         baseURL: 'http://localhost:9000/',
@@ -94,6 +94,25 @@ export const profileAPI = {
         const response = await axiosInstance.get(`profile/${userId}`)
         const profileData = response.data[0]
         return profileData;
+    },
+
+    /**
+     * @param {object} file
+     * @param {string} name
+     * @param {string} age
+     */
+    async updateUserInfo(file, name, age) {
+        const formData = new FormData()
+
+        formData.append('avatar', file)
+        formData.append('userName', name)
+        formData.append('userAge', age)
+
+        const axiosInstance = getAxiosInstance()
+        const response = await axiosInstance.post('users/updateInfo', formData)
+
+        const updateResult = response.data
+        return updateResult;
     },
 
     /**

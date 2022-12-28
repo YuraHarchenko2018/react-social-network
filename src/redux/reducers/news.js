@@ -42,7 +42,8 @@ const newsSlice = createSlice({
          */
         posts: [],
         newsPerPage: 5,
-        totalNewsAmount: 0
+        totalNewsAmount: 0,
+        isLoading: false,
     },
     reducers: {
         setNews(state, action) {
@@ -64,7 +65,10 @@ const newsSlice = createSlice({
             const amount = action.payload
             state.totalNewsAmount = amount
         },
-
+        setIsLoading(state, action) {
+            const loadingStatus = action.payload
+            state.isLoading = loadingStatus
+        },
         addLikeToPost(state, action) {
             const { postId, likeData } = action.payload
 
@@ -87,13 +91,14 @@ const newsSlice = createSlice({
         },
     },
     extraReducers: (builder) => {
-        builder.addCase(fetchNews.fulfilled, (state, action) => {
-            console.log('fulfilled below')
-            console.log(action.payload)
+        builder.addCase(fetchNews.fulfilled, (state) => {
+            state.isLoading = false
         })
-        builder.addCase(fetchNews.rejected, (state, action) => {
-            console.log('rejected below')
-            console.log(action.payload)
+        builder.addCase(fetchNews.pending, (state) => {
+            state.isLoading = true
+        })
+        builder.addCase(fetchNews.rejected, (state) => {
+            state.isLoading = false
         })
         builder.addCase(likePostNewsPage.rejected, (state, action) => {
             alert('If you want like post, please signup or login')
@@ -105,6 +110,7 @@ export const {
     setNews,
     setAmountNewsPerPage,
     setNewsAmount,
+    setIsLoading,
     addLikeToPost,
     removeLikeOnPost,
 } = newsSlice.actions;

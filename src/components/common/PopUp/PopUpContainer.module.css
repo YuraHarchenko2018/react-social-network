@@ -1,6 +1,6 @@
 .popUpContainer {
     position: fixed;
-    width: 300px;
+    width: 450px;
     min-height: 100px;
     background: white;
     border-radius: 10px;
@@ -10,6 +10,7 @@
     z-index: 3;
     transform: translate(-50%, -50%);
 }
+
 .backgroundBlur {
     position: fixed;
     background: #8c8c8c96;

@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useEffect } from "react"
 import { fetchFriends } from "redux/reducers/users"
 import { getFriendsPerPageSelector, getFriendsSelector } from "redux/selectors/users"
 import useLoginRedirect from "hooks/useLoginRedirect"
@@ -16,8 +16,11 @@ const FriendsContainer = () => {
     const friends = useAppSelector(getFriendsSelector)
     const perPage = useAppSelector(getFriendsPerPageSelector)
 
-    if (friends === null) {
+    useEffect(() => {
         dispatch(fetchFriends({ selectedPage: 1, perPage }))
+    }, [dispatch, perPage])
+
+    if (friends === null) {
         return <Preloader />
     }
 

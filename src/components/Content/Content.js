@@ -2,7 +2,7 @@ import React from "react"
 import { Routes, Route } from 'react-router-dom'
 import { suspenseWithPreloader } from "utils/helpers/suspenseWithPreloader"
 import HelloPage from "./HelloPage/HelloPage"
-import DialogsContainer from "./Dialogs/DialogsContainer"
+import Dialogs from "./Dialogs/Dialogs"
 import FriendsContainer from "./Friends/FriendsContainer"
 import News from "./News/News"
 import Login from "./Login/Login"
@@ -24,7 +24,7 @@ const Content = () => {
                     <Route path=":userId" element={suspenseWithPreloader(ProfileContainer)} />
                 </Route>
 
-                <Route path="dialogs" element={<DialogsContainer />} />
+                <Route path="dialogs" element={<Dialogs />} />
                 <Route path="friends" element={<FriendsContainer />} />
                 <Route path="users" element={suspenseWithPreloader(UsersContainer)} />
                 <Route path="news" element={<News />} />
