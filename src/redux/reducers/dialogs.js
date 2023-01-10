@@ -1,5 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit"
 import { chatAPI } from "api/chat";
+import { getSelectedDialogSelector } from "redux/selectors/dialogs";
+import { fetchFriends } from "./users";
 
 let initialState = {
     /**
@@ -13,17 +15,30 @@ let initialState = {
      * ] | []} dialogs
      */
     dialogs: [],
+
+    /**
+     * Object for unreaded messages (Now working only in online mode [websocket])
+     * Where key is a chatId
+     * And value is the amount of unreaded messages
+     */
+    unreadedMessages: {},
+
     /**
      * @property {number | null} selectedDialog
      */
     selectedDialog: null,
 
-    messages: [
-        { id: 1, senderId: 30, text: "Hi" },
-        { id: 2, senderId: 2, text: "How are you?" },
-        { id: 3, senderId: 30, text: "Good" },
-        { id: 4, senderId: 2, text: "What do you think?" },
-    ],
+    /**
+     * @property {[
+     *   {
+     *     id: number,
+     *     senderId: number,
+     *     text: string,
+     *   }, 
+     *   ...
+     * ] | []} messages
+     */
+    messages: [],
 }
 
 const dialogsSlice = createSlice({
@@ -34,7 +49,15 @@ const dialogsSlice = createSlice({
             const { id, senderId, text } = action.payload
             state.messages.push({ id, senderId, text })
         },
-        // messagesReceived
+        addUnreadedMessage(state, action) {
+            const chatId = action.payload
+            const unreadedAmout = state.unreadedMessages[chatId] ?? 0
+            state.unreadedMessages[chatId] = unreadedAmout + 1
+        },
+        nullifyUnreadedMessagesValueForChat(state, action) {
+            const chatId = action.payload
+            state.unreadedMessages[chatId] = 0
+        },
         setMessages(state, action) {
             state.messages = action.payload
         },
@@ -50,6 +73,8 @@ const dialogsSlice = createSlice({
 
 export const {
     addMessage,
+    addUnreadedMessage,
+    nullifyUnreadedMessagesValueForChat,
     setMessages,
     setDialogs,
     setSelectedDialog,
@@ -60,6 +85,28 @@ export const fetchDialogs = createAsyncThunk(
     async (data, { dispatch }) => {
         const dialogs = await chatAPI.getDialogs()
         dispatch(setDialogs(dialogs))
+    }
+)
+
+export const createChat = createAsyncThunk(
+    'dialogs/createChat',
+    /**
+     * @param {number} friendId
+     */
+    async (friendId, { dispatch }) => {
+        const resultData = await chatAPI.createChat(friendId)
+
+        if (resultData.status) {
+            const chatId = resultData.chatId
+
+            dispatch(setSelectedDialog(chatId))
+            dispatch(fetchDialogs())
+            dispatch(setMessages([]))
+            dispatch(fetchFriends({ selectedPage: 1, perPage: 100 })) // ??? add mark to select all
+
+            dispatch(stopListeningMessage())
+            dispatch(startListeningMessage())
+        }
     }
 )
 
@@ -79,12 +126,20 @@ let _messageHandler = null
 
 export const startListeningMessage = createAsyncThunk(
     'dialogs/startListeningMessage',
-    async (data, { dispatch }) => {
+    async (data, { dispatch, getState }) => {
         if (!_messageHandler) {
-            _messageHandler = ({ id, text, senderId, created_at, updated_at }) => {
+            _messageHandler = ({ id, text, senderId, created_at, updated_at, chat }) => {
                 console.log('startListeningMessage: ', created_at, updated_at)
-                console.log({ id, senderId, text })
-                dispatch(addMessage({ id, senderId, text }))
+                console.log({ id, senderId, text, chat })
+
+                const selectedDialog = getSelectedDialogSelector(getState())
+
+                // !!! add preview on dialogs if chatId is not the selectedDialog
+                if (chat.id === selectedDialog) {
+                    dispatch(addMessage({ id, senderId, text }))
+                } else {
+                    dispatch(addUnreadedMessage(chat.id))
+                }
             }
         }
 

@@ -36,12 +36,19 @@ export const chatAPI = {
     },
 
     async handleSendMessage(message, chatId) {
+        console.log('handleSendMessage - ' + message + ", " + chatId)
         this.socket.emit('message', { chatId, text: message })
+    },
+
+    async createChat(friendId) {
+        const axiosInstance = getAxiosInstance()
+        const response = await axiosInstance.post(`chat/create`, { friendId })
+        return response.data
     },
 
     async getDialogs() {
         const axiosInstance = getAxiosInstance()
-        const response = await axiosInstance.get(`chat/dialogs`,)
+        const response = await axiosInstance.get(`chat/dialogs`)
         const dialogsData = response.data
         return dialogsData
     },

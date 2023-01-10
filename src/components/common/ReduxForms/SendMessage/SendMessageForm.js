@@ -5,23 +5,28 @@ import { composeValidators, required, maxLenght1000 } from '../../../../utils/fo
 import s from "./SendMessageForm.module.css"
 
 
-const SendMessageForm = ({ onSubmit }) => <Form onSubmit={onSubmit} render={ExactForm} />
+const SendMessageForm = ({ onSubmit }) => {
+  return <Form onSubmit={onSubmit} render={ExactForm} />
+}
 
-const ExactForm = ({ handleSubmit }) => (
-  <form onSubmit={handleSubmit}>
-      <Field 
-          name="message" 
-          placeholder="Message here..." 
-          validate={composeValidators(required, maxLenght1000)} 
-          component={MessageInput} 
-      />
+const ExactForm = ({ handleSubmit, form }) => (
+  <form onSubmit={event => {
+    handleSubmit(event)
+    form.reset()
+  }}>
+    <Field
+      name="message"
+      placeholder="Message here..."
+      validate={composeValidators(required, maxLenght1000)}
+      component={MessageInput}
+    />
   </form>
 )
 
 const MessageInput = ({ input, meta, ...props }) => (
-    <div className={s.messageInputWrapper}>
-      <input {...input} {...props} className={s.messageInput} />
-    </div>
+  <div className={s.messageInputWrapper}>
+    <input {...input} {...props} autoComplete="off" className={s.messageInput} />
+  </div>
 )
 
 export default SendMessageForm

@@ -18,6 +18,7 @@ const SearchUsers = () => {
             <TextField id="outlined-basic" label="Search Users"
                 size="small"
                 variant="outlined"
+                autoComplete='off'
                 onChange={handleSearchChange}
                 sx={{ width: '300px' }}
             />

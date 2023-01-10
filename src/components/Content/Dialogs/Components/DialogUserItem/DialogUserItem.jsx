@@ -1,8 +1,8 @@
 import React from "react";
-import { Avatar, ListItem, ListItemButton, ListItemIcon, ListItemText } from "@mui/material";
+import { Avatar, Badge, ListItem, ListItemButton, ListItemIcon, ListItemText } from "@mui/material";
 import { serverLink } from "constants/common";
 
-const DialogUserItem = ({ handleClick, avatarImg, userName, isSelected }) => {
+const DialogUserItem = ({ handleClick, avatarImg, userName, isSelected, newMessagesAmount }) => {
     const avatar = serverLink + avatarImg
     return (
         <ListItem disablePadding>
@@ -11,6 +11,9 @@ const DialogUserItem = ({ handleClick, avatarImg, userName, isSelected }) => {
                     <Avatar alt="Remy Sharp" src={avatar} />
                 </ListItemIcon>
                 <ListItemText primary={userName} />
+                {
+                    newMessagesAmount > 0 && <Badge badgeContent={newMessagesAmount} color="primary"></Badge>
+                }
             </ListItemButton>
         </ListItem>
     )
