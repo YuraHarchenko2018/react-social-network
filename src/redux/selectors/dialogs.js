@@ -19,11 +19,11 @@ export const getFriendsWithoutChat = createSelector(
         getFriendsSelector,
         getDialogsUsersSelector
     ],
-    (friends, chats) => {
-        const filterFriends = friends?.filter((item) => {
-            return !chats.some(chat => item.id === chat.id)
+    (friends, friendWithChat) => {
+        const noChatFriends = friends?.filter((friend) => {
+            return !friendWithChat.some(chatFriend => friend.id === chatFriend.id)
         })
-        return filterFriends
+        return noChatFriends
     }
 )
 
