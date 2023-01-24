@@ -1,10 +1,10 @@
 import React from 'react'
+import { useDispatch } from 'react-redux';
 import { TextField, Box } from '@mui/material'
 import { searchFriends, setIsSearchFlag } from '../../../../redux/reducers/users'
-import { useAppDispatch } from '../../../../hooks/redux.ts'
 
 function SearchFriends() {
-  const dispatch = useAppDispatch()
+  const dispatch = useDispatch()
 
   const handleSearchChange = (e) => {
     dispatch(searchFriends(e.target.value))

@@ -1,16 +1,15 @@
 import React from 'react'
 import { NavLink } from 'react-router-dom'
+import { useDispatch, useSelector } from 'react-redux'
 import { follow, unfollow } from '../../../../../redux/reducers/users'
 import { getAuthUserIdSelector } from '../../../../../redux/selectors/auth'
 import { getFollowingInProcessSelector, getUsersSelector } from '../../../../../redux/selectors/users'
 import generateStatus from '../../../../../utils/helpers/generateStatus'
 import { serverLink } from '../../../../../constants/common'
 import s from './UsersList.module.css'
-// @ts-ignore
-import { useAppDispatch, useAppSelector } from '../../../../../hooks/redux.ts'
 
 function UsersList() {
-  const users = useAppSelector(getUsersSelector)
+  const users = useSelector(getUsersSelector)
 
   return (
     <div className={s.usersList}>
@@ -49,10 +48,10 @@ function Avatar({ userId, avatarImg }) {
 }
 
 function FollowButton({ userId, isFollow }) {
-  const dispatch = useAppDispatch()
+  const dispatch = useDispatch()
 
-  const authUserId = useAppSelector(getAuthUserIdSelector)
-  const followingInProcess = useAppSelector(getFollowingInProcessSelector)
+  const authUserId = useSelector(getAuthUserIdSelector)
+  const followingInProcess = useSelector(getFollowingInProcessSelector)
 
   const handleFollow = () => dispatch(follow(userId))
   const handleUnfollow = () => dispatch(unfollow(userId))

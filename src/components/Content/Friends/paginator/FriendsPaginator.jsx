@@ -1,7 +1,7 @@
 import React from 'react'
+import { useDispatch, useSelector } from 'react-redux';
 import { Pagination } from '@mui/material'
 import { fetchFriends } from '../../../../redux/reducers/users'
-import { useAppDispatch, useAppSelector } from '../../../../hooks/redux.ts'
 import {
   getFriendsPagesCountSelector,
   getFriendsPerPageSelector,
@@ -10,11 +10,11 @@ import {
 import s from '../Friends.module.css'
 
 function FriendsPaginator() {
-  const dispatch = useAppDispatch()
+  const dispatch = useDispatch()
 
-  const pagesCount = useAppSelector(getFriendsPagesCountSelector)
-  const perPage = useAppSelector(getFriendsPerPageSelector)
-  const isSearch = useAppSelector(getIsSearchSelector)
+  const pagesCount = useSelector(getFriendsPagesCountSelector)
+  const perPage = useSelector(getFriendsPerPageSelector)
+  const isSearch = useSelector(getIsSearchSelector)
 
   const isPaginatorAble = pagesCount > 0
 

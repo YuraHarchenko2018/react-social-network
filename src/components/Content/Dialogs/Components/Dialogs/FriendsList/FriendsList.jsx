@@ -1,12 +1,12 @@
 import React from 'react'
+import { useDispatch } from 'react-redux';
 import { List } from '@mui/material'
 import { createChat } from '../../../../../../redux/reducers/dialogs'
-import { useAppDispatch } from '../../../../../../hooks/redux.ts'
 import DialogUserItem from '../DialogUserItem/DialogUserItem'
 import s from './FriendsList.module.css'
 
 function FriendsList({ friends }) {
-  const dispatch = useAppDispatch()
+  const dispatch = useDispatch()
 
   const handleFriendClick = (friendId) => () => {
     dispatch(createChat(friendId))

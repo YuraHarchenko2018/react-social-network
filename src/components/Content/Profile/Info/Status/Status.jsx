@@ -1,12 +1,11 @@
 import React, { useState } from 'react'
+import { useDispatch } from 'react-redux';
 import generateStatus from '../../../../../utils/helpers/generateStatus'
 import { updateUserStatus } from '../../../../../redux/reducers/profile'
 import s from './Status.module.css'
-// @ts-ignore
-import { useAppDispatch } from '../../../../../hooks/redux.ts'
 
 function Status({ userId, actualUserStatus, authUserId }) {
-  const dispatch = useAppDispatch()
+  const dispatch = useDispatch()
 
   const userStatus = actualUserStatus || generateStatus()
 

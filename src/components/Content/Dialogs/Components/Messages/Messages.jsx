@@ -1,17 +1,17 @@
 import React, { useEffect, useRef } from 'react'
+import { useDispatch, useSelector } from 'react-redux';
 import { fetchMessages } from '../../../../../redux/reducers/dialogs'
 import { getDialogsMessagesSelector, getSelectedDialogSelector } from '../../../../../redux/selectors/dialogs'
 import useInfiniteScroll from '../../../../../hooks/useInfiniteScroll'
-import { useAppDispatch, useAppSelector } from '../../../../../hooks/redux.ts'
-import s from './Messages.module.css'
 import SelectChatPreview from './SelectChatPreview/SelectChatPreview'
 import MessageItem from './MessageItem/MessageItem'
+import s from './Messages.module.css'
 
 function Messages() {
-  const dispatch = useAppDispatch()
+  const dispatch = useDispatch()
 
-  const messages = useAppSelector(getDialogsMessagesSelector)
-  const selectedChatId = useAppSelector(getSelectedDialogSelector)
+  const messages = useSelector(getDialogsMessagesSelector)
+  const selectedChatId = useSelector(getSelectedDialogSelector)
 
   const { loadMoreRef, page, resetPage } = useInfiniteScroll()
 

@@ -1,11 +1,10 @@
 import React from 'react'
+import { useDispatch } from 'react-redux';
 import { TextField, Box } from '@mui/material'
 import { searchUsers, setIsSearchFlag } from '../../../../../redux/reducers/users'
-// @ts-ignore
-import { useAppDispatch } from '../../../../../hooks/redux.ts'
 
 function SearchUsers() {
-  const dispatch = useAppDispatch()
+  const dispatch = useDispatch()
 
   const handleSearchChange = (e) => {
     dispatch(searchUsers(e.target.value))

@@ -1,6 +1,6 @@
 import React from 'react'
+import { useSelector } from 'react-redux';
 import { getDialogsUsersSelector, getFriendsWithoutChat } from '../../../../../redux/selectors/dialogs'
-import { useAppSelector } from '../../../../../hooks/redux.ts'
 import FriendsList from './FriendsList/FriendsList'
 import ChatsList from './ChatsList/ChatsList'
 import NoChatsPreview from './NoChatsPreview/NoChatsPreview'
@@ -8,8 +8,8 @@ import NoFriendsPreview from './NoFriendsPreview/NoFriendsPreview'
 // @ts-ignore
 
 function DialogsUsers() {
-  const dialogs = useAppSelector(getDialogsUsersSelector)
-  const friends = useAppSelector(getFriendsWithoutChat)
+  const dialogs = useSelector(getDialogsUsersSelector)
+  const friends = useSelector(getFriendsWithoutChat)
 
   return (
     <div>
