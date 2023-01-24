@@ -1,36 +1,20 @@
-import { createSelector } from "reselect"
-import { getFriendsSelector } from "./users"
+import { createSelector } from 'reselect'
+import { getFriendsSelector } from './users'
 
-
-export const getDialogsUsersSelector = (state) => {
-    return state.dialogs.dialogs
-}
-
-export const getDialogsMessagesSelector = (state) => {
-    return state.dialogs.messages
-}
-
-export const getSelectedDialogSelector = (state) => {
-    return state.dialogs.selectedDialog
-}
+export const getDialogsUsersSelector = (state) => state.dialogs.dialogs
+export const getDialogsMessagesSelector = (state) => state.dialogs.messages
+export const getSelectedDialogSelector = (state) => state.dialogs.selectedDialog
+export const getUnreadMessagesSelector = (state) => state.dialogs.unreadMessages
+export const getUnreadAmountForChatSelector = (unread, chatId) => unread[chatId] ?? 0
 
 export const getFriendsWithoutChat = createSelector(
-    [
-        getFriendsSelector,
-        getDialogsUsersSelector
-    ],
-    (friends, friendWithChat) => {
-        const noChatFriends = friends?.filter((friend) => {
-            return !friendWithChat.some(chatFriend => friend.id === chatFriend.id)
-        })
-        return noChatFriends
-    }
+  [
+    getFriendsSelector,
+    getDialogsUsersSelector,
+  ],
+  (friends, friendWithChat) => {
+    const filterFunc = (friend) => !friendWithChat.some((chatFriend) => friend.id === chatFriend.id)
+    const noChatFriends = friends?.filter(filterFunc)
+    return noChatFriends
+  },
 )
-
-export const getUnreadedMessagesSelector = (state) => {
-    return state.dialogs.unreadedMessages
-}
-
-export const getUnreadedAmountForChatSelector = (unreaded, chatId) => {
-    return unreaded[chatId] ?? 0
-}

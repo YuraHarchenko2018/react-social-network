@@ -1,25 +1,9 @@
-
-
-export const getUserInfoSelector = state => {
-    return state.profile.userInfo
-}
-
-export const getUserInfoStatusSelector = state => {
-    return state.profile.userInfoStatus
-}
-
-export const getUserPostsSelector = state => {
-    return state.profile.posts
-}
-
-export const getUserPostsStatusSelector = state => {
-    return state.profile.userPostsStatus
-}
-
-export const getProfileUserIdSelector = state => {
-    return state.profile.profileUserId
-}
-
-export const getIsModifyableUserSelector = state => {
-    return state.auth.authUserId === state.profile.profileUserId
+export const getUserInfoSelector = (state) => state.profile.userInfo
+export const getUserInfoStatusSelector = (state) => state.profile.userInfoStatus
+export const getUserPostsSelector = (state) => state.profile.posts
+export const getUserPostsStatusSelector = (state) => state.profile.userPostsStatus
+export const getProfileUserIdSelector = (state) => state.profile.profileUserId
+export const getIsModifiableUserSelector = (state) => {
+  const isModifiable = state.auth.authUserId === state.profile.profileUserId
+  return isModifiable
 }

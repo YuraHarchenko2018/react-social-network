@@ -1,11 +1,12 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit"
-import { postsAPI } from "api/api"
-import { setAuthErrorOccur } from "./auth"
+/* eslint-disable no-param-reassign */
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
+import { postsAPI } from '../../api/api'
+import { setAuthErrorOccur } from './auth'
 
 const newsSlice = createSlice({
-    name: 'news',
-    initialState: {
-        /**
+  name: 'news',
+  initialState: {
+    /**
          * @property {{
          *  id: number,
          *  userId: number,
@@ -40,125 +41,127 @@ const newsSlice = createSlice({
          *  },
          * } | null} posts
          */
-        posts: [],
-        newsPerPage: 5,
-        totalNewsAmount: 0,
-        isLoading: false,
+    posts: [],
+    newsPerPage: 5,
+    totalNewsAmount: 0,
+    isLoading: false,
+  },
+  reducers: {
+    setNews(state, action) {
+      const { posts } = action.payload
+      // state.posts = [...posts, ...state.posts]
+      return {
+        ...state,
+        posts: posts === null ? [] : [
+          ...posts,
+          ...state.posts,
+        ],
+      }
     },
-    reducers: {
-        setNews(state, action) {
-            const { posts } = action.payload
-            // state.posts = [...posts, ...state.posts];
-            return {
-                ...state,
-                posts: posts === null ? [] : [
-                    ...posts,
-                    ...state.posts
-                ]
-            }
-        },
-        setAmountNewsPerPage(state, action) {
-            const { amount } = action.payload
-            state.newsPerPage = amount
-        },
-        setNewsAmount(state, action) {
-            const amount = action.payload
-            state.totalNewsAmount = amount
-        },
-        setIsLoading(state, action) {
-            const loadingStatus = action.payload
-            state.isLoading = loadingStatus
-        },
-        addLikeToPost(state, action) {
-            const { postId, likeData } = action.payload
+    setAmountNewsPerPage(state, action) {
+      const { amount } = action.payload
+      state.newsPerPage = amount
+    },
+    setNewsAmount(state, action) {
+      const amount = action.payload
+      state.totalNewsAmount = amount
+    },
+    setIsLoading(state, action) {
+      const loadingStatus = action.payload
+      state.isLoading = loadingStatus
+    },
+    addLikeToPost(state, action) {
+      const { postId, likeData } = action.payload
 
-            state.posts.forEach(post => {
-                if (post.id === postId) {
-                    post.likesCount++
-                    post.likes.push(likeData)
-                }
-            })
-        },
-        removeLikeOnPost(state, action) {
-            const { postId, userId } = action.payload
+      state.posts.forEach((post) => {
+        if (post.id === postId) {
+          post.likesCount += 1
+          post.likes.push(likeData)
+        }
+      })
+    },
+    removeLikeOnPost(state, action) {
+      const { postId, userId } = action.payload
 
-            state.posts.forEach(post => {
-                if (post.id === postId) {
-                    post.likesCount--
-                    post.likes = post.likes.filter(likeObj => likeObj.user.id !== userId)
-                }
-            })
-        },
+      state.posts.forEach((post) => {
+        if (post.id === postId) {
+          post.likesCount -= post.likesCount - 1
+          post.likes = post.likes.filter((likeObj) => likeObj.user.id !== userId)
+        }
+      })
     },
-    extraReducers: (builder) => {
-        builder.addCase(fetchNews.fulfilled, (state) => {
-            state.isLoading = false
-        })
-        builder.addCase(fetchNews.pending, (state) => {
-            state.isLoading = true
-        })
-        builder.addCase(fetchNews.rejected, (state) => {
-            state.isLoading = false
-        })
-        builder.addCase(likePostNewsPage.rejected, (state, action) => {
-            alert('If you want like post, please signup or login')
-        })
-    },
-});
+  },
+  extraReducers: (builder) => {
+    builder.addCase(fetchNews.fulfilled, (state) => {
+      state.isLoading = false
+    })
+    builder.addCase(fetchNews.pending, (state) => {
+      state.isLoading = true
+    })
+    builder.addCase(fetchNews.rejected, (state) => {
+      state.isLoading = false
+    })
+    builder.addCase(likePostNewsPage.rejected, () => {
+      // eslint-disable-next-line no-alert
+      alert('If you want like post, please signup or login')
+    })
+  },
+})
 
 export const {
-    setNews,
-    setAmountNewsPerPage,
-    setNewsAmount,
-    setIsLoading,
-    addLikeToPost,
-    removeLikeOnPost,
-} = newsSlice.actions;
-
+  setNews,
+  setAmountNewsPerPage,
+  setNewsAmount,
+  setIsLoading,
+  addLikeToPost,
+  removeLikeOnPost,
+} = newsSlice.actions
 
 export const fetchNews = createAsyncThunk(
-    'news/fetchNews',
-    /**
-     * @param {*} param0
-     */
-    async ({ selectedPage, perPage }, { rejectWithValue, dispatch }) => {
-        try {
-            const newsPosts = await postsAPI.getPosts(selectedPage, perPage)
-            const newsAmount = await postsAPI.getPostsAmount()
-            dispatch(setNewsAmount(newsAmount))
-            dispatch(setNews({ posts: newsPosts }))
-            return newsPosts
-        } catch (error) {
-            if (error.response) {
-                dispatch(setAuthErrorOccur())
-                return rejectWithValue('fetchNews error')
-            }
-        }
+  'news/fetchNews',
+  /**
+   * @param {*} param0
+   */
+  async ({ selectedPage, perPage }, { rejectWithValue, dispatch }) => {
+    try {
+      const newsPosts = await postsAPI.getPosts(selectedPage, perPage)
+      const newsAmount = await postsAPI.getPostsAmount()
+      dispatch(setNewsAmount(newsAmount))
+      dispatch(setNews({ posts: newsPosts }))
+      return newsPosts
+    } catch (error) {
+      if (error.response) {
+        dispatch(setAuthErrorOccur())
+        return rejectWithValue('fetchNews error')
+      }
     }
+    return null
+  },
 )
 
 export const likePostNewsPage = createAsyncThunk(
-    'news/likePostNewsPage',
-    /**
-     * @param {*} param0
-     */
-    async ({ postId, authUserId }, thunkAPI) => {
-        try {
-            let result = await postsAPI.likePost(postId)
-            if (result.status) {
-                if (result.likeData) {
-                    thunkAPI.dispatch(addLikeToPost({ postId, likeData: result.likeData }))
-                } else {
-                    thunkAPI.dispatch(removeLikeOnPost({ postId, userId: authUserId }))
-                }
-            } else {
-                throw new Error(result.message)
-            }
-        } catch (error) {
-            thunkAPI.dispatch(setAuthErrorOccur())
-            return thunkAPI.rejectWithValue(error)
+  'news/likePostNewsPage',
+  /**
+   * @param {*} param0
+   */
+  async ({ postId, authUserId }, thunkAPI) => {
+    try {
+      const result = await postsAPI.likePost(postId)
+      if (result.status) {
+        if (result.likeData) {
+          thunkAPI.dispatch(addLikeToPost({ postId, likeData: result.likeData }))
+        } else {
+          thunkAPI.dispatch(removeLikeOnPost({ postId, userId: authUserId }))
         }
+      } else {
+        throw new Error(result.message)
+      }
+    } catch (error) {
+      thunkAPI.dispatch(setAuthErrorOccur())
+      return thunkAPI.rejectWithValue(error)
     }
+    return null
+  },
 )
 
 export default newsSlice.reducer

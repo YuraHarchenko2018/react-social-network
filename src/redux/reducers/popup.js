@@ -1,4 +1,5 @@
-import { createSlice } from "@reduxjs/toolkit"
+/* eslint-disable no-param-reassign */
+import { createSlice } from '@reduxjs/toolkit'
 
 const popUpSlice = createSlice({
   name: 'popUp',
@@ -8,7 +9,7 @@ const popUpSlice = createSlice({
     /**
      * @property {any} payload
      */
-    payload: null
+    payload: null,
   },
   reducers: {
     setContent(state, action) {
@@ -19,14 +20,14 @@ const popUpSlice = createSlice({
     },
     setPayload(state, action) {
       state.payload = action.payload
-    }
-  }
-});
+    },
+  },
+})
 
 export const {
   setContent,
   setIsShow,
-  setPayload
-} = popUpSlice.actions;
+  setPayload,
+} = popUpSlice.actions
 
 export default popUpSlice.reducer

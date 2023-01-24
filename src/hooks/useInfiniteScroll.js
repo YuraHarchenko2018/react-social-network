@@ -1,33 +1,56 @@
-import { useState, useRef, useCallback, useEffect } from 'react';
+import { useRef, useEffect, useState } from 'react'
+import { useSelector } from 'react-redux'
+import { getSelectedDialogSelector } from '../redux/selectors/dialogs'
 
 const useInfiniteScroll = () => {
-  const [page, setPage] = useState(1);
+  const [page, setPage] = useState(1)
 
-  const loadMoreRef = useRef(null);
+  const loadMoreRef = useRef(null)
   const refCurrent = loadMoreRef.current
 
-  const handleObserver = useCallback(([entry]) => {
-    if (entry.isIntersecting) {
-      setPage((prev) => prev + 1);
-    }
-  }, [])
+  const selectedChatId = useSelector(getSelectedDialogSelector)
+
+  console.log(refCurrent)
+  // const handleObserver = useCallback(([entry]) => {
+  //   if (entry.isIntersecting) {
+  //     setPage(page => page + 1)
+  //   }
+  // }, [])
+
+  const resetPage = () => {
+    setPage(1)
+  }
 
   useEffect(() => {
-    const observeerOption = {
+    resetPage()
+
+    const observerOption = {
       root: null,
       rootMargin: '0px',
       threshold: 1.0,
     }
 
-    const observer = new IntersectionObserver(handleObserver, observeerOption)
+    const elem = document.querySelector('#test_test_test')
+    console.log('elem')
+    console.log(elem)
 
-    if (loadMoreRef.current) {
-      observer.observe(loadMoreRef.current)
+    const observer = new IntersectionObserver(([entry]) => {
+      if (entry.isIntersecting) {
+        console.log('isIntersecting true')
+        setPage((currentPage) => currentPage + 1)
+      }
+    }, observerOption)
+
+    if (elem) { // loadMoreRef.current
+      observer.observe(elem)
     }
 
-  }, [handleObserver, refCurrent]);
+    return () => {
+      observer.disconnect()
+    }
+  }, [selectedChatId])
 
-  return { loadMoreRef, page };
+  return { loadMoreRef, page, resetPage }
 }
 
-export default useInfiniteScroll;
+export default useInfiniteScroll

@@ -1,17 +1,17 @@
-import { useEffect } from "react"
-import { useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
-import { getIsLoginInSelector } from "redux/selectors/auth";
+import { useEffect } from 'react'
+import { useSelector } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
+import { getIsLoginInSelector } from '../redux/selectors/auth'
 
 const useLoginRedirect = () => {
-    const navigate = useNavigate();
-    const isLoginIn = useSelector(getIsLoginInSelector)
+  const navigate = useNavigate()
+  const isLoginIn = useSelector(getIsLoginInSelector)
 
-    useEffect(() => {
-        if (!isLoginIn) {
-            navigate('/login')
-        }
-    }, [navigate, isLoginIn])
+  useEffect(() => {
+    if (!isLoginIn) {
+      navigate('/login')
+    }
+  }, [navigate, isLoginIn])
 }
 
 export default useLoginRedirect

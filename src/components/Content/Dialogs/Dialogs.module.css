@@ -8,25 +8,3 @@
     background: #fff;
     padding: 5px;
 }
-
-.messagesList {
-    border: 1px solid #57575742;
-    border-radius: 4px;
-    padding: 5px;
-    overflow: auto;
-    height: 600px;
-    padding-right: 12px;
-}
-
-.messages {
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-end;
-}
-
-.friendsList {
-    border: 1px solid #cfcfcf;
-    margin-top: 10px;
-    max-height: 325px;
-    overflow-x: hidden;
-}

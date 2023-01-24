@@ -1,13 +1,3 @@
-
-
-export const getContentPopUp = (state) => {
-    return state.popUp.content
-}
-
-export const getIsShowPopUp = (state) => {
-    return state.popUp.isShow
-}
-
-export const getPopUpPayload = (state) => {
-    return state.popUp.payload
-}
+export const getContentPopUp = (state) => state.popUp.content
+export const getIsShowPopUp = (state) => state.popUp.isShow
+export const getPopUpPayload = (state) => state.popUp.payload

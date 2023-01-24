@@ -1,36 +1,34 @@
-import React, { useEffect } from "react"
-import LoginForm from "components/common/ReduxForms/Login/LoginForm";
-import useRootRedirect from "hooks/useRootRedirect";
-import { login, setIsLoginErrorOccur } from "redux/reducers/login"
-import { getIsLoginInSelector } from "redux/selectors/auth";
-import { getIsFetchingLoginStatus, getIsOccurErrorLoginStatus } from "redux/selectors/login";
-import s from "./Login.module.css"
-// @ts-ignore
-import { useAppDispatch, useAppSelector } from "hooks/redux.ts"
+import React, { useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import LoginForm from '../../common/ReduxForms/Login/LoginForm'
+import useRootRedirect from '../../../hooks/useRootRedirect'
+import { login, setIsLoginErrorOccur } from '../../../redux/reducers/login'
+import { getIsLoginInSelector } from '../../../redux/selectors/auth'
+import { getIsFetchingLoginStatus, getIsOccurErrorLoginStatus } from '../../../redux/selectors/login'
+import s from './Login.module.css'
 
+function Login() {
+  const dispatch = useDispatch()
 
-const Login = () => {
-    const dispatch = useAppDispatch()
+  const isLoginIn = useSelector(getIsLoginInSelector)
+  const isFetching = useSelector(getIsFetchingLoginStatus)
+  const isOccurError = useSelector(getIsOccurErrorLoginStatus)
 
-    const isLoginIn = useAppSelector(getIsLoginInSelector)
-    const isFetching = useAppSelector(getIsFetchingLoginStatus)
-    const isOccurError = useAppSelector(getIsOccurErrorLoginStatus)
+  useRootRedirect(isLoginIn)
 
-    useRootRedirect(isLoginIn)
+  const handleSubmit = ({ email, password }) => {
+    dispatch(login(email, password))
+  }
 
-    const handleSubmit = ({ email, password }) => {
-        dispatch(login(email, password))
-    }
+  useEffect(() => () => {
+    dispatch(setIsLoginErrorOccur(false))
+  }, [dispatch])
 
-    useEffect(() => () => {
-        dispatch(setIsLoginErrorOccur(false))
-    }, [dispatch])
-
-    return (
-        <div className={s.loginPage}>
-            <LoginForm onSubmit={handleSubmit} isFetching={isFetching} isOccurError={isOccurError} />
-        </div>
-    )
+  return (
+    <div className={s.loginPage}>
+      <LoginForm onSubmit={handleSubmit} isFetching={isFetching} isOccurError={isOccurError} />
+    </div>
+  )
 }
 
 export default Login

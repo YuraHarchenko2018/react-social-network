@@ -1,14 +1,13 @@
-import React from "react"
-import { useNavigate } from "react-router-dom"
-import { useDispatch } from "react-redux"
-import { logout } from "redux/reducers/auth"
-import { serverLink } from "constants/common"
-import s from "./Header.module.css"
+import React from 'react'
+import { useNavigate } from 'react-router-dom'
+import { useDispatch } from 'react-redux'
+import { logout } from '../../redux/reducers/auth'
+import { serverLink } from '../../constants/common'
+import s from './Header.module.css'
 
-
-const Header = ({ isLoginIn, authUserProfileImgLink }) => {
+function Header({ isLoginIn, authUserProfileImgLink }) {
   const dispatch = useDispatch()
-  const navigate = useNavigate();
+  const navigate = useNavigate()
 
   const loginBtnClick = () => navigate('/login')
   const signUpBtnClick = () => navigate('/sign-up')
@@ -24,11 +23,11 @@ const Header = ({ isLoginIn, authUserProfileImgLink }) => {
       <div className={s.loginBtnWrapper}>
         {
           isLoginIn ? (
-            <button onClick={logoutBtnClick} className={s.logoutBtn}>Logout</button>
+            <button type="button" onClick={logoutBtnClick} className={s.logoutBtn}>Logout</button>
           ) : (
             <>
-              <button onClick={loginBtnClick} className={s.loginBtn}>Login</button>
-              <button onClick={signUpBtnClick} className={s.signUpBtn}>Sign Up</button>
+              <button type="button" onClick={loginBtnClick} className={s.loginBtn}>Login</button>
+              <button type="button" onClick={signUpBtnClick} className={s.signUpBtn}>Sign Up</button>
             </>
           )
         }

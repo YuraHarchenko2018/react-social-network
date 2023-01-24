@@ -1,9 +1,2 @@
-
-
-export const getIsFetchingLoginStatus = (state) => {
-    return state.login.isFetching
-}
-
-export const getIsOccurErrorLoginStatus = (state) => {
-    return state.login.isOccurError
-}
+export const getIsFetchingLoginStatus = (state) => state.login.isFetching
+export const getIsOccurErrorLoginStatus = (state) => state.login.isOccurError

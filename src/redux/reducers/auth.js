@@ -1,10 +1,11 @@
-import { createSlice } from "@reduxjs/toolkit"
-import { authAPI, profileAPI } from "api/api"
+/* eslint-disable no-param-reassign */
+import { createSlice } from '@reduxjs/toolkit'
+import { authAPI, profileAPI } from '../../api/api'
 
 const authUserIdFromStorage = localStorage.getItem('authUserId')
 const jwtFromStorage = localStorage.getItem('jwtToken')
-const initialIsLoginIn = jwtFromStorage !== null ? true : false
-const defaultUserImg = "https://cdn-icons-png.flaticon.com/512/149/149071.png"
+const initialIsLoginIn = jwtFromStorage !== null
+const defaultUserImg = 'https://cdn-icons-png.flaticon.com/512/149/149071.png'
 
 const authSlice = createSlice({
   name: 'auth',
@@ -13,7 +14,7 @@ const authSlice = createSlice({
     jwtToken: jwtFromStorage,
     isLoginIn: initialIsLoginIn,
     authUserId: +authUserIdFromStorage,
-    authUserProfileImgLink: defaultUserImg
+    authUserProfileImgLink: defaultUserImg,
   },
   reducers: {
     setAuthData(state, action) {
@@ -58,20 +59,20 @@ const authSlice = createSlice({
     },
     setUserAvatar(state, action) {
       state.authUserProfileImgLink = action.payload.profileImg
-    }
-  }
-});
+    },
+  },
+})
 
 export const {
   setAuthData,
   setUserData,
   setAuthErrorOccur,
   logout,
-  setUserAvatar
-} = authSlice.actions;
+  setUserAvatar,
+} = authSlice.actions
 
 export const isJwtValid = () => async (dispatch) => {
-  let authMeData = await authAPI.me()
+  const authMeData = await authAPI.me()
   dispatch(setUserData(authMeData))
 }
 
@@ -82,7 +83,6 @@ export const getUserProfileImg = (userId) => async (dispatch) => {
     dispatch(setUserAvatar({ profileImg }))
   } catch (error) {
     if (error.response) {
-      // set to store flag that mean "something went wrong"
       dispatch(setAuthErrorOccur())
     }
   }

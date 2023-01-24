@@ -1,0 +1,6 @@
+.friendsList {
+    border: 1px solid #cfcfcf;
+    margin-top: 10px;
+    max-height: 325px;
+    overflow-x: hidden;
+}

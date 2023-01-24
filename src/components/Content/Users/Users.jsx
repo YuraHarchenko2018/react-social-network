@@ -6,15 +6,14 @@ import UsersPaginator from './elements/paginator/UsersPaginator'
 
 import s from './Users.module.css'
 
-
-const Users = () => {
-    return (
-        <div className={s.usersPageWrapper}>
-            <SearchUsers />
-            <UsersList />
-            <UsersPaginator />
-        </div>
-    )
+function Users() {
+  return (
+    <div className={s.usersPageWrapper}>
+      <SearchUsers />
+      <UsersList />
+      <UsersPaginator />
+    </div>
+  )
 }
 
 export default Users

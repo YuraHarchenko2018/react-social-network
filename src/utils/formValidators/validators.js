@@ -1,23 +1,23 @@
-
 // Rules Fabric
-const maxLenghtCreator = maxLength => value => {
-    if (value && value.length > maxLength) {
-        return 'Max length limit - ' + maxLength
-    }
-    return undefined
+const maxLengthCreator = (maxLength) => (value) => {
+  if (value && value.length > maxLength) {
+    return `Max length limit - ${maxLength}`
+  }
+  return undefined
 }
 
 // Rules
-export const required = value => (value ? undefined : 'Required')
-export const maxLenght10 = maxLenghtCreator(10)
-export const maxLenght30 = maxLenghtCreator(30)
-export const maxLenght50 = maxLenghtCreator(50)
-export const maxLenght100 = maxLenghtCreator(100)
-export const maxLenght240 = maxLenghtCreator(240)
-export const maxLenght1000 = maxLenghtCreator(1000)
-export const maxLenght2000 = maxLenghtCreator(2000)
+export const required = (value) => (value ? undefined : 'Required')
+export const maxLength50 = maxLengthCreator(50)
+export const maxLength100 = maxLengthCreator(100)
+export const maxLength1000 = maxLengthCreator(1000)
+export const maxLength2000 = maxLengthCreator(2000)
 
 // helper
-export const composeValidators = (...validators) => value => {
-    return validators.reduce((error, validator) => error || validator(value), undefined)
+export const composeValidators = (...validators) => {
+  const closure = (value) => {
+    const reduceFunc = (error, validator) => error || validator(value)
+    return validators.reduce(reduceFunc, undefined)
+  }
+  return closure
 }

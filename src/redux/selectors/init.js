@@ -1,5 +1,1 @@
-
-
-export const getIsAppInit = (state) => {
-    return state.init.isAppInit
-}
+export const getIsAppInit = (state) => state.init.isAppInit

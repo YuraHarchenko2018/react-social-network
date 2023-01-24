@@ -1,4 +1,4 @@
-import { configureStore } from '@reduxjs/toolkit';
+import { configureStore } from '@reduxjs/toolkit' // ?????
 import { combineReducers } from 'redux'
 
 import profileSlice from './reducers/profile'
@@ -11,22 +11,22 @@ import popUpSlice from './reducers/popup'
 import newsSlice from './reducers/news'
 
 const reducers = {
-    profile: profileSlice,
-    dialogs: dialogsSlice,
-    users: usersSlice,
-    login: loginSlice,
-    auth: authSlice,
-    init: initSlice,
-    popUp: popUpSlice,
-    news: newsSlice
+  profile: profileSlice,
+  dialogs: dialogsSlice,
+  users: usersSlice,
+  login: loginSlice,
+  auth: authSlice,
+  init: initSlice,
+  popUp: popUpSlice,
+  news: newsSlice,
 }
 
 export const rootReducer = combineReducers({
-    ...reducers
+  ...reducers,
 })
 
 const setupStore = () => configureStore({
-    reducer: rootReducer,
-});
+  reducer: rootReducer,
+})
 
 export default setupStore
