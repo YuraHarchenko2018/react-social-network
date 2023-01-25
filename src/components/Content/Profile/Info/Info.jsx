@@ -79,17 +79,14 @@ function UsernameBlock({ name }) {
 }
 
 function AdditionalData({ email, age }) {
+  const emailTitle = `Email: ${email}`
+  const ageTitle = `Age: ${age}`
+
   return (
     <div className={s.userInfoData}>
       <ul>
-        <li>
-          Email:
-          {email}
-        </li>
-        <li>
-          Age:
-          {age}
-        </li>
+        <li>{emailTitle}</li>
+        <li>{ageTitle}</li>
       </ul>
     </div>
   )
