@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import Preloader from '../../common/Preloader/Preloader'
 import { fetchNews, setNews } from '../../../redux/reducers/news'
 import { getPerPageSelector, getNewsSelector, getNewsIsLoadingSelector } from '../../../redux/selectors/news'
-import useInfiniteScroll from '../../../hooks/useInfiniteScroll'
+import useNewsInfiniteScroll from '../../../hooks/useNewsInfinityScroll';
 import { Posts } from '../Profile/Posts/Posts'
 import s from './News.module.css'
 
@@ -14,7 +14,7 @@ function News() {
   const perPage = useSelector(getPerPageSelector)
   const loading = useSelector(getNewsIsLoadingSelector)
 
-  const { loadMoreRef, page } = useInfiniteScroll()
+  const { loadMoreRef, page } = useNewsInfiniteScroll()
 
   useEffect(() => {
     dispatch(fetchNews({

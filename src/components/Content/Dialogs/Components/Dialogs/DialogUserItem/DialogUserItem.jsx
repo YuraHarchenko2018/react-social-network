@@ -16,8 +16,8 @@ function DialogUserItem({
         </ListItemIcon>
         <ListItemText primary={userName} />
         {
-                    newMessagesAmount > 0 && <Badge badgeContent={newMessagesAmount} color="primary" />
-                }
+          newMessagesAmount > 0 && <Badge badgeContent={newMessagesAmount} color="primary" />
+        }
       </ListItemButton>
     </ListItem>
   )

@@ -4,6 +4,8 @@ import { getFriendsSelector } from './users'
 export const getDialogsUsersSelector = (state) => state.dialogs.dialogs
 export const getDialogsMessagesSelector = (state) => state.dialogs.messages
 export const getSelectedDialogSelector = (state) => state.dialogs.selectedDialog
+export const getSelectedChatPageSelector = (state) => state.dialogs.selectedChatPage
+export const isMessagesLoadAvailableSelector = (state) => state.dialogs.isMessagesLoadAvailable
 export const getUnreadMessagesSelector = (state) => state.dialogs.unreadMessages
 export const getUnreadAmountForChatSelector = (unread, chatId) => unread[chatId] ?? 0
 

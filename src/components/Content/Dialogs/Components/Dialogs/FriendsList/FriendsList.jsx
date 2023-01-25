@@ -20,17 +20,17 @@ function FriendsList({ friends }) {
       <div className={s.friendsList}>
         <List sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }} aria-label="contacts">
           {
-                        friends && friends.map((friend) => (
-                          <DialogUserItem
-                            key={friend.id}
-                            avatarImg={friend.avatarImg}
-                            userName={friend.name}
-                            isSelected={false}
-                            handleClick={handleFriendClick(friend.id)}
-                            newMessagesAmount={0}
-                          />
-                        ))
-                    }
+            friends && friends.map((friend) => (
+              <DialogUserItem
+                key={friend.id}
+                avatarImg={friend.avatarImg}
+                userName={friend.name}
+                isSelected={false}
+                handleClick={handleFriendClick(friend.id)}
+                newMessagesAmount={0}
+              />
+            ))
+          }
         </List>
       </div>
     </>

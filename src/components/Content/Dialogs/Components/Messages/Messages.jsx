@@ -1,8 +1,13 @@
 import React, { useEffect, useRef } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchMessages } from '../../../../../redux/reducers/dialogs'
-import { getDialogsMessagesSelector, getSelectedDialogSelector } from '../../../../../redux/selectors/dialogs'
-import useInfiniteScroll from '../../../../../hooks/useInfiniteScroll'
+import {
+  getDialogsMessagesSelector,
+  getSelectedDialogSelector,
+  getSelectedChatPageSelector,
+  isMessagesLoadAvailableSelector,
+} from '../../../../../redux/selectors/dialogs'
+import useChatInfiniteScroll from '../../../../../hooks/useChatInfiniteScroll'
 import SelectChatPreview from './SelectChatPreview/SelectChatPreview'
 import MessageItem from './MessageItem/MessageItem'
 import s from './Messages.module.css'
@@ -12,26 +17,22 @@ function Messages() {
 
   const messages = useSelector(getDialogsMessagesSelector)
   const selectedChatId = useSelector(getSelectedDialogSelector)
+  const selectedChatPage = useSelector(getSelectedChatPageSelector)
+  const isMessagesLoadAvailable = useSelector(isMessagesLoadAvailableSelector)
 
-  const { loadMoreRef, page, resetPage } = useInfiniteScroll()
+  const { loadMoreRef } = useChatInfiniteScroll()
 
   const messagesListEl = useRef(null)
 
-  console.log(`test selectedChatId mess - ${selectedChatId}`)
-  console.log(`test page mess - ${page}`)
-
-  // вынести page в редакс
   useEffect(() => {
     if (selectedChatId) {
-      console.log(`selectedChatId - ${selectedChatId}`)
       dispatch(fetchMessages({
         chatId: selectedChatId,
-        page,
+        page: selectedChatPage,
         limit: 30,
       }))
     }
-    console.log(`page - ${page}`)
-  }, [dispatch, selectedChatId, page])
+  }, [dispatch, selectedChatId, selectedChatPage])
 
   useEffect(() => {
     if (messagesListEl) {
@@ -42,19 +43,17 @@ function Messages() {
     }
   }, [])
 
+  const messageMapFunc = (el) => <MessageItem key={el.id} userId={el.senderId} message={el.text} />
+
   return (
     <div className={s.messagesList} ref={messagesListEl}>
       <div className={s.messages}>
         {
-          !!selectedChatId && messages.map((el) => <MessageItem key={el.id} userId={el.senderId} message={el.text} />)
+          !!selectedChatId && messages.map(messageMapFunc)
         }
         {
-          // !!selectedChatId && <div ref={loadMoreRef}>Loading... {page}</div>
-          !!selectedChatId && messages.length && (
-            <div id="test_test_test">
-              Loading...
-              {page}
-            </div>
+          !!selectedChatId && !!messages.length && isMessagesLoadAvailable && (
+            <div ref={loadMoreRef} />
           )
         }
       </div>

@@ -6,15 +6,15 @@ import { fetchFriends } from './users'
 
 const initialState = {
   /**
-     * @property {[
-     *   {
-     *     id: number,
-     *     name: string,
-     *     avatarImg: string,
-     *   },
-     *   ...
-     * ] | []} dialogs
-     */
+   * @property {[
+   *   {
+   *     id: number,
+   *     name: string,
+   *     avatarImg: string,
+   *   },
+   *   ...
+   * ] | []} dialogs
+   */
   dialogs: [],
 
   /**
@@ -28,6 +28,8 @@ const initialState = {
      * @property {number | null} selectedDialog
      */
   selectedDialog: null,
+  selectedChatPage: 1,
+  isMessagesLoadAvailable: true,
 
   /**
      * @property {[
@@ -61,9 +63,14 @@ const dialogsSlice = createSlice({
     },
     setMessages(state, action) {
       state.messages = action.payload
+      state.isMessagesLoadAvailable = true
     },
     addMessagesToExists(state, action) {
       state.messages = [...state.messages, ...action.payload]
+
+      if (action.payload.length === 0) {
+        state.isMessagesLoadAvailable = false
+      }
     },
     setDialogs(state, action) {
       state.dialogs = action.payload
@@ -71,6 +78,16 @@ const dialogsSlice = createSlice({
     setSelectedDialog(state, action) {
       const chatId = action.payload
       state.selectedDialog = chatId
+    },
+    setSelectedPage(state, action) {
+      const page = action.payload
+      state.selectedChatPage = page
+    },
+    incrementSelectedPage(state) {
+      state.selectedChatPage += 1
+    },
+    setToDefaultSelectedPage(state) {
+      state.selectedChatPage = 1
     },
   },
 })
@@ -83,6 +100,9 @@ export const {
   addMessagesToExists,
   setDialogs,
   setSelectedDialog,
+  setSelectedPage,
+  incrementSelectedPage,
+  setToDefaultSelectedPage,
 } = dialogsSlice.actions
 
 // eslint-disable-next-line no-underscore-dangle
@@ -139,6 +159,7 @@ export const createChat = createAsyncThunk(
       dispatch(setSelectedDialog(chatId))
       dispatch(fetchDialogs())
       dispatch(setMessages([]))
+      dispatch(setToDefaultSelectedPage())
       dispatch(fetchFriends({ selectedPage: 1, perPage: 100 })) // ??? add mark to select all
 
       dispatch(stopListeningMessage())

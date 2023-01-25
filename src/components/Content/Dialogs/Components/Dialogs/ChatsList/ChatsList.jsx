@@ -5,6 +5,7 @@ import {
   setMessages,
   nullifyUnreadMessagesValueForChat,
   setSelectedDialog,
+  setToDefaultSelectedPage,
 } from '../../../../../../redux/reducers/dialogs'
 import {
   getSelectedDialogSelector,
@@ -23,6 +24,7 @@ function ChatsList({ dialogs }) {
     dispatch(setSelectedDialog(chatId))
     dispatch(setMessages([]))
     dispatch(nullifyUnreadMessagesValueForChat(chatId))
+    dispatch(setToDefaultSelectedPage())
   }
 
   return (
