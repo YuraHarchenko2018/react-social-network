@@ -6,9 +6,8 @@ const useRootRedirect = (isLoginIn) => {
 
   useEffect(() => {
     if (isLoginIn) {
-      return navigate('/')
+      navigate('/')
     }
-    return null
   }, [navigate, isLoginIn])
 }
 

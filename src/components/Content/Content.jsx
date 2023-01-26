@@ -10,8 +10,8 @@ import SignUp from './SignUp/SignUp'
 import s from './Content.module.css'
 
 function Content() {
-  const UsersContainer = React.lazy(() => import('./Users/UsersContainer'))
   const ProfileContainer = React.lazy(() => import('./Profile/ProfileContainer'))
+  const UsersContainer = React.lazy(() => import('./Users/UsersContainer'))
 
   return (
     <div className={s.content}>
